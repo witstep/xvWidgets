@@ -47,15 +47,18 @@ distance = cv::pointPolygonTest(contours, Point2f(10,20), true);
 ```
 
 cvWidgets becomes useful only when we ommit parameters.
-If in the example above we ommit any of the constructor parameters, the user is prompted for it through a GUI.
+If any of the constructor parameters is omitted, the user is prompted for it through a GUI.
 
 ```C++
 //A pop-up dialog asks if the distance should be measured
-cvWidgets::pointPolygonTest ppt2(contours, Point2f(10,20), NULL);
+cvWidgets::pointPolygonTest ppt1(contours, Point2f(10,20));
 
 //The user is offered a graphical interface to draw a polygon
-cvWidgets::pointPolygonTest ppt1(NULL, Point2f(10,20), true);
+cvWidgets::pointPolygonTest ppt2(NULL, Point2f(10,20), true);
 
 //The user is asked to draw a polygon and select a point
-cvWidgets::pointPolygonTest ppt2(NULL, NULL, true);
+cvWidgets::pointPolygonTest ppt3(NULL, NULL, true);
+
+//The user will need to input all 3 parameters
+cvWidgets::pointPolygonTest ppt4();
 ```
