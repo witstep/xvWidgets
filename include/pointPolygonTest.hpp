@@ -4,7 +4,6 @@
 #include "Point.hpp"
 #include "Contour.hpp"
 #include <opencv2/core.hpp>
-#include <climits>
 
 namespace cvWidgets{
 
