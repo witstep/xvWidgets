@@ -8,8 +8,11 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include <map>
+
+#include "Mat.hpp"
 
 namespace cvWidgets{
 
@@ -31,10 +34,12 @@ namespace cvWidgets{
 		void release(){ return m_videoCapture.release(); };
 		bool grab(){ return m_videoCapture.grab(); }
 		bool retrieve(cv::Mat& image, int channel = 0);
-		VideoCapture& VideoCapture::operator>>(cv::Mat& image){ m_videoCapture >> image; };
 		bool read(cv::Mat& image){ return m_videoCapture.read(image); };
 		double get(int propId){ return m_videoCapture.get(propId); };
 		bool set(int propId, double value){ return m_videoCapture.set(propId, value); };
+		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
+		friend void operator>>(VideoCapture&, Mat&);
+
 #pragma endregion cv::VideoCapture
 
 	private:
