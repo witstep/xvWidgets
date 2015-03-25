@@ -1,10 +1,13 @@
 #pragma once
-#include "wx/panel.h"
-#include "opencv2/core.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#include <wx/wx.h>
+#include <wx/panel.h>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include "pointPolygonTest.hpp"
 
 namespace cvWidgets{
+
+	class VideoCapture;//forward declaration
 
 	class Mat : public wxPanel
 	{
@@ -13,7 +16,7 @@ namespace cvWidgets{
 		Mat(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
 			const wxPoint &pos = wxDefaultPosition,
-			const wxSize &size = wxDefaultSize,
+			const wxSize &size = wxSize(720, 480),
 			long style = wxTAB_TRAVERSAL,
 			const wxString &name = wxPanelNameStr
 		);
@@ -25,9 +28,15 @@ namespace cvWidgets{
 		cv::Mat m_cvMat;
 		void paintEvent(wxPaintEvent & evt);
 		void operator<<(const cv::Mat&);
+
+		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
+
 		DECLARE_EVENT_TABLE()
 	private:
+		wxBitmap m_bitmap;
+		void createBitmap();
 		friend void operator>>(cv::VideoCapture&, Mat&);
+		friend void operator>>(VideoCapture&, Mat&);
 		
 	};
 

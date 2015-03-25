@@ -1,8 +1,11 @@
 #include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 #include <wx/dcbuffer.h>
-#include <wx/wx.h>
 
 #include "../include/Mat.hpp"
+#include "../include/VideoCapture.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 using namespace cvWidgets;
@@ -11,7 +14,10 @@ BEGIN_EVENT_TABLE(Mat, wxPanel)
 EVT_PAINT(Mat::paintEvent)
 END_EVENT_TABLE()
 
-Mat::Mat(){}
+
+Mat::Mat() : wxPanel()
+{
+}
 
 Mat::Mat(wxWindow *parent,
 	wxWindowID id,
@@ -24,30 +30,35 @@ Mat::Mat(wxWindow *parent,
 
 }
 
-
-void cvWidgets::operator >> (cv::VideoCapture &videoCapture, cvWidgets::Mat &mat){
+void cvWidgets::operator >> (cv::VideoCapture &videoCapture, cvWidgets::Mat &mat)
+{
 	videoCapture >> mat.m_cvMat;
-	mat.Refresh(false);
-	Sleep(33);
 }
 
+void cvWidgets::operator >> (cvWidgets::VideoCapture &videoCapture, cvWidgets::Mat &mat)
+{
+	videoCapture.m_videoCapture >> mat.m_cvMat;
+}
 
 void Mat::operator<<(const cv::Mat& cvMat)
 {
 
 }
 
-
 void Mat::paintEvent(wxPaintEvent & evt)
 {
 	if (this->m_cvMat.empty())
 		return;
 
-	wxImage image(this->m_cvMat.cols, this->m_cvMat.rows, (unsigned char*)this->m_cvMat.data, true);
-	cv::cvtColor(this->m_cvMat, this->m_cvMat, cv::COLOR_BGR2RGB);
-	wxBitmap bitmap(image);
+	wxBufferedPaintDC dc(this, m_bitmap);
+}
 
-	wxBufferedPaintDC dc(this, bitmap);
+void Mat::createBitmap()
+{
+	cv::Mat mat;
+	cv::cvtColor(m_cvMat, mat, cv::COLOR_BGR2RGB);
+	wxImage m_image = wxImage(mat.cols, mat.rows, (unsigned char*)mat.data, true);
+	m_bitmap = wxBitmap(m_image);
 }
 
 double Mat::pointPolygonTest(cv::InputArray contour){
@@ -58,4 +69,10 @@ double Mat::pointPolygonTest(cv::InputArray contour, cv::Point2f pt){
 }
 double Mat::pointPolygonTest(cv::InputArray contour, cv::Point2f pt, bool measureDist){
 	return 0.0;
+}
+
+void Mat::Refresh(bool eraseBackground, const wxRect *rect)
+{
+	createBitmap();
+	wxPanel::Refresh(eraseBackground);
 }
