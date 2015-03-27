@@ -5,7 +5,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "pointPolygonTest.hpp"
 
-namespace cvWidgets{
+namespace xvWidgets{
 
 	class VideoCapture;//forward declaration
 
@@ -27,6 +27,9 @@ namespace cvWidgets{
 
 		cv::Mat m_cvMat;
 		void paintEvent(wxPaintEvent & evt);
+
+		operator cv::_InputArray() const { return m_cvMat; }
+		operator cv::_OutputArray() const { return m_cvMat; }
 		void operator<<(const cv::Mat&);
 
 		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);

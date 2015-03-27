@@ -2,12 +2,12 @@
 
 #include <opencv2/core.hpp>
 
-namespace cvWidgets{
+namespace xvWidgets{
 	
 	template <class T>
 	class Point_{
 	public:
-		static T NULL_POINT;
+		static T UNDEFINED;
 
 	};
 

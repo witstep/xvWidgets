@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "wx/wx.h"
 #include <wx/panel.h>
 #include <wx/filepicker.h>
 #include <wx/propgrid/propgrid.h>
@@ -14,14 +15,20 @@
 
 #include "Mat.hpp"
 
-namespace cvWidgets{
+namespace xvWidgets{
 
 	class VideoCapture : public wxPanel
 	{
 
 	public:
 		static const std::string CLASS_NAME;
-		VideoCapture(wxWindow* parent);
+		VideoCapture(wxWindow * parent,
+			wxWindowID id = wxID_ANY,
+			const wxPoint &pos = wxDefaultPosition,
+			const wxSize &size = wxSize(720, 480),
+			long style = wxTAB_TRAVERSAL,
+			const wxString &name = wxPanelNameStr
+		);
 		VideoCapture();
 		VideoCapture(const std::string& filename);
 		VideoCapture(int device);

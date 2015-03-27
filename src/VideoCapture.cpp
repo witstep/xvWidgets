@@ -5,10 +5,10 @@
 
 #include <wx/sizer.h>
 
-#include "../include/VideoCapture.hpp"
+#include "VideoCapture.hpp"
 #include <sstream>
 
-using namespace cvWidgets;
+using namespace xvWidgets;
 using namespace std;
 using namespace std::tr2;
 
@@ -21,9 +21,14 @@ const map <int, string > VideoCapture::PROPERTY_MAP({
 	pair < int, string >(cv::CAP_PROP_FRAME_HEIGHT, "CAP_PROP_FRAME_HEIGHT")
 });
 
-VideoCapture::VideoCapture(wxWindow* parent) :
-	wxPanel(parent),
-	m_selfHosted(false)
+VideoCapture::VideoCapture(wxWindow *parent,
+	wxWindowID id,
+	const wxPoint &pos,
+	const wxSize &size,
+	long style,
+	const wxString &name
+	) :
+	wxPanel(parent, id, pos, size, style, name), m_selfHosted(false)
 {
 	init();
 }
@@ -66,7 +71,7 @@ bool VideoCapture::open(const string& filename)
 void VideoCapture::init()
 {
 	if (m_parent == NULL)
-		this->SetParent(new wxDialog(NULL, -1, _T("VideoCapture"),wxDefaultPosition,wxDefaultSize));
+		this->SetParent(new wxDialog(NULL, -1, VideoCapture::CLASS_NAME, wxDefaultPosition, wxDefaultSize));
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 

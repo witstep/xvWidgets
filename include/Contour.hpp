@@ -3,7 +3,7 @@
 #include <vector>
 #include <opencv2/core.hpp>
 
-namespace cvWidgets{
+namespace xvWidgets{
 
 	class Mat;
 

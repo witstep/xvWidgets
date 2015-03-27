@@ -1,7 +1,7 @@
 #include <wx/wxprec.h>
 #include "../include/Contour.hpp"
 
-using namespace cvWidgets;
+using namespace xvWidgets;
 
 template Contour < cv::Point2i >::Contour(const std::vector< cv::Point2i >& v);
 template Contour < cv::Point2f >::Contour(const std::vector< cv::Point2f >& v);

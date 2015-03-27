@@ -4,11 +4,11 @@
 #endif
 #include <wx/dcbuffer.h>
 
-#include "../include/Mat.hpp"
+#include "Mat.hpp"
 #include "../include/VideoCapture.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-using namespace cvWidgets;
+using namespace xvWidgets;
 
 BEGIN_EVENT_TABLE(Mat, wxPanel)
 EVT_PAINT(Mat::paintEvent)
@@ -27,15 +27,15 @@ Mat::Mat(wxWindow *parent,
 	const wxString &name
 	) :wxPanel(parent,id,pos,size,style,name)
 {
-
+	this->SetBackgroundColour(*wxBLACK);
 }
 
-void cvWidgets::operator >> (cv::VideoCapture &videoCapture, cvWidgets::Mat &mat)
+void xvWidgets::operator >> (cv::VideoCapture &videoCapture, xvWidgets::Mat &mat)
 {
 	videoCapture >> mat.m_cvMat;
 }
 
-void cvWidgets::operator >> (cvWidgets::VideoCapture &videoCapture, cvWidgets::Mat &mat)
+void xvWidgets::operator >> (xvWidgets::VideoCapture &videoCapture, xvWidgets::Mat &mat)
 {
 	videoCapture.m_videoCapture >> mat.m_cvMat;
 }
@@ -55,6 +55,8 @@ void Mat::paintEvent(wxPaintEvent & evt)
 
 void Mat::createBitmap()
 {
+	if (m_cvMat.empty())
+		return;
 	cv::Mat mat;
 	cv::cvtColor(m_cvMat, mat, cv::COLOR_BGR2RGB);
 	wxImage m_image = wxImage(mat.cols, mat.rows, (unsigned char*)mat.data, true);

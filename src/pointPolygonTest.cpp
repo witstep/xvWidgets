@@ -3,7 +3,7 @@
 #include "opencv2/imgproc.hpp"
 #include <sstream>
 
-using namespace cvWidgets;
+using namespace xvWidgets;
 
 pointPolygonTest::pointPolygonTest(cv::InputArray contour)
 	:m_contour(contour)
