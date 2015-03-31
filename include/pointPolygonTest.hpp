@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mat.hpp"
+#include "Image.hpp"
 #include "Point.hpp"
 #include "Contour.hpp"
 #include <opencv2/core.hpp>

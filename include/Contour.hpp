@@ -5,13 +5,13 @@
 
 namespace xvWidgets{
 
-	class Mat;
+	class Image;
 
 	template <class T>
 	class Contour : public std::vector<T>
 	{
 	public:
-		Contour<T>(const Mat&);
+		Contour<T>(const Image&);
 		Contour<T>();
 
 		Contour<T>(const std::vector<T>& v) : std::vector<T>(v){};

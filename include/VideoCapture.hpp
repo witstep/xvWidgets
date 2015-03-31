@@ -13,7 +13,7 @@
 
 #include <map>
 
-#include "Mat.hpp"
+#include "Image.hpp"
 
 namespace xvWidgets{
 
@@ -45,7 +45,7 @@ namespace xvWidgets{
 		double get(int propId){ return m_videoCapture.get(propId); };
 		bool set(int propId, double value){ return m_videoCapture.set(propId, value); };
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
-		friend void operator>>(VideoCapture&, Mat&);
+		friend void operator>>(VideoCapture&, Image&);
 
 #pragma endregion cv::VideoCapture
 
