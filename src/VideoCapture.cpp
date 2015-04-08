@@ -8,7 +8,7 @@
 #include "VideoCapture.hpp"
 #include <sstream>
 
-using namespace xvWidgets;
+using namespace xv;
 using namespace std;
 using namespace std::tr2;
 

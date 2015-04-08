@@ -15,7 +15,7 @@
 
 #include "Image.hpp"
 
-namespace xvWidgets{
+namespace xv{
 
 	class VideoCapture : public wxPanel
 	{
@@ -45,7 +45,7 @@ namespace xvWidgets{
 		double get(int propId){ return m_videoCapture.get(propId); };
 		bool set(int propId, double value){ return m_videoCapture.set(propId, value); };
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
-		friend void operator>>(VideoCapture&, Image&);
+		friend void operator>>(VideoCapture&, Image<int>&);
 
 #pragma endregion cv::VideoCapture
 
