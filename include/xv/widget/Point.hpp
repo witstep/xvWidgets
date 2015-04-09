@@ -10,27 +10,26 @@ namespace widget{
 	class Point_ : public Widget<_Tp>
 	{
 	public:
-		//virtual ~Point_(){};
 		static const wxString CLASS_NAME;
 		Point_();
-		Point_(_Tp _x, _Tp _y) : m_point(_x, _y){};
-		Point_(const cv::Point_<_Tp> & pt) : m_point(pt) {};
-		Point_(const cv::Size_<_Tp>& sz) : m_point(sz) {};
-		Point_(const cv::Vec<_Tp, 2>& v) : m_point(v) {};
+		Point_(_Tp _x, _Tp _y) { m_position = cv::Point_<_Tp>(_x, _y); };
+		Point_(const cv::Point_<_Tp> & pt) : m_position(pt) {};
+		Point_(const cv::Size_<_Tp>& sz) : m_position(sz) {};
+		Point_(const cv::Vec<_Tp, 2>& v) : m_position(v) {};
 
 		static cv::Point_<_Tp> UNDEFINED;
 
 #pragma region operators
-		operator _Tp() const{ return m_cvPoint; };
+		operator _Tp() const{ return m_position; };
 #pragma endregion operators
 
 	private:
+		//cv::Point_<_Tp> m_position;
 		void paint(const cv::Mat&);
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		void initWidget();
-		cv::Point_<_Tp> m_point;
 		bool m_dragging=false;
 
 	};
