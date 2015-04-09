@@ -19,6 +19,7 @@ namespace xv{
 	class Image : public wxPanel
 	{
 	public:
+		friend Widget<_Tp>;
 		Image();
 		Image(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
@@ -42,7 +43,9 @@ namespace xv{
 		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
 		int getScale(){ return m_scale; };
 	private:
-
+		void setClickMouseCursor(){
+			wxSetCursor(wxCURSOR_HAND);
+		};
 		void onMouseMove(wxMouseEvent& evt);
 		void onMouseDown(wxMouseEvent& evt);
 		void onMouseUp(wxMouseEvent& evt);

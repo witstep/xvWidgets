@@ -15,26 +15,41 @@ END_EVENT_TABLE()
 template <typename _Tp>
 void Image<_Tp>::onMouseDown(wxMouseEvent& evt)
 {
-	wxPoint point(evt.GetPosition());
-	for (auto &w : m_widgets)
-		w->onMouseDown(cv::Point(point.x - m_hBorder, point.y - m_vBorder));
+	wxPoint evtPoint(evt.GetPosition());
+	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	for (auto &w : m_widgets){
+		if (w->getBounds().contains(point))
+			w->onMouseDown(point);
+	}
 }
 
 template <typename _Tp>
 void Image<_Tp>::onMouseUp(wxMouseEvent& evt)
 {
-	wxPoint point(evt.GetPosition());
+	wxPoint evtPoint(evt.GetPosition());
+	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	/*for (auto &w : m_widgets)
+		w->onMouseUp(point);//no need to check for bounds*/
 
-	for (auto &w : m_widgets)
-		w->onMouseUp(cv::Point(point.x + m_hBorder/m_scale, point.y - m_vBorder));
+
+	for (std::list<xv::Widget<_Tp>*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
+		(*i)->onMouseUp(point);//no need to check for bounds
+		if ((*i)->m_deleted)
+			i = m_widgets.erase(i);
+		else
+			i++;
+	}
 }
 
 template <typename _Tp>
 void Image<_Tp>::onMouseMove(wxMouseEvent& evt)
 {
-	wxPoint point(evt.GetPosition());
-	for (auto &w : m_widgets)
-		w->onMouseMove(getPixelInterpolation(cv::Point(point.x, point.y)));
+	wxPoint evtPoint(evt.GetPosition());
+	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	for (auto &w : m_widgets){
+		if(w->getBounds().contains(point))
+			w->onMouseMove(point);
+	}
 	Refresh();
 }
 
@@ -107,12 +122,12 @@ void Image<_Tp>::createBitmap()
 	
 	m_mutex.Lock();
 	m_renderMat = m_cvMat.clone();
+	if (m_widgets.size() > 0 )
 	for (auto &w : m_widgets)
 		w->paint(m_renderMat);
 	cv::cvtColor(m_renderMat, m_renderMat, cv::COLOR_BGR2RGB);
 
 	setBestSizeFit();
-	
 	
 	m_image = wxImage(m_renderMat.cols, m_renderMat.rows, (unsigned char*)m_renderMat.data, true);
 	m_bitmap = wxBitmap(m_image);
