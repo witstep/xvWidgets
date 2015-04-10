@@ -48,7 +48,7 @@ template <typename _Tp>
 bool Widget<_Tp>::mouseOverButton(cv::Point_<_Tp> mousePosition,
 	cv::Point_<_Tp> buttonPosition)
 {
-	if (distance<_Tp>(m_position + buttonPosition, mousePosition) < BUTTON_RADIUS)
+	if (distance<_Tp>(position() + buttonPosition, mousePosition) < BUTTON_RADIUS)
 		return true;
 	return false;
 }
@@ -80,8 +80,8 @@ cv::Rect_<_Tp> Widget<_Tp>::getBounds()
 template <typename _Tp>
 void Widget<_Tp>::paintButtons(const cv::Mat& image)
 {
-	cv::Point_<_Tp> pointOK = m_position + cv::Point_<_Tp>(OK_POSITION);
-	cv::Point_<_Tp> pointCancel = m_position + cv::Point_<_Tp>(CANCEL_POSITION);
+	cv::Point_<_Tp> pointOK = position() + cv::Point_<_Tp>(OK_POSITION);
+	cv::Point_<_Tp> pointCancel = position() + cv::Point_<_Tp>(CANCEL_POSITION);
 
 	float radians = 45 * M_PI / 180;
 

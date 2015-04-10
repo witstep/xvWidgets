@@ -38,9 +38,9 @@ namespace xv {
 		virtual void onMouseDown(const cv::Point&) = 0;
 		virtual void onMouseMove(const cv::Point&) = 0;
 		virtual void onMouseUp(const cv::Point&) = 0;
+		virtual cv::Point_<_Tp> position() = 0;
 		Image<_Tp> *m_image = NULL;
 		cv::Rect_<_Tp> m_bounds;
-		cv::Point_<_Tp> m_position;
 	private:
 		bool m_deleted = false;
 		bool mouseOverButton(cv::Point_<_Tp> mousePosition,

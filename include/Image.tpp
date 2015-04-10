@@ -28,9 +28,6 @@ void Image<_Tp>::onMouseUp(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
-	/*for (auto &w : m_widgets)
-		w->onMouseUp(point);//no need to check for bounds*/
-
 
 	for (std::list<xv::Widget<_Tp>*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		(*i)->onMouseUp(point);//no need to check for bounds
@@ -46,6 +43,7 @@ void Image<_Tp>::onMouseMove(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+
 	for (auto &w : m_widgets){
 		if(w->getBounds().contains(point))
 			w->onMouseMove(point);
@@ -109,8 +107,8 @@ void Image<_Tp>::paintEvent(wxPaintEvent & evt)
 
 	m_mutex.Lock();
 	wxBufferedPaintDC dc(this, m_bitmap);
-	m_lastPaintTime = std::chrono::steady_clock::now();
 	m_mutex.Unlock();
+	m_lastPaintTime = std::chrono::steady_clock::now();
 }
 
 template <typename _Tp>
@@ -181,5 +179,4 @@ void Image<_Tp>::Refresh(bool eraseBackground, const wxRect *rect)
 		return;//no need to render at more than 30 fps
 	createBitmap();
 	wxPanel::Refresh(eraseBackground);
-	Update();
 }

@@ -7,16 +7,17 @@ namespace xv{
 namespace widget{
 	
 	template <class _Tp>
-	class Point_ : public Widget<_Tp>
+	class Point_ : public Widget<_Tp>, public cv::Point_<_Tp>
 	{
 	public:
-		static const wxString CLASS_NAME;
+		static const std::string CLASS_NAME;
+#pragma region constructors
 		Point_();
-		Point_(_Tp _x, _Tp _y) { m_position = cv::Point_<_Tp>(_x, _y); };
-		Point_(const cv::Point_<_Tp> & pt) : m_position(pt) {};
-		Point_(const cv::Size_<_Tp>& sz) : m_position(sz) {};
-		Point_(const cv::Vec<_Tp, 2>& v) : m_position(v) {};
-
+		Point_(_Tp _x, _Tp _y);
+		Point_(const cv::Point_<_Tp> & pt);
+		Point_(const cv::Size_<_Tp>& sz);
+		Point_(const cv::Vec<_Tp, 2>& v);
+#pragma endregion constructors
 		static cv::Point_<_Tp> UNDEFINED;
 
 #pragma region operators
@@ -24,11 +25,11 @@ namespace widget{
 #pragma endregion operators
 
 	private:
-		//cv::Point_<_Tp> m_position;
 		void paint(const cv::Mat&);
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
+		virtual cv::Point_<_Tp> position();
 		void initWidget();
 		bool m_dragging=false;
 
