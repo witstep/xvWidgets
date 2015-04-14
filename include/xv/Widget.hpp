@@ -41,6 +41,7 @@ namespace xv {
 		virtual cv::Point_<_Tp> position() = 0;
 		Image<_Tp> *m_image = NULL;
 		cv::Rect_<_Tp> m_bounds;
+		bool m_dragging = false;
 	private:
 		bool isMouseOverButton(cv::Point_<_Tp> mousePosition,
 			cv::Point_<_Tp> buttonPosition);

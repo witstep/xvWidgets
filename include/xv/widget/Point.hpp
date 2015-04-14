@@ -18,10 +18,17 @@ namespace widget{
 		Point_(const cv::Size_<_Tp>& sz);
 		Point_(const cv::Vec<_Tp, 2>& v);
 #pragma endregion constructors
-		static cv::Point_<_Tp> UNDEFINED;
+
+		static Point_<_Tp> UNDEFINED;
 
 #pragma region operators
-		operator _Tp() const{ return m_position; };
+		operator cv::Point_<_Tp>() const{ return m_position; };
+		bool operator == (const Point_<_Tp> &b) {
+			if (this->m_undefined && b.m_undefined)
+				return true;//if both are undefined they are considered equal
+			//compare as a cv::Point_
+			return static_cast<cv::Point_<_Tp>>(*this) == b;
+		};
 #pragma endregion operators
 
 	private:
@@ -31,7 +38,7 @@ namespace widget{
 		void onMouseUp(const cv::Point&);
 		virtual cv::Point_<_Tp> position();
 		void initWidget();
-		bool m_dragging=false;
+		bool m_undefined = false; //only the default constructor sets it to true
 
 	};
 

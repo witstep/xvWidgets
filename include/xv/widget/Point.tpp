@@ -8,8 +8,10 @@ const std::string Point_<_Tp>::CLASS_NAME("Point");
 #pragma region constructors
 
 template <class _Tp>
-Point_<_Tp>::Point_(_Tp _x, _Tp _y) : cv::Point_<_Tp>(_x, _y){};
+Point_<_Tp>::Point_() : cv::Point_<_Tp>(), m_undefined(true){};
 
+template <class _Tp>
+Point_<_Tp>::Point_(_Tp _x, _Tp _y) : cv::Point_<_Tp>(_x, _y){};
 
 template <class _Tp>
 Point_<_Tp>::Point_(const cv::Point_<_Tp> & pt) : cv::Point_<_Tp>(pt){};
@@ -101,10 +103,7 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 }
 
 template <typename _Tp>
-cv::Point_<_Tp> Point_<_Tp>::UNDEFINED = cv::Point_<_Tp>(
-	std::numeric_limits<_Tp>::lowest(),
-	std::numeric_limits<_Tp>::lowest()
-);
+Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
 
 template <typename _Tp>
 void Point_<_Tp>::initWidget()
