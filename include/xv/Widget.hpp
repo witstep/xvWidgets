@@ -42,8 +42,7 @@ namespace xv {
 		Image<_Tp> *m_image = NULL;
 		cv::Rect_<_Tp> m_bounds;
 	private:
-		bool m_deleted = false;
-		bool mouseOverButton(cv::Point_<_Tp> mousePosition,
+		bool isMouseOverButton(cv::Point_<_Tp> mousePosition,
 			cv::Point_<_Tp> buttonPosition);
 	};
 }

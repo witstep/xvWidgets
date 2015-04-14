@@ -45,7 +45,7 @@ _Tp xv::distance<_Tp>(cv::Point_<_Tp> p1, cv::Point_<_Tp> p2)
 }
 
 template <typename _Tp>
-bool Widget<_Tp>::mouseOverButton(cv::Point_<_Tp> mousePosition,
+bool Widget<_Tp>::isMouseOverButton(cv::Point_<_Tp> mousePosition,
 	cv::Point_<_Tp> buttonPosition)
 {
 	if (distance<_Tp>(position() + buttonPosition, mousePosition) < BUTTON_RADIUS)
@@ -56,19 +56,19 @@ bool Widget<_Tp>::mouseOverButton(cv::Point_<_Tp> mousePosition,
 template <class _Tp>
 void Widget<_Tp>::onMouseMove(const cv::Point& point)
 {
-	if (mouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
+	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
 		m_image->setClickMouseCursor();
-	else if (mouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)) )
+	else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
 		m_image->setClickMouseCursor();
 }
 
 template <class _Tp>
 void Widget<_Tp>::onMouseUp(const cv::Point& point)
 {
-	if (mouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
-		m_deleted = true;
-	else if (mouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
-		m_deleted = true;
+	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
+		m_image = NULL;
+	else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
+		m_image = NULL;
 }
 
 template <typename _Tp>
@@ -83,7 +83,7 @@ void Widget<_Tp>::paintButtons(const cv::Mat& image)
 	cv::Point_<_Tp> pointOK = position() + cv::Point_<_Tp>(OK_POSITION);
 	cv::Point_<_Tp> pointCancel = position() + cv::Point_<_Tp>(CANCEL_POSITION);
 
-	float radians = 45 * M_PI / 180;
+	double radians = 45 * M_PI / 180;
 
 	//ok button
 	cv::circle(
