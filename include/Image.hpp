@@ -36,6 +36,7 @@ namespace xv{
 
 #pragma region operators
 		operator cv::_InputOutputArray() const { return m_cvMat; }
+		operator cv::Mat() const { return m_cvMat; }
 		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
 		void operator<<(const cv::Mat&);
 #pragma endregion operators
@@ -71,6 +72,7 @@ namespace xv{
 			videoCapture.m_videoCapture >> image.m_cvMat;
 			image.m_mutex.Unlock();
 		};
+
 		float m_scale = 1;
 		int m_hBorder = 0;
 		int m_vBorder=0;
