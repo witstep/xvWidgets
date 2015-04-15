@@ -1,6 +1,5 @@
 #include "Point.hpp"
-using namespace xv::widget;
-
+using namespace xv;
 
 template <class _Tp>
 const std::string Point_<_Tp>::CLASS_NAME("Point");
@@ -8,7 +7,7 @@ const std::string Point_<_Tp>::CLASS_NAME("Point");
 #pragma region constructors
 
 template <class _Tp>
-Point_<_Tp>::Point_() : cv::Point_<_Tp>(), m_undefined(true){};
+Point_<_Tp>::Point_() : cv::Point_<_Tp>() { m_undefined = true; };
 
 template <class _Tp>
 Point_<_Tp>::Point_(_Tp _x, _Tp _y) : cv::Point_<_Tp>(_x, _y){};
@@ -104,9 +103,3 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 
 template <typename _Tp>
 Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
-
-template <typename _Tp>
-void Point_<_Tp>::initWidget()
-{
-	
-}

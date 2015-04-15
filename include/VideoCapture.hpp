@@ -45,7 +45,7 @@ namespace xv{
 		double get(int propId){ return m_videoCapture.get(propId); };
 		bool set(int propId, double value){ return m_videoCapture.set(propId, value); };
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
-		friend void operator>>(VideoCapture&, Image<int>&);
+		friend void operator>>(VideoCapture&, Image_<int>&);
 
 #pragma endregion cv::VideoCapture
 

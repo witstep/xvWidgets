@@ -3,17 +3,17 @@
 #include "opencv2/imgproc/imgproc.hpp"
 using namespace xv;
 
-BEGIN_EVENT_TABLE_TEMPLATE1(Image, wxPanel,_Tp)
-	EVT_PAINT(Image::paintEvent)
-	EVT_SIZE(Image::sizeEvent)
-	EVT_ERASE_BACKGROUND(Image::onEraseBackground)
-	EVT_LEFT_DOWN(Image::onMouseDown)
-	EVT_LEFT_UP(Image::onMouseUp)
-	EVT_MOTION(Image::onMouseMove)
+BEGIN_EVENT_TABLE_TEMPLATE1(Image_, wxPanel,_Tp)
+	EVT_PAINT(Image_::paintEvent)
+	EVT_SIZE(Image_::sizeEvent)
+	EVT_ERASE_BACKGROUND(Image_::onEraseBackground)
+	EVT_LEFT_DOWN(Image_::onMouseDown)
+	EVT_LEFT_UP(Image_::onMouseUp)
+	EVT_MOTION(Image_::onMouseMove)
 END_EVENT_TABLE()
 
 template <typename _Tp>
-void Image<_Tp>::onMouseDown(wxMouseEvent& evt)
+void Image_<_Tp>::onMouseDown(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
@@ -24,14 +24,14 @@ void Image<_Tp>::onMouseDown(wxMouseEvent& evt)
 }
 
 template <typename _Tp>
-void Image<_Tp>::onMouseUp(wxMouseEvent& evt)
+void Image_<_Tp>::onMouseUp(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 
 	for (std::list<xv::Widget<_Tp>*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		(*i)->onMouseUp(point);//no need to check for bounds
-		if ((*i)->m_deleted)
+		if (!(*i)->m_image)
 			i = m_widgets.erase(i);
 		else
 			i++;
@@ -39,7 +39,7 @@ void Image<_Tp>::onMouseUp(wxMouseEvent& evt)
 }
 
 template <typename _Tp>
-void Image<_Tp>::onMouseMove(wxMouseEvent& evt)
+void Image_<_Tp>::onMouseMove(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
@@ -52,7 +52,7 @@ void Image<_Tp>::onMouseMove(wxMouseEvent& evt)
 }
 
 template <typename _Tp>
-cv::Point Image<_Tp>::getPixelInterpolation(cv::Point point)
+cv::Point Image_<_Tp>::getPixelInterpolation(cv::Point point)
 {
 	int x = point.x / m_scale - m_hBorder / m_scale;
 	int y = point.y / m_scale - m_vBorder / m_scale;
@@ -71,18 +71,18 @@ cv::Point Image<_Tp>::getPixelInterpolation(cv::Point point)
 }
 
 template <typename _Tp>
-void Image<_Tp>::onEraseBackground(wxEraseEvent&)
+void Image_<_Tp>::onEraseBackground(wxEraseEvent&)
 {
 	//avoids flickering
 }
 
 template <typename _Tp>
-Image<_Tp>::Image() : wxPanel()
+Image_<_Tp>::Image_() : wxPanel()
 {
 }
 
 template <typename _Tp>
-Image<_Tp>::Image(wxWindow *parent,
+Image_<_Tp>::Image_(wxWindow *parent,
 	wxWindowID id,
 	const wxPoint &pos,
 	const wxSize &size,
@@ -94,13 +94,13 @@ Image<_Tp>::Image(wxWindow *parent,
 }
 
 template <typename _Tp>
-void Image<_Tp>::operator<<(const cv::Mat& cvMat)
+void Image_<_Tp>::operator<<(const cv::Mat& cvMat)
 {
 
 }
 
 template <typename _Tp>
-void Image<_Tp>::paintEvent(wxPaintEvent & evt)
+void Image_<_Tp>::paintEvent(wxPaintEvent & evt)
 {
 	if (this->m_cvMat.empty())
 		return;
@@ -112,7 +112,7 @@ void Image<_Tp>::paintEvent(wxPaintEvent & evt)
 }
 
 template <typename _Tp>
-void Image<_Tp>::createBitmap()
+void Image_<_Tp>::createBitmap()
 {
 	if (m_cvMat.empty())
 		return;
@@ -133,14 +133,14 @@ void Image<_Tp>::createBitmap()
 }
 
 template <typename _Tp>
-void Image<_Tp>::sizeEvent(wxSizeEvent& evt){
+void Image_<_Tp>::sizeEvent(wxSizeEvent& evt){
 	int w, h;
 	GetSize(&w,&h);
 	createBitmap();
 }
 
 template <typename _Tp>
-void Image<_Tp>::setBestSizeFit()
+void Image_<_Tp>::setBestSizeFit()
 {
 	int cols, newCols, rows, newRows;
 	m_hBorder = 0; m_vBorder = 0; m_scale = 1;
@@ -172,7 +172,7 @@ void Image<_Tp>::setBestSizeFit()
 }
 
 template <typename _Tp>
-void Image<_Tp>::Refresh(bool eraseBackground, const wxRect *rect)
+void Image_<_Tp>::Refresh(bool eraseBackground, const wxRect *rect)
 {
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < 33)

@@ -8,11 +8,11 @@ namespace xv {
 	_Tp distance(cv::Point_<_Tp>, cv::Point_<_Tp>);
 
 	template <typename _Tp>
-	class Image;
+	class Image_;
 
 	template <typename _Tp>
 	class Widget{
-		friend Image<_Tp>;
+		friend Image_<_Tp>;
 	public:
 		static const _Tp MARGIN;
 		static const int BUTTON_RADIUS;
@@ -23,7 +23,7 @@ namespace xv {
 		static const cv::Scalar AFFIRMATIVE_COLOR;
 		static const cv::Scalar NEGATIVE_COLOR;
 
-		friend void operator >> (Image<_Tp> &image, Widget<_Tp> &widget){
+		friend void operator >> (Image_<_Tp> &image, Widget<_Tp> &widget){
 			if (std::find(image.m_widgets.begin(), image.m_widgets.end(), &widget) == image.m_widgets.end()){
 				image.m_widgets.push_back(&widget);
 				widget.m_image = &image;
@@ -39,9 +39,10 @@ namespace xv {
 		virtual void onMouseMove(const cv::Point&) = 0;
 		virtual void onMouseUp(const cv::Point&) = 0;
 		virtual cv::Point_<_Tp> position() = 0;
-		Image<_Tp> *m_image = NULL;
+		Image_<_Tp> *m_image = NULL;
 		cv::Rect_<_Tp> m_bounds;
 		bool m_dragging = false;
+		bool m_undefined = false; //only the default constructor sets it to true
 	private:
 		bool isMouseOverButton(cv::Point_<_Tp> mousePosition,
 			cv::Point_<_Tp> buttonPosition);

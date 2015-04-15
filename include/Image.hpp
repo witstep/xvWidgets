@@ -16,12 +16,12 @@ namespace xv{
 	class VideoCapture;//forward declaration
 
 	template <typename _Tp>
-	class Image : public wxPanel
+	class Image_ : public wxPanel
 	{
 	public:
 		friend Widget<_Tp>;
-		Image();
-		Image(wxWindow * parent,
+		Image_();
+		Image_(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
 			const wxPoint &pos = wxDefaultPosition,
 			const wxSize &size = wxSize(720, 480),
@@ -36,7 +36,7 @@ namespace xv{
 
 #pragma region operators
 		operator cv::_InputOutputArray() const { return m_cvMat; }
-		friend void operator >> (Image &image, Widget<_Tp> &widget);
+		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
 		void operator<<(const cv::Mat&);
 #pragma endregion operators
 
@@ -61,12 +61,12 @@ namespace xv{
 		wxSizer* m_sizer;
 		inline void createBitmap();
 		void setBestSizeFit();
-		friend void operator>>(cv::VideoCapture &videoCapture, Image<_Tp> &image){
+		friend void operator>>(cv::VideoCapture &videoCapture, Image_<_Tp> &image){
 			image.m_mutex.Lock();
 			videoCapture >> image.m_cvMat;
 			image.m_mutex.Unlock();
 		}
-		friend void operator>>(VideoCapture &videoCapture, Image<_Tp> &image){
+		friend void operator>>(VideoCapture &videoCapture, Image_<_Tp> &image){
 			image.m_mutex.Lock();
 			videoCapture.m_videoCapture >> image.m_cvMat;
 			image.m_mutex.Unlock();
@@ -78,6 +78,7 @@ namespace xv{
 		DECLARE_EVENT_TABLE()
 	};
 
+	typedef Image_<int> Image;
 }
 
 #include "Image.tpp"

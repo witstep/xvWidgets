@@ -4,7 +4,6 @@
 #include <opencv2/core.hpp>
 
 namespace xv{
-namespace widget{
 	
 	template <class _Tp>
 	class Point_ : public Widget<_Tp>, public cv::Point_<_Tp>
@@ -37,8 +36,6 @@ namespace widget{
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		virtual cv::Point_<_Tp> position();
-		void initWidget();
-		bool m_undefined = false; //only the default constructor sets it to true
 
 	};
 
@@ -46,7 +43,6 @@ namespace widget{
 	typedef Point2i Point;
 	typedef Point_<float> Point2f;
 	typedef Point_<double> Point2d;
-}
 }
 
 #include "Point.tpp"

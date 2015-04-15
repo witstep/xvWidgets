@@ -65,10 +65,13 @@ void Widget<_Tp>::onMouseMove(const cv::Point& point)
 template <class _Tp>
 void Widget<_Tp>::onMouseUp(const cv::Point& point)
 {
-	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
+	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION))){
+		m_undefined = false;
 		m_image = NULL;
-	else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
+	}else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION))){
+		m_undefined = true;
 		m_image = NULL;
+	}
 }
 
 template <typename _Tp>
