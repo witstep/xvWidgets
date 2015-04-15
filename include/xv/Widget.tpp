@@ -81,6 +81,13 @@ cv::Rect_<_Tp> Widget<_Tp>::getBounds()
 }
 
 template <typename _Tp>
+void Widget<_Tp>::render(const cv::Mat& image)
+{
+	paintButtons(image);
+	paint(image);
+}
+
+template <typename _Tp>
 void Widget<_Tp>::paintButtons(const cv::Mat& image)
 {
 	cv::Point_<_Tp> pointOK = position() + cv::Point_<_Tp>(OK_POSITION);

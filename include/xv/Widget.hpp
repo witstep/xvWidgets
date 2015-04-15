@@ -23,6 +23,7 @@ namespace xv {
 		static const cv::Scalar AFFIRMATIVE_COLOR;
 		static const cv::Scalar NEGATIVE_COLOR;
 
+		//widgets for use input
 		friend void operator >> (Image_<_Tp> &image, Widget<_Tp> &widget){
 			if (std::find(image.m_widgets.begin(), image.m_widgets.end(), &widget) == image.m_widgets.end()){
 				image.m_widgets.push_back(&widget);
@@ -30,9 +31,20 @@ namespace xv {
 			}
 		};
 
+		//simple rendering of widget without user input
+		void operator >> (Image_<_Tp> &image){
+			this->paint(image);
+			/*if (std::find(image.m_widgets.begin(), image.m_widgets.end(), this) == image.m_widgets.end()){
+				image.m_widgets.push_back(this);
+				this->m_image = &image;
+			}*/
+		};
+
 		cv::Rect_<_Tp> getBounds();
+		virtual void render(const cv::Mat&);
 	protected:
 		virtual ~Widget() = 0;
+		
 		virtual void paint(const cv::Mat&) = 0;
 		virtual void paintButtons(const cv::Mat&);
 		virtual void onMouseDown(const cv::Point&) = 0;

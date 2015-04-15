@@ -122,7 +122,7 @@ void Image_<_Tp>::createBitmap()
 	m_renderMat = m_cvMat.clone();
 	if (m_widgets.size() > 0 )
 	for (auto &w : m_widgets)
-		w->paint(m_renderMat);
+		w->render(m_renderMat);
 	cv::cvtColor(m_renderMat, m_renderMat, cv::COLOR_BGR2RGB);
 
 	setBestSizeFit();

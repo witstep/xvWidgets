@@ -28,6 +28,13 @@ namespace xv{
 			//compare as a cv::Point_
 			return static_cast<cv::Point_<_Tp>>(*this) == b;
 		};
+
+		bool operator != (const Point_<_Tp> &b) {
+			if (this->m_undefined && b.m_undefined)
+				return false;//if both are undefined they are considered equal
+			//compare as a cv::Point_
+			return static_cast<cv::Point_<_Tp>>(*this) != b;
+		};
 #pragma endregion operators
 
 	private:
