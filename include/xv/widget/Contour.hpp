@@ -3,22 +3,30 @@
 #include <vector>
 #include <opencv2/core.hpp>
 
-namespace xvWidgets{
+namespace xv{
 
-	class Image;
+	template <typename _Tp>
+	class Image_;
 
-	template <class T>
-	class Contour : public std::vector<T>
+	template <class _Tp>
+	class Contour_ : public Widget<_Tp>, public std::vector<Point_<_Tp>>
 	{
 	public:
-		Contour<T>(const Image&);
-		Contour<T>();
-
-		Contour<T>(const std::vector<T>& v) : std::vector<T>(v){};
+#pragma region constructors
+		Contour_<_Tp>();
+		Contour_<_Tp>(const std::vector<_Tp>& v) : std::vector<_Tp>(v){};
+#pragma endregion constructors
 
 	private:
-		void showGUI();
+		void paint(const cv::Mat&);
+		void onMouseMove(const cv::Point&);
+		void onMouseDown(const cv::Point&);
+		void onMouseUp(const cv::Point&);
+		virtual cv::Point_<_Tp> position();
 	};
+
+	typedef Contour_<int> Contour;
 
 }
 
+#include "Contour.tpp"
