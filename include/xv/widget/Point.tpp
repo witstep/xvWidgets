@@ -50,7 +50,6 @@ void Point_<T>::onMouseMove(const cv::Point& point)
 	Widget::onMouseMove(point);
 	if (!m_dragging)
 		return;
-	position() = point;
 	x = point.x;
 	y = point.y;
 }
@@ -79,11 +78,12 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 		Widget::HIGHLIGHT_COLOR
 		);
 
+
+#ifdef	_XDEBUG
 	std::stringstream ss;
 	ss << "(" << position().x << "," << position().y << ")";
 	cv::putText(image, ss.str(), position() + cv::Point_<_Tp>(-MARGIN * 2, MARGIN * 2), 1, 1, Widget::HIGHLIGHT_COLOR);
 
-#ifdef	_DEBUG
 	_Tp marginOffset = MARGIN * 4;
 	std::vector<cv::Point> points = {
 		position() + cv::Point_<_Tp>(-marginOffset, -marginOffset),
@@ -95,8 +95,8 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 #endif
 
 	m_bounds = cv::Rect_<_Tp>(
-		position() - cv::Point_<_Tp>(MARGIN * 4, MARGIN * 4),
-		position() + cv::Point_<_Tp>(MARGIN * 4, MARGIN * 4)
+		position() - cv::Point_<_Tp>(MARGIN, MARGIN),
+		position() + cv::Point_<_Tp>(MARGIN, MARGIN)
 		);
 }
 

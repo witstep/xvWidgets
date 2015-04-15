@@ -36,14 +36,12 @@ namespace xv{
 			return static_cast<cv::Point_<_Tp>>(*this) != b;
 		};
 #pragma endregion operators
-
-	private:
 		void paint(const cv::Mat&);
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		virtual cv::Point_<_Tp> position();
-
+	private:
 	};
 
 	typedef Point_<int> Point2i;

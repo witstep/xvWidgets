@@ -34,22 +34,23 @@ namespace xv {
 		//simple rendering of widget without user input
 		void operator >> (Image_<_Tp> &image){
 			this->paint(image);
-			/*if (std::find(image.m_widgets.begin(), image.m_widgets.end(), this) == image.m_widgets.end()){
-				image.m_widgets.push_back(this);
-				this->m_image = &image;
-			}*/
 		};
 
 		cv::Rect_<_Tp> getBounds();
 		virtual void render(const cv::Mat&);
-	protected:
-		virtual ~Widget() = 0;
-		
 		virtual void paint(const cv::Mat&) = 0;
 		virtual void paintButtons(const cv::Mat&);
 		virtual void onMouseDown(const cv::Point&) = 0;
 		virtual void onMouseMove(const cv::Point&) = 0;
 		virtual void onMouseUp(const cv::Point&) = 0;
+
+		void startDragging(){ m_dragging = true; };
+		void stopDragging(){ m_dragging = false; };
+		bool isDragging(){ return m_dragging; };
+		
+	protected:
+		virtual ~Widget() = 0;
+
 		virtual cv::Point_<_Tp> position() = 0;
 		Image_<_Tp> *m_image = NULL;
 		cv::Rect_<_Tp> m_bounds;
