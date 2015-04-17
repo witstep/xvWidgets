@@ -19,9 +19,11 @@ namespace xv{
 
 	private:
 		void paint(const cv::Mat&);
+		void paintAddPointButton(const Point_<_Tp>&, const cv::Mat& image);
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
+		void setMouseOver(bool mouseOver);
 		virtual cv::Point_<_Tp> position();
 	};
 

@@ -41,6 +41,7 @@ namespace xv{
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		virtual cv::Point_<_Tp> position();
+		virtual void setPosition(cv::Point_<_Tp> position);
 	private:
 	};
 

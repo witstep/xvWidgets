@@ -45,8 +45,11 @@ void Image_<_Tp>::onMouseMove(wxMouseEvent& evt)
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 
 	for (auto &w : m_widgets){
-		if(w->getBounds().contains(point))
+		if (w->getBounds().contains(point)){
 			w->onMouseMove(point);
+			w->setMouseOver(true);
+		}else
+			w->setMouseOver(false);
 	}
 	Refresh();
 }

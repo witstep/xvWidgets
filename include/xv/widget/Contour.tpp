@@ -18,8 +18,11 @@ template <class _Tp>
 void Contour_<_Tp>::paint(const cv::Mat& image)
 {
 	//paint each point
-	for (auto &p : *this)
+	for (auto &p : *this){
+		if (p.isMouseOver())
+			paintAddPointButton(p, m_image->m_renderMat);//cloning buttons
 		p.paint(image);
+	}
 
 	//draw lines between each point and the next
 	for (size_t i = 0; i < this->size()-1; i++){
@@ -43,6 +46,32 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 	m_bounds = cv::Rect_<_Tp>(
 		cv::Point_<_Tp>(0,0),
 		cv::Point_<_Tp>(image.cols-1, image.rows-1)
+		);
+}
+
+template <typename _Tp>
+void Contour_<_Tp>::paintAddPointButton(const Point_<_Tp>& pointCancel, const cv::Mat& image)
+{
+	double radians = 45 * M_PI / 180;
+	cv::line(
+		image,
+		cv::Point_<_Tp>(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		cv::Point_<_Tp>(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Widget::NEGATIVE_COLOR
+		);
+
+	cv::line(
+		image,
+		cv::Point_<_Tp>(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		cv::Point_<_Tp>(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Widget::NEGATIVE_COLOR
+		);
+
+	cv::circle(
+		image,
+		pointCancel,
+		BUTTON_RADIUS,
+		Widget::NEGATIVE_COLOR
 		);
 }
 
@@ -80,5 +109,14 @@ void Contour_<T>::onMouseMove(const cv::Point& point)
 	for (auto &p : *this){
 		if (p.isDragging())
 			p.onMouseMove(point);
+	}
+}
+
+template <class _Tp>
+void Contour_<_Tp>::setMouseOver(bool mouseOver)
+{
+	Widget::setMouseOver(mouseOver);
+	for (auto &p : *this){
+		p.setMouseOver(mouseOver);
 	}
 }

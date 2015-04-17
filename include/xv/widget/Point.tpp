@@ -102,3 +102,10 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 
 template <typename _Tp>
 Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
+
+template <typename _Tp>
+void Point_<_Tp>::setPosition(cv::Point_<_Tp> position)
+{
+	x = position.x;
+	y = position.y;
+}
