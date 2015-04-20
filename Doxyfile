@@ -1,0 +1,8 @@
+PROJECT_NAME     = xvWidgets
+INPUT            = include
+RECURSIVE        = YES
+FILE_PATTERNS    = *.hpp
+WARNINGS         = YES
+SEARCHENGINE     = NO
+OUTPUT_DIRECTORY = doc
+GENERATE_LATEX   = NO
