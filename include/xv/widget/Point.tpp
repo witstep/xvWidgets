@@ -7,13 +7,20 @@ const std::string Point_<_Tp>::CLASS_NAME("Point");
 #pragma region constructors
 
 template <class _Tp>
-Point_<_Tp>::Point_() : cv::Point_<_Tp>() { m_undefined = true; };
+Point_<_Tp>::Point_() : cv::Point_<_Tp>() {
+	m_undefined = true;
+};
 
 template <class _Tp>
-Point_<_Tp>::Point_(_Tp _x, _Tp _y) : cv::Point_<_Tp>(_x, _y){};
+Point_<_Tp>::Point_(_Tp _x, _Tp _y) : cv::Point_<_Tp>(_x, _y)
+{
+	setPosition(cv::Point_<_Tp>(_x, _y));
+};
 
 template <class _Tp>
-Point_<_Tp>::Point_(const cv::Point_<_Tp> & pt) : cv::Point_<_Tp>(pt){};
+Point_<_Tp>::Point_(const cv::Point_<_Tp> & pt) : cv::Point_<_Tp>(pt) {
+	setPosition(pt);
+};
 
 template <class _Tp>
 Point_<_Tp>::Point_(const cv::Size_<_Tp>& sz) : cv::Point_<_Tp>(pt){};
@@ -22,12 +29,6 @@ template <class _Tp>
 Point_<_Tp>::Point_(const cv::Vec<_Tp, 2>& v) : m_position(v){};
 
 #pragma endregion constructors
-
-template <class _Tp>
-cv::Point_<_Tp> Point_<_Tp>::position()
-{
-	return cv::Point_<_Tp>(this->x, this->y);
-}
 
 template <class T>
 void Point_<T>::onMouseDown(const cv::Point& point)
@@ -50,24 +51,24 @@ void Point_<T>::onMouseMove(const cv::Point& point)
 	Widget::onMouseMove(point);
 	if (!m_dragging)
 		return;
-	x = point.x;
-	y = point.y;
+	setPosition(point);
 }
 
 template <typename _Tp>
 void Point_<_Tp>::paint(const cv::Mat& image)
 {
+	_Tp crosshairLen = MARGIN * 5;
 	cv::line(
 		image,
-		position() - cv::Point_<_Tp>(0, MARGIN),
-		position() + cv::Point_<_Tp>(0, MARGIN),
+		position() - cv::Point_<_Tp>(0, crosshairLen),
+		position() + cv::Point_<_Tp>(0, crosshairLen),
 		Widget::FOREGROUND_COLOR
 		);
 
 	cv::line(
 		image,
-		position() - cv::Point_<_Tp>(MARGIN, 0),
-		position() + cv::Point_<_Tp>(MARGIN, 0),
+		position() - cv::Point_<_Tp>(crosshairLen, 0),
+		position() + cv::Point_<_Tp>(crosshairLen, 0),
 		Widget::FOREGROUND_COLOR
 		);
 
@@ -94,10 +95,6 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 	cv::polylines(image, points, true, Widget::FOREGROUND_COLOR, 1);
 #endif
 
-	m_bounds = cv::Rect_<_Tp>(
-		position() - cv::Point_<_Tp>(MARGIN, MARGIN),
-		position() + cv::Point_<_Tp>(MARGIN, MARGIN)
-		);
 }
 
 template <typename _Tp>
@@ -106,6 +103,14 @@ Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
 template <typename _Tp>
 void Point_<_Tp>::setPosition(cv::Point_<_Tp> position)
 {
+	Widget::setPosition(position);
 	x = position.x;
 	y = position.y;
+
+	m_contour = {
+		position + cv::Point_<_Tp>(-MARGIN, -MARGIN),
+		position + cv::Point_<_Tp>(-MARGIN, +MARGIN),
+		position + cv::Point_<_Tp>(+MARGIN, +MARGIN),
+		position + cv::Point_<_Tp>(+MARGIN, -MARGIN),
+	};
 }

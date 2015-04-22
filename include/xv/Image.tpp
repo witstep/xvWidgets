@@ -18,8 +18,10 @@ void Image_<_Tp>::onMouseDown(wxMouseEvent& evt)
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 	for (auto &w : m_widgets){
-		if (w->getBounds().contains(point))
+		if (w->contains(point)){
 			w->onMouseDown(point);
+			return;//click only passed to the topmost widget
+		}
 	}
 }
 
@@ -41,16 +43,21 @@ void Image_<_Tp>::onMouseUp(wxMouseEvent& evt)
 template <typename _Tp>
 void Image_<_Tp>::onMouseMove(wxMouseEvent& evt)
 {
+	//if (!evt.Dragging()) return;//to-do: handle mouse-up outside of the app
+
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 
 	for (auto &w : m_widgets){
-		if (w->getBounds().contains(point)){
-			w->onMouseMove(point);
+		if (w->contains(point)){
 			w->setMouseOver(true);
-		}else
+		} else{
 			w->setMouseOver(false);
+		}
+		//not checking for bounds because the widget may have been dragged away
+		w->onMouseMove(point); 
 	}
+
 	Refresh();
 }
 

@@ -7,16 +7,16 @@
 using namespace xv;
 
 template <class _Tp>
-const _Tp Widget<_Tp>::MARGIN = 21;
+const _Tp Widget<_Tp>::MARGIN = 5;
 
 template <class _Tp>
-const cv::Point Widget<_Tp>::OK_POSITION = cv::Point(MARGIN * 2, MARGIN * 3);
+const int Widget<_Tp>::BUTTON_RADIUS = 11;
 
 template <class _Tp>
-const cv::Point Widget<_Tp>::CANCEL_POSITION = cv::Point(MARGIN * 3, MARGIN * 3);
+const cv::Point Widget<_Tp>::OK_POSITION = cv::Point(BUTTON_RADIUS * 2, MARGIN * 3);
 
 template <class _Tp>
-const int Widget<_Tp>::BUTTON_RADIUS = Widget<_Tp>::MARGIN / 2.5;
+const cv::Point Widget<_Tp>::CANCEL_POSITION = cv::Point(BUTTON_RADIUS * 5, MARGIN * 3);
 
 template <typename _Tp>
 const cv::Scalar Widget<_Tp>::FOREGROUND_COLOR(255, 0, 0);
@@ -42,6 +42,11 @@ _Tp xv::distance<_Tp>(cv::Point_<_Tp> p1, cv::Point_<_Tp> p2)
 	int dx = p1.x - p2.x;
 	int dy = p1.y - p2.y;
 	return (_Tp)fabs(sqrt(dx*dx + dy*dy));
+}
+template <typename _Tp>
+cv::Point_<_Tp> Widget<_Tp>::position()
+{
+	return m_position;
 }
 
 template <typename _Tp>
@@ -75,9 +80,11 @@ void Widget<_Tp>::onMouseUp(const cv::Point& point)
 }
 
 template <typename _Tp>
-cv::Rect_<_Tp> Widget<_Tp>::getBounds()
+bool Widget<_Tp>::contains(const cv::Point_<_Tp>& point)
 {
-	return m_bounds;
+	if( cv::pointPolygonTest(m_contour, point, true) >= -MARGIN )
+		return true;
+	return false;
 }
 
 template <typename _Tp>

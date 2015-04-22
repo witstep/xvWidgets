@@ -1,6 +1,7 @@
 #include "Contour.hpp"
 #include "Point.hpp"
-#include "../../Image.hpp"
+#include "../Image.hpp"
+#include <numeric>
 
 using namespace xv;
 
@@ -43,10 +44,15 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 		);
 
 	//the whole image
-	m_bounds = cv::Rect_<_Tp>(
-		cv::Point_<_Tp>(0,0),
-		cv::Point_<_Tp>(image.cols-1, image.rows-1)
-		);
+	
+	m_contour = {
+		cv::Point_<_Tp>(0, 0),
+		cv::Point_<_Tp>(image.cols - 1, image.rows - 1)
+	};
+
+	m_contour.clear();
+	for (auto &p : *this)
+		m_contour.push_back(p);
 }
 
 template <typename _Tp>
@@ -75,22 +81,13 @@ void Contour_<_Tp>::paintAddPointButton(const Point_<_Tp>& pointCancel, const cv
 		);
 }
 
-template <class _Tp>
-cv::Point_<_Tp> Contour_<_Tp>::position()
-{
-	if (m_undefined && m_image)
-		return cv::Point_<_Tp>(100, 100);
-
-	return cv::Point_<_Tp>(0, 0);// this->x, this->y);
-}
-
 template <class T>
 void Contour_<T>::onMouseDown(const cv::Point& point)
 {
 	for (auto &p : *this){
-		if (p.getBounds().contains(point)){
+		if (p.contains(point)){
 			p.onMouseDown(point);
-			return;//no need to look for other points
+			return;//pass click to the topmost point
 		}
 	}
 }
@@ -101,6 +98,13 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 	Widget::onMouseUp(point);
 	for (auto &p : *this)
 		p.onMouseUp(point);//no need to check for bounds?
+
+	cv::Point_<T> middle(0, 0);
+
+	for (auto &p : *this)
+		middle += cv::Point_<T>(p.x / this->size(), p.y / this->size());
+
+	m_position = middle;
 }
 
 template <class T>

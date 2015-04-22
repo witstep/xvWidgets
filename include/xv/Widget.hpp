@@ -1,6 +1,7 @@
 #pragma once
 
 #include <opencv2/core.hpp>
+#include <vector>
 
 namespace xv {
 
@@ -40,9 +41,9 @@ namespace xv {
 			this->paint(image);
 		};
 
-		cv::Rect_<_Tp> getBounds();
 		virtual void render(const cv::Mat&);
 		virtual void paint(const cv::Mat&) = 0;
+		virtual bool contains(const cv::Point_<_Tp>&);
 		virtual void paintButtons(const cv::Mat&);
 		virtual void onMouseDown(const cv::Point&) = 0;
 		virtual void onMouseMove(const cv::Point&) = 0;
@@ -54,16 +55,15 @@ namespace xv {
 		virtual void setMouseOver(bool mouseOver){ m_mouseOver = mouseOver; };
 		virtual bool isMouseOver(){ return m_mouseOver; };
 		virtual void setPosition(cv::Point_<_Tp> position){ m_position = position; };
-		
+		virtual cv::Point_<_Tp> position();
 	protected:
 		virtual ~Widget() = 0;
 
-		virtual cv::Point_<_Tp> position() = 0;
 		Image_<_Tp> *m_image = NULL;
-		cv::Rect_<_Tp> m_bounds;
-		bool m_dragging = false;
-		bool m_mouseOver = false;
-		bool m_undefined = false; //only the default constructor sets it to true
+		std::vector<cv::Point_<_Tp>> m_contour;
+		bool m_dragging = false;  /*!< The user is dragging the widget */
+		bool m_mouseOver = false; /*!< The mouse pointer is over the widget */
+		bool m_undefined = false; /*!< The member variable that stores a primitive datatype doesn't hold a defined value */
 		cv::Point_<_Tp> m_position;
 	private:
 		bool isMouseOverButton(cv::Point_<_Tp> mousePosition,

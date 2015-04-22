@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <list>
 #include <opencv2/core.hpp>
 
 namespace xv{
@@ -14,7 +14,7 @@ namespace xv{
 	public:
 #pragma region constructors
 		Contour_<_Tp>();
-		Contour_<_Tp>(const std::vector<_Tp>& v) : std::vector<_Tp>(v){};
+		Contour_<_Tp>(const std::list<_Tp>& v) : std::list<_Tp>(v){};
 #pragma endregion constructors
 
 	private:
@@ -24,7 +24,6 @@ namespace xv{
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		void setMouseOver(bool mouseOver);
-		virtual cv::Point_<_Tp> position();
 	};
 
 	typedef Contour_<int> Contour;

@@ -9,7 +9,7 @@ namespace xv{
 	class Point_ : public Widget<_Tp>, public cv::Point_<_Tp>
 	{
 	public:
-		static const std::string CLASS_NAME;
+		static const std::string CLASS_NAME; /*!< Class name to be displayed in the GUI.  */
 #pragma region constructors
 		Point_();
 		Point_(_Tp _x, _Tp _y);
@@ -18,7 +18,7 @@ namespace xv{
 		Point_(const cv::Vec<_Tp, 2>& v);
 #pragma endregion constructors
 
-		static Point_<_Tp> UNDEFINED;
+		static Point_<_Tp> UNDEFINED; /*!< Represents a Point_ for which coordinates were not yet set.  */
 
 #pragma region operators
 		operator cv::Point_<_Tp>() const{ return m_position; };
@@ -40,7 +40,6 @@ namespace xv{
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
-		virtual cv::Point_<_Tp> position();
 		virtual void setPosition(cv::Point_<_Tp> position);
 	private:
 	};
