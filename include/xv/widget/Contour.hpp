@@ -2,6 +2,7 @@
 
 #include <list>
 #include <opencv2/core.hpp>
+#include "../Widget.hpp"
 
 namespace xv{
 
@@ -16,7 +17,7 @@ namespace xv{
 		Contour_<_Tp>();
 		Contour_<_Tp>(const std::list<_Tp>& v) : std::list<_Tp>(v){};
 #pragma endregion constructors
-
+		virtual void setPosition(cv::Point_<_Tp> position);
 	private:
 		void paint(const cv::Mat&);
 		void paintAddPointButton(const Point_<_Tp>&, const cv::Mat& image);
@@ -24,6 +25,7 @@ namespace xv{
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		void setMouseOver(bool mouseOver);
+
 	};
 
 	typedef Contour_<int> Contour;

@@ -15,7 +15,7 @@ namespace xv {
 	class Widget{
 		friend Image_<_Tp>;
 	public:
-		static const _Tp MARGIN;
+		static const _Tp MARGIN; /*\< test*/
 		static const int BUTTON_RADIUS;
 		static const cv::Point OK_POSITION;
 		static const cv::Point CANCEL_POSITION;
@@ -54,8 +54,9 @@ namespace xv {
 		bool isDragging(){ return m_dragging; };
 		virtual void setMouseOver(bool mouseOver){ m_mouseOver = mouseOver; };
 		virtual bool isMouseOver(){ return m_mouseOver; };
-		virtual void setPosition(cv::Point_<_Tp> position){ m_position = position; };
+		virtual void setPosition(cv::Point_<_Tp> position);
 		virtual cv::Point_<_Tp> position();
+		bool isMouseOverButton(cv::Point_<_Tp> mousePosition, cv::Point_<_Tp> buttonPosition);
 	protected:
 		virtual ~Widget() = 0;
 
@@ -65,9 +66,9 @@ namespace xv {
 		bool m_mouseOver = false; /*!< The mouse pointer is over the widget */
 		bool m_undefined = false; /*!< The member variable that stores a primitive datatype doesn't hold a defined value */
 		cv::Point_<_Tp> m_position;
+
 	private:
-		bool isMouseOverButton(cv::Point_<_Tp> mousePosition,
-			cv::Point_<_Tp> buttonPosition);
+
 	};
 }
 

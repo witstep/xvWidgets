@@ -7,7 +7,7 @@
 using namespace xv;
 
 template <class _Tp>
-const _Tp Widget<_Tp>::MARGIN = 5;
+const _Tp Widget<_Tp>::MARGIN = 10;
 
 template <class _Tp>
 const int Widget<_Tp>::BUTTON_RADIUS = 11;
@@ -43,6 +43,13 @@ _Tp xv::distance<_Tp>(cv::Point_<_Tp> p1, cv::Point_<_Tp> p2)
 	int dy = p1.y - p2.y;
 	return (_Tp)fabs(sqrt(dx*dx + dy*dy));
 }
+
+template <typename _Tp>
+void Widget<_Tp>::setPosition(cv::Point_<_Tp> position)
+{
+	m_position = position;
+}
+
 template <typename _Tp>
 cv::Point_<_Tp> Widget<_Tp>::position()
 {
@@ -53,7 +60,8 @@ template <typename _Tp>
 bool Widget<_Tp>::isMouseOverButton(cv::Point_<_Tp> mousePosition,
 	cv::Point_<_Tp> buttonPosition)
 {
-	if (distance<_Tp>(position() + buttonPosition, mousePosition) < BUTTON_RADIUS)
+	int d = distance<_Tp>(position() + buttonPosition, mousePosition);
+	if (d < BUTTON_RADIUS)
 		return true;
 	return false;
 }
