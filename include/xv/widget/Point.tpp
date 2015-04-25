@@ -57,7 +57,7 @@ void Point_<T>::onMouseMove(const cv::Point& point)
 template <typename _Tp>
 void Point_<_Tp>::paint(const cv::Mat& image)
 {
-	_Tp crosshairLen = MARGIN * 5;
+	_Tp crosshairLen = MARGIN * 3;
 	cv::line(
 		image,
 		position() - cv::Point_<_Tp>(0, crosshairLen),
