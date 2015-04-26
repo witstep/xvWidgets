@@ -33,8 +33,11 @@ void Image_<_Tp>::onMouseUp(wxMouseEvent& evt)
 
 	for (std::list<xv::Widget<_Tp>*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		(*i)->onMouseUp(point);//no need to check for bounds
-		if (!(*i)->m_image)
+		if (!(*i)->m_image){
+			m_mutex.Lock();//assure the GUI thread is not iterating
 			i = m_widgets.erase(i);
+			m_mutex.Unlock();
+		}
 		else
 			i++;
 	}
