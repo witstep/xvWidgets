@@ -26,6 +26,8 @@ namespace xv{
 		void onMouseUp(const cv::Point&);
 		void setMouseOver(bool mouseOver);
 
+		Point_<_Tp> m_centerPoint;
+
 	};
 
 	typedef Contour_<int> Contour;

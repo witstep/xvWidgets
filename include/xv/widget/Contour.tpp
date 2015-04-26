@@ -38,9 +38,12 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 		Widget::HIGHLIGHT_COLOR
 		);
 
+	//widget contour
 	m_contour.clear();
 	for (auto &p : *this)
 		m_contour.push_back(p);
+
+	m_centerPoint.paint(image);
 }
 
 template <typename _Tp>
@@ -89,6 +92,11 @@ void Contour_<_Tp>::paintAddPointButton(const Point_<_Tp>& point, const cv::Mat&
 template <class T>
 void Contour_<T>::onMouseDown(const cv::Point& point)
 {
+	if (m_centerPoint.contains(point)){
+		m_centerPoint.onMouseDown(point);
+		return;
+	}
+
 	for (auto &p : *this){
 		if (p.contains(point)){
 			p.onMouseDown(point);
@@ -101,6 +109,8 @@ template <class T>
 void Contour_<T>::onMouseUp(const cv::Point& point)
 {
 	Widget::onMouseUp(point);
+
+	m_centerPoint.onMouseUp(point);
 	for (auto &p : *this)
 		p.onMouseUp(point);//no need to check for bounds?
 
@@ -111,7 +121,7 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 	
 	for (std::vector<Point_<T>>::iterator i = begin(); i != end();i++){
 		if (i->isMouseOverButton(point, cv::Point_<T>(BUTTON_RADIUS, -BUTTON_RADIUS))){
-			insert(i,*i + cv::Point_<T>(BUTTON_RADIUS * 2, -BUTTON_RADIUS * 2));
+			insert(i+1, *i + cv::Point_<T>(BUTTON_RADIUS * 2, -BUTTON_RADIUS * 2));
 			break;
 		}
 
@@ -124,12 +134,24 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 		}
 	}
 
-	m_position = middle;
+	//m_position = middle;
+	setPosition(middle);
 }
 
 template <class T>
 void Contour_<T>::onMouseMove(const cv::Point& point)
 {
+	m_centerPoint.onMouseMove(point);
+
+	//when the central anchor point is dragged, move the whole widget and return
+	if (m_centerPoint.isDragging()){
+		for (auto &p : *this){
+			p.setPosition(p.position()+(m_centerPoint-m_position));
+		}
+		setPosition(m_position);
+		return;
+	}
+
 	for (auto &p : *this){
 		p.onMouseMove(point);
 
@@ -165,5 +187,7 @@ void Contour_<_Tp>::setPosition(cv::Point_<_Tp> position)
 		push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
 		push_back(m_position + Point_<_Tp>(polygonMargin, -polygonMargin));
 	}
+
+	m_centerPoint.setPosition(m_position);
 
 }
