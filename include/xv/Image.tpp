@@ -115,9 +115,6 @@ void Image_<_Tp>::operator<<(const cv::Mat& cvMat)
 template <typename _Tp>
 void Image_<_Tp>::paintEvent(wxPaintEvent & evt)
 {
-	if (this->m_cvMat.empty())
-		return;
-
 	m_mutex.Lock();
 	wxBufferedPaintDC dc(this, m_bitmap);
 	m_mutex.Unlock();
@@ -126,20 +123,22 @@ void Image_<_Tp>::paintEvent(wxPaintEvent & evt)
 
 template <typename _Tp>
 void Image_<_Tp>::createBitmap()
+
 {
-	if (m_cvMat.empty())
-		return;
-
-	
 	m_mutex.Lock();
-	m_renderMat = m_cvMat.clone();
-	if (m_widgets.size() > 0 )
-	for (auto &w : m_widgets)
-		w->render(m_renderMat);
-	cv::cvtColor(m_renderMat, m_renderMat, cv::COLOR_BGR2RGB);
-
-	setBestSizeFit();
-	
+	//create a blank bitmap
+	if (m_cvMat.empty()){
+		int w, h;
+		GetSize(&w, &h);
+		m_renderMat = cv::Mat(h, w, CV_8UC3, cv::Scalar(0, 0, 0));
+	}else{
+		m_renderMat = m_cvMat.clone();
+		if (m_widgets.size() > 0 )
+		for (auto &w : m_widgets)
+			w->render(m_renderMat);
+		cv::cvtColor(m_renderMat, m_renderMat, cv::COLOR_BGR2RGB);
+		setBestSizeFit();
+	}
 	m_image = wxImage(m_renderMat.cols, m_renderMat.rows, (unsigned char*)m_renderMat.data, true);
 	m_bitmap = wxBitmap(m_image);
 	m_mutex.Unlock();
@@ -147,8 +146,6 @@ void Image_<_Tp>::createBitmap()
 
 template <typename _Tp>
 void Image_<_Tp>::sizeEvent(wxSizeEvent& evt){
-	int w, h;
-	GetSize(&w,&h);
 	createBitmap();
 	Refresh();
 }
