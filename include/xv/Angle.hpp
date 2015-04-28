@@ -2,7 +2,7 @@
 
 #include <list>
 #include <opencv2/core.hpp>
-#include "../Widget.hpp"
+#include "Widget.hpp"
 
 namespace xv{
 
@@ -10,29 +10,28 @@ namespace xv{
 	class Image_;
 
 	template <class _Tp>
-	class Contour_ : public Widget<_Tp>, public std::vector<Point_<_Tp>>
+	class Angle_ : public Widget<_Tp>
 	{
 	public:
 #pragma region constructors
-		Contour_<_Tp>();
-		Contour_<_Tp>(const std::list<_Tp>& v) : std::list<_Tp>(v){};
+		Angle_<_Tp>();
+
 #pragma endregion constructors
 		virtual void setPosition(cv::Point_<_Tp> position);
 	private:
 		void paint(const cv::Mat&);
-		void paintAddPointButton(const Point_<_Tp>&, const cv::Mat& image);
 		void onMouseMove(const cv::Point&);
 		void onMouseDown(const cv::Point&);
 		void onMouseUp(const cv::Point&);
 		void setMouseOver(bool mouseOver);
 		void defineContours();
 
-		Point_<_Tp> m_centerPoint;
-
+		Point_<_Tp> m_vertex, m_pointA, m_pointB;
+		std::list< Point_<_Tp>* >  m_points;
 	};
 
-	typedef Contour_<int> Contour;
+	typedef Angle_<int> Angle;
 
 }
 
-#include "Contour.tpp"
+#include "Angle.tpp"

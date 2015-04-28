@@ -90,6 +90,7 @@ void Widget<_Tp>::onMouseUp(const cv::Point& point)
 template <typename _Tp>
 bool Widget<_Tp>::contains(const cv::Point_<_Tp>& point)
 {
+	assert(("Widget contour empty", m_contour.size() > 0));
 	if( cv::pointPolygonTest(m_contour, point, true) >= -MARGIN )
 		return true;
 	return false;

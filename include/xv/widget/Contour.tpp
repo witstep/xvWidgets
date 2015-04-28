@@ -38,12 +38,15 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 		Widget::HIGHLIGHT_COLOR
 		);
 
-	//widget contour
-	m_contour.clear();
-	for (auto &p : *this)
-		m_contour.push_back(p);
-
 	m_centerPoint.paint(image);
+}
+
+template <class _Tp>
+void Contour_<_Tp>::defineContours()
+{
+	m_contour.clear();
+	for (auto p : *this)
+		m_contour.push_back(p);
 }
 
 template <typename _Tp>
@@ -134,7 +137,8 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 		}
 	}
 
-	//m_position = middle;
+	defineContours();
+
 	setPosition(middle);
 }
 
@@ -148,7 +152,7 @@ void Contour_<T>::onMouseMove(const cv::Point& point)
 		for (auto &p : *this){
 			p.setPosition(p.position()+(m_centerPoint-m_position));
 		}
-		setPosition(m_position);
+		setPosition(m_centerPoint);
 		return;
 	}
 
@@ -186,6 +190,7 @@ void Contour_<_Tp>::setPosition(cv::Point_<_Tp> position)
 		push_back(m_position + Point_<_Tp>(-polygonMargin, -polygonMargin));
 		push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
 		push_back(m_position + Point_<_Tp>(polygonMargin, -polygonMargin));
+		defineContours();
 	}
 
 	m_centerPoint.setPosition(m_position);
