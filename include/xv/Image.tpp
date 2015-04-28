@@ -150,6 +150,7 @@ void Image_<_Tp>::sizeEvent(wxSizeEvent& evt){
 	int w, h;
 	GetSize(&w,&h);
 	createBitmap();
+	Refresh();
 }
 
 template <typename _Tp>
