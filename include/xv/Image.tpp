@@ -130,6 +130,8 @@ void Image_<_Tp>::createBitmap()
 	if (m_cvMat.empty()){
 		int w, h;
 		GetSize(&w, &h);
+		if (w < 1 || h < 1)
+			return;
 		m_renderMat = cv::Mat(h, w, CV_8UC3, cv::Scalar(0, 0, 0));
 	}else{
 		m_renderMat = m_cvMat.clone();
