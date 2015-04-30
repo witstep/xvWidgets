@@ -13,7 +13,7 @@
 
 #include <map>
 
-#include "Image.hpp"
+#include "xv/Image.hpp"
 
 namespace xv{
 
@@ -25,7 +25,7 @@ namespace xv{
 		VideoCapture(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
 			const wxPoint &pos = wxDefaultPosition,
-			const wxSize &size = wxSize(720, 480),
+			const wxSize &size = wxDefaultSize,
 			long style = wxTAB_TRAVERSAL,
 			const wxString &name = wxPanelNameStr
 		);
@@ -46,7 +46,6 @@ namespace xv{
 		bool set(int propId, double value){ return m_videoCapture.set(propId, value); };
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
 		friend void operator>>(VideoCapture&, Image_<int>&);
-
 #pragma endregion cv::VideoCapture
 
 	private:

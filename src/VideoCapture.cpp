@@ -70,12 +70,15 @@ bool VideoCapture::open(const string& filename)
 #pragma region layout
 void VideoCapture::init()
 {
-	if (m_parent == NULL)
-		this->SetParent(new wxDialog(NULL, -1, VideoCapture::CLASS_NAME, wxDefaultPosition, wxDefaultSize));
 
+	if (m_parent == NULL){
+		this->Create(new wxDialog(NULL, -1, VideoCapture::CLASS_NAME, wxDefaultPosition, wxDefaultSize));
+		m_parent->Layout();
+		m_parent->Centre(wxBOTH);
+		m_parent->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	}
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	m_parent->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	SetSizer(mainSizer);
 	
 	initFilePicker(mainSizer);
 	initPropertyGrid(mainSizer);
@@ -83,16 +86,13 @@ void VideoCapture::init()
 	if (m_selfHosted)
 		initButtons(mainSizer);//will have OK/Cancel buttons
 
-	m_parent->SetSizer(mainSizer);
-	m_parent->Layout();
-
-	m_parent->Centre(wxBOTH);
+	Fit();
 }
 
 void VideoCapture::initFilePicker(wxSizer* mainSizer)
 {
 	m_filePickerCtrl = new wxFilePickerCtrl(
-		this->m_parent,
+		this,
 		wxID_ANY,
 		m_filename.string(),
 		_("Open Video"),
@@ -108,28 +108,25 @@ void VideoCapture::initFilePicker(wxSizer* mainSizer)
 
 void VideoCapture::initPropertyGrid(wxSizer* mainSizer)
 {
-	m_propertyGrid = new wxPropertyGrid(this->m_parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	m_propertyGrid = new wxPropertyGrid(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	m_propertyGrid->Append(new wxPropertyCategory("", CLASS_NAME));
 	for (auto property : PROPERTY_MAP)
 		m_propertyGrid->Append(new wxFloatProperty(property.second, property.second, m_videoCapture.get(property.first)))
 		->Enable(false);
 
-	mainSizer->Add(m_propertyGrid, 1, wxALL | wxEXPAND, 5);
+	mainSizer->Add(m_propertyGrid, 0, wxALL | wxEXPAND, 5);
 }
 
 void VideoCapture::initButtons(wxSizer* mainSizer)
 {
-	wxButton *okButton = new wxButton(this->m_parent, wxID_OK);
-	wxButton *cancelButton = new wxButton(this->m_parent, wxID_CANCEL);
+	wxButton *okButton = new wxButton(this, wxID_OK);
+	wxButton *cancelButton = new wxButton(this, wxID_CANCEL);
 	wxStdDialogButtonSizer* buttonSizer = new wxStdDialogButtonSizer;
 
 	buttonSizer->SetAffirmativeButton(okButton);
 	buttonSizer->SetNegativeButton(cancelButton);
 
 	buttonSizer->Realize();
-
-	//okButton->Bind(wxEVT_BUTTON, &VideoCapture::evtOK, this);
-	//cancelButton->Bind(wxEVT_BUTTON, &VideoCapture::evtCancel, this);
 
 	mainSizer->Add(buttonSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 }
