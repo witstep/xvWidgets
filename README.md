@@ -34,34 +34,34 @@ The toolkit follows a set of conventions intended to make usage intuitive and co
 
 For example, consider the function cv::pointPolygonTest with the following prototype
 
-```C++
+~~~~~~~~~~~~~~~{.cpp}
 double cv::pointPolygonTest(InputArray contour, Point2f pt, bool measureDist);
-```
+~~~~~~~~~~~~~~~
 
 Resulting in the following constructor declarations and run method for xv::pointPolygonTest
-```C++
+~~~~~~~~~~~~~~~{.cpp}
 pointPolygonTest(cv::InputArray contour);
 pointPolygonTest(cv::InputArray contour, cv::Point2f pt = Point2f::NULL_POINT);
 pointPolygonTest(cv::InputArray contour, cv::Point2f pt, bool measureDist);
 double pointPolygonTest::run();
 
-```
+~~~~~~~~~~~~~~~
 
 Constructing xv::pointPolygonTest with all the arguments set followed by a call to run(), is analogous to calling cv::pointPolygonTest directly.
 
-```C++
+~~~~~~~~~~~~~~~{.cpp}
 double distance;
 std::vector<cv::Point2f> contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );
 distance = xv::pointPolygonTest ppt(contours, Point2f(10,20), true).run();
 
 //in this case we might as well call OpenCV directly, the result would be the same.
 distance = cv::pointPolygonTest(contours, Point2f(10,20), true);
-```
+~~~~~~~~~~~~~~~
 
 xvWidgets becomes useful only when we ommit arguments.
 If any of the constructor parameters is omitted or empty, the user is prompted for it through a GUI.
 
-```C++
+~~~~~~~~~~~~~~~{.cpp}
 std::vector<cv::Point2f> contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );
 std::vector<cv::Point2f> emptyContours();
 
@@ -76,4 +76,4 @@ xv::pointPolygonTest ppt3(emptyContours, Point2f::NULL_POINT, true);
 
 //The user will need to input all 3 parameters
 xv::pointPolygonTest ppt4();
-```
+~~~~~~~~~~~~~~~

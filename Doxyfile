@@ -1,7 +1,8 @@
 PROJECT_NAME     = xvWidgets
-INPUT            = include
+INPUT            = .
+USE_MDFILE_AS_MAINPAGE = README.md
 RECURSIVE        = YES
-FILE_PATTERNS    = *.hpp
+FILE_PATTERNS    = *.hpp *.md
 WARNINGS         = YES
 SEARCHENGINE     = NO
 OUTPUT_DIRECTORY = doc
