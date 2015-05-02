@@ -94,9 +94,9 @@ void VideoPlayer::onSliderClickUp(wxMouseEvent& evt){
 	evt.Skip();
 }
 
-void VideoPlayer::process(cv::Mat &frame)
+void VideoPlayer::process()
 {
-
+	m_processCallback(*m_image);
 }
 
 bool VideoPlayer::open(const cv::String &filename)
@@ -144,6 +144,12 @@ void VideoPlayer::play()
 	m_playButton->SetLabel(_("Pause"));
 }
 
+void VideoPlayer::play(std::function<void(cv::Mat &)> callback)
+{
+	m_image->setPreProcessing(callback);
+	play();
+}
+
 void VideoPlayer::pause()
 {
 	if (m_state == playbackState::idle)
@@ -179,12 +185,13 @@ void* VideoPlaybackThread::Entry()
 		m_player->m_mutex.Lock();
 		*m_player->m_videoCapture >> *m_player->m_image;
 		m_player->m_mutex.Unlock();
+		m_player->process();
 
 		if (i == 0) 
 			wxEndBusyCursor();
 
 		while (m_player->m_state == VideoPlayer::seeking || m_player->m_state == VideoPlayer::paused)
-			Sleep(1000);
+			Sleep(1000); /// to-do: why not lock a mutex here or use Pause()?
 	}
 	return NULL;
 }

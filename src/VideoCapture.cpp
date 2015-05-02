@@ -5,7 +5,7 @@
 
 #include <wx/sizer.h>
 
-#include "VideoCapture.hpp"
+#include "xv/VideoCapture.hpp"
 #include <sstream>
 
 using namespace xv;

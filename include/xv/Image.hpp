@@ -8,6 +8,7 @@
 
 #include <chrono>
 #include <list>
+#include <functional>
 
 #include "xv/Widget.hpp"
 
@@ -34,9 +35,16 @@ namespace xv{
 		void sizeEvent(wxSizeEvent&);
 		void onEraseBackground(wxEraseEvent&);
 
+		/// apply any required algorithms
+		void setPreProcessing(std::function<void(cv::Mat &)> preProcessCallback)
+		{
+			m_preProcessCallback = preProcessCallback;
+		}
+
 #pragma region operators
 		operator cv::_InputOutputArray() const { return m_cvMat; }
 		operator cv::Mat() const { return m_cvMat; }
+		operator cv::Mat&() { return m_cvMat; }
 		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
 		void operator<<(const cv::Mat&);
 #pragma endregion operators
@@ -44,6 +52,8 @@ namespace xv{
 		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
 		int getScale(){ return m_scale; };
 	private:
+		std::function<void(cv::Mat &)> m_preProcessCallback = [](cv::Mat &){};
+
 		void setClickMouseCursor(){
 			wxSetCursor(wxCURSOR_HAND);
 		};
@@ -62,15 +72,19 @@ namespace xv{
 		wxSizer* m_sizer;
 		inline void createBitmap();
 		void setBestSizeFit();
+
 		friend void operator>>(cv::VideoCapture &videoCapture, Image_<_Tp> &image){
 			image.m_mutex.Lock();
 			videoCapture >> image.m_cvMat;
 			image.m_mutex.Unlock();
+			image.Refresh();
 		}
+
 		friend void operator>>(VideoCapture &videoCapture, Image_<_Tp> &image){
 			image.m_mutex.Lock();
 			videoCapture.m_videoCapture >> image.m_cvMat;
 			image.m_mutex.Unlock();
+			image.Refresh();
 		};
 
 		float m_scale = 1;

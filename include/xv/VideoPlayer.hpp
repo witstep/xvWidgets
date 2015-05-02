@@ -1,6 +1,6 @@
 #pragma once
 
-//#include <opencv2/core.hpp>
+#include <functional>
 #include <opencv2/highgui.hpp>
 #include "Image.hpp"
 
@@ -11,7 +11,7 @@ namespace xv{
 
 class VideoPlayer : public wxPanel
 {
-
+	friend class VideoPlaybackThread;
 public:
 	/// Constructor inherited from wxPanel
 	VideoPlayer(wxWindow * parent,
@@ -30,7 +30,7 @@ public:
 #pragma region control
 
 	/// Called once for each frame
-	virtual void process(cv::Mat &frame);
+	virtual void process();
 
 	///Try to open the named file
 	virtual bool open(const cv::String &filename);
@@ -40,6 +40,9 @@ public:
 	
 	/// Start media loop
 	virtual void play(); 
+	
+	/// Start media loop and execute callback for each frame
+	virtual void play(std::function<void(cv::Mat &)> callback);
 
 	/// Pause media loop 
 	virtual void pause();
@@ -61,6 +64,8 @@ public:
 #pragma endregion event handling
 
 private:
+	std::function<void(cv::Mat &)> m_processCallback = [](cv::Mat &){};
+
 	enum playbackState{
 		idle,   //no video loaded
 		playing,//ongoing playback
@@ -68,7 +73,7 @@ private:
 		seeking //looking for a frame
 	} m_state = paused;
 
-	friend class VideoPlaybackThread;
+	
 	cv::VideoCapture* m_videoCapture = NULL;
 	Image* m_image;
 	wxButton* m_playButton;
@@ -77,11 +82,9 @@ private:
 	wxStaticText* m_filenameLabel;
 
 	wxMutex m_mutex;
-
 	VideoPlaybackThread* m_playbackThread;
 
 	void init();
-
 };
 
 class VideoPlaybackThread : public wxThread{

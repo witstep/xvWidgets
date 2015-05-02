@@ -1,5 +1,5 @@
 #include <wx/dcbuffer.h>
-#include "../include/VideoCapture.hpp"
+#include "VideoCapture.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 using namespace xv;
 
@@ -123,7 +123,6 @@ void Image_<_Tp>::paintEvent(wxPaintEvent & evt)
 
 template <typename _Tp>
 void Image_<_Tp>::createBitmap()
-
 {
 	m_mutex.Lock();
 	//create a blank bitmap
@@ -134,6 +133,7 @@ void Image_<_Tp>::createBitmap()
 			return;
 		m_renderMat = cv::Mat(h, w, CV_8UC3, cv::Scalar(0, 0, 0));
 	}else{
+		m_preProcessCallback(m_cvMat); /// apply any additional pre-defined processing steps
 		m_renderMat = m_cvMat.clone();
 		if (m_widgets.size() > 0 )
 		for (auto &w : m_widgets)
