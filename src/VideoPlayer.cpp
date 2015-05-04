@@ -31,7 +31,7 @@ VideoPlayer::VideoPlayer(cv::VideoCapture* videoCapture)
 void VideoPlayer::init()
 {
 	m_videoCapture = new cv::VideoCapture();
-	m_playbackThread = new VideoPlaybackThread(this);
+	m_thread = new Thread(this);
 
 	m_image = new Image(this);
 	m_playButton = new wxButton(this, wxID_ANY, _("Play"));
@@ -137,8 +137,8 @@ void VideoPlayer::play()
 	if ( m_state == playbackState::idle )
 		return; /// can't play if media not open
 	///launch the playback thread, if not running
-	if (!m_playbackThread->IsRunning())
-		m_playbackThread->Run();
+	if (!m_thread->IsRunning())
+		m_thread->Run();
 
 	m_state = VideoPlayer::playing;
 	m_playButton->SetLabel(_("Pause"));
@@ -167,13 +167,13 @@ void VideoPlayer::onPlayClick(wxCommandEvent& evt)
 	}
 }
 
-VideoPlaybackThread::VideoPlaybackThread(VideoPlayer* player)
+VideoPlayer::Thread::Thread(VideoPlayer* player)
 	:m_player(player)
 {
 	
 }
 
-void* VideoPlaybackThread::Entry()
+void* VideoPlayer::Thread::Entry()
 {
 	while (!TestDestroy()){
 		int i = (int) m_player->m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);

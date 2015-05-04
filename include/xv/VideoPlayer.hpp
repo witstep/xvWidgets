@@ -11,7 +11,7 @@ namespace xv{
 
 class VideoPlayer : public wxPanel
 {
-	friend class VideoPlaybackThread;
+	friend class Thread;
 public:
 	/// Constructor inherited from wxPanel
 	VideoPlayer(wxWindow * parent,
@@ -82,18 +82,19 @@ private:
 	wxStaticText* m_filenameLabel;
 
 	wxMutex m_mutex;
-	VideoPlaybackThread* m_playbackThread;
+	class Thread : public wxThread{
+	public:
+		Thread(VideoPlayer* const);
+		virtual void *Entry();
+	private:
+		VideoPlayer *m_player;
+	} *m_thread;
 
 	void init();
+
 };
 
-class VideoPlaybackThread : public wxThread{
-public:
-	VideoPlaybackThread(VideoPlayer* const);
-	virtual void *Entry();
-private:
-	VideoPlayer *m_player;
-};
+
 
 
 }//namespace
