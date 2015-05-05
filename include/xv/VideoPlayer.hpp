@@ -13,6 +13,8 @@ class VideoPlayer : public wxPanel
 {
 	friend class Thread;
 public:
+	static const int LABEL_UPDATE_INTERVAL;
+	static const char* LABEL_DEFAULT_TEXT;
 	/// Constructor inherited from wxPanel
 	VideoPlayer(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
@@ -32,11 +34,15 @@ public:
 	/// Called once for each frame
 	virtual void process();
 
-	///Try to open the named file
+	/// Try to open the named file
 	virtual bool open(const cv::String &filename);
 
 	/// Try to open device
 	virtual bool open(int device);
+
+	/// Shared implementation for int and cv::String
+	template <typename _Tp>
+	bool open_(const _Tp &deviceOrFilename);
 	
 	/// Start media loop
 	virtual void play(); 
@@ -64,6 +70,20 @@ public:
 #pragma endregion event handling
 
 private:
+
+	int 
+		m_fps = 0,
+		m_frameCount = 0;
+
+	wxTimer m_timer;
+
+	/// used to handle redraw after a resize
+	void sizeEvent(wxSizeEvent&);
+	void onTimer(wxTimerEvent&);
+
+	/// populate the label with hh::mm::ss corresponding to the frame
+	void showTimeLabel(wxStaticText* label,int frame);
+
 	std::function<void(cv::Mat &)> m_processCallback = [](cv::Mat &){};
 
 	enum playbackState{
@@ -78,8 +98,10 @@ private:
 	Image* m_image;
 	wxButton* m_playButton;
 	wxSlider* m_slider;
-	wxStaticText* m_durationLabel;
-	wxStaticText* m_filenameLabel;
+	wxStaticText
+		*m_positionLabel,
+		*m_durationLabel;
+	wxSizer *m_sizer;
 
 	wxMutex m_mutex;
 	class Thread : public wxThread{
@@ -92,6 +114,7 @@ private:
 
 	void init();
 
+	DECLARE_EVENT_TABLE()
 };
 
 

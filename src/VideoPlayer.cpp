@@ -1,4 +1,6 @@
 #include <wx/wxprec.h>
+#include <wx/numformatter.h>
+
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
@@ -9,6 +11,25 @@
 
 using namespace xv;
 
+const int VideoPlayer::LABEL_UPDATE_INTERVAL = 750;
+const char* VideoPlayer::LABEL_DEFAULT_TEXT = "--:--";
+
+BEGIN_EVENT_TABLE(VideoPlayer, wxPanel)
+	EVT_TIMER(wxID_HIGHEST + 1, VideoPlayer::onTimer)
+END_EVENT_TABLE()
+
+void VideoPlayer::onTimer(wxTimerEvent& event)
+{
+	showTimeLabel(m_positionLabel, m_videoCapture->get(cv::CAP_PROP_POS_FRAMES));
+}
+
+void VideoPlayer::sizeEvent(wxSizeEvent& evt)
+{
+	/// required because GUI thread is not aware the playback thread is
+	/// updating the duration labels
+	//m_sizer->RecalcSizes();
+}
+
 VideoPlayer::VideoPlayer(
 	wxWindow *parent,
 	wxWindowID id,
@@ -17,7 +38,8 @@ VideoPlayer::VideoPlayer(
 	long style,
 	const wxString &name
 	) 
-	: wxPanel(parent, id, pos, size, style, name)
+	: m_timer(this, wxID_HIGHEST+1),
+	wxPanel(parent, id, pos, size, style, name)
 {
 	init();
 }
@@ -43,25 +65,27 @@ void VideoPlayer::init()
 	m_slider->Bind(wxEVT_LEFT_UP, &VideoPlayer::onSliderClickUp, this);
 	m_slider->Bind(wxEVT_SCROLL_CHANGED, &VideoPlayer::onSliderMove, this);
 
-	m_durationLabel = new wxStaticText(this, wxID_ANY, "00:00/00:00");
-	m_filenameLabel = new wxStaticText(this, wxID_ANY, "");
+	m_positionLabel = new wxStaticText(this, wxID_ANY, LABEL_DEFAULT_TEXT);
+	wxStaticText *separator = new wxStaticText(this, wxID_ANY, "/");
+	m_durationLabel = new wxStaticText(this, wxID_ANY, LABEL_DEFAULT_TEXT); 
 
-	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+	m_sizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* controlSizer = new wxBoxSizer(wxHORIZONTAL);
-
+	
 	//controls
 	controlSizer->Add(m_playButton);
 	m_slider->Bind(wxEVT_LEFT_DOWN, &VideoPlayer::onSliderClickDown, this);
 
 	controlSizer->Add(m_slider, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
+	controlSizer->Add(m_positionLabel, 0, wxALIGN_CENTER_VERTICAL);
+	controlSizer->Add(separator, 0, wxALIGN_CENTER_VERTICAL);
 	controlSizer->Add(m_durationLabel, 0, wxALIGN_CENTER_VERTICAL);
-	controlSizer->Add(m_filenameLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	//main layout
-	mainSizer->Add(m_image, 1, wxALL | wxEXPAND);
-	mainSizer->Add(controlSizer,0,wxALL | wxEXPAND,5);
+	m_sizer->Add(m_image, 1, wxALL | wxEXPAND);
+	m_sizer->Add(controlSizer, 0, wxALL | wxEXPAND, 5);
 
-	SetSizer(mainSizer);
+	SetSizer(m_sizer);
 }
 
 VideoPlayer::~VideoPlayer()
@@ -99,36 +123,36 @@ void VideoPlayer::process()
 	m_processCallback(*m_image);
 }
 
-bool VideoPlayer::open(const cv::String &filename)
+template <typename _Tp>
+bool VideoPlayer::open_(const _Tp &deviceOrFilename)
 {
 	wxBusyCursor busy;
 	m_slider->SetValue(0); /// rewind to first frame
+	m_durationLabel->SetLabel(LABEL_DEFAULT_TEXT);
 
-	if (m_videoCapture->open(filename)){
-		m_slider->SetRange(1, (int)m_videoCapture->get(cv::CAP_PROP_FRAME_COUNT));
+	if (m_videoCapture->open(deviceOrFilename)){
+		m_fps = m_videoCapture->get(cv::CAP_PROP_FPS);
+		m_frameCount = m_videoCapture->get(cv::CAP_PROP_FRAME_COUNT);
+		showTimeLabel(m_durationLabel, m_frameCount);
+		m_slider->SetRange(1, (int)m_frameCount);
+		m_timer.Start(LABEL_UPDATE_INTERVAL);
 		m_state = playbackState::paused;
 		return true;
 	}
-
+	m_timer.Stop();
 	m_slider->SetRange(0, 1);
 	m_state = playbackState::idle;
 	return false;
 }
 
+bool VideoPlayer::open(const cv::String &filename)
+{
+	return open_<cv::String>(filename);
+}
+
 bool VideoPlayer::open(int device)
 {
-	wxBusyCursor busy;
-	m_slider->SetValue(0); /// rewind to first frame
-
-	if (m_videoCapture->open(device)){
-		m_slider->SetRange(1, (int)m_videoCapture->get(cv::CAP_PROP_FRAME_COUNT));
-		m_state = playbackState::paused;
-		return true;
-	}
-
-	m_slider->SetRange(0, 1);
-	m_state = playbackState::idle;
-	return false;
+	return open_<int>(device);
 }
 
 void VideoPlayer::play()
@@ -167,6 +191,35 @@ void VideoPlayer::onPlayClick(wxCommandEvent& evt)
 	}
 }
 
+void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
+{
+	
+	if (m_fps < 1)
+		return; /// property no available
+
+	int totalSeconds = videoFrame / m_fps;
+
+	int hours = totalSeconds / 3600;
+	int totalMinutes = totalSeconds / 60;
+	int minutes = totalMinutes % 60;
+	int seconds = totalSeconds % 60;
+
+	if (hours > 0) /// more than an hour
+		label->SetLabel(
+			wxString::Format("%02d:%02d:%02d",
+			hours,
+			minutes,
+			seconds)
+		);
+	else
+		label->SetLabel(
+			wxString::Format("%02d:%02d",
+			minutes,
+			seconds)
+		);
+	m_sizer->RecalcSizes();
+}
+
 VideoPlayer::Thread::Thread(VideoPlayer* player)
 	:m_player(player)
 {
@@ -177,7 +230,6 @@ void* VideoPlayer::Thread::Entry()
 {
 	while (!TestDestroy()){
 		int i = (int) m_player->m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);
-
 		if (i == 0) /// the first frame of a new media source can be loaded with a delay
 			wxBeginBusyCursor();
 
