@@ -11,6 +11,9 @@ namespace xv {
 	template <typename _Tp>
 	class Image_;
 
+	/** @brief Base class for all Widgets
+	*/
+
 	template <typename _Tp>
 	class Widget{
 		friend Image_<_Tp>;
