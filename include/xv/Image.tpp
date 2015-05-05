@@ -103,6 +103,7 @@ Image_<_Tp>::Image_(wxWindow *parent,
 	const wxString &name
 	) :wxPanel(parent,id,pos,size,style,name)
 {
+	this->SetMinSize(wxSize(20, 20));
 	this->SetBackgroundColour(*wxBLACK);
 }
 
