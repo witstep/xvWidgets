@@ -52,6 +52,9 @@ VideoPlayer::VideoPlayer(cv::VideoCapture* videoCapture)
 
 void VideoPlayer::init()
 {
+
+	this->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+
 	m_videoCapture = new cv::VideoCapture();
 	m_thread = new Thread(this);
 
@@ -64,6 +67,7 @@ void VideoPlayer::init()
 	m_slider->Bind(wxEVT_LEFT_DOWN, &VideoPlayer::onSliderClickDown, this);
 	m_slider->Bind(wxEVT_LEFT_UP, &VideoPlayer::onSliderClickUp, this);
 	m_slider->Bind(wxEVT_SCROLL_CHANGED, &VideoPlayer::onSliderMove, this);
+	m_slider->Bind(wxEVT_SLIDER, &VideoPlayer::onMouseMove, this);
 
 	m_positionLabel = new wxStaticText(this, wxID_ANY, LABEL_DEFAULT_TEXT);
 	wxStaticText *separator = new wxStaticText(this, wxID_ANY, "/");
@@ -93,15 +97,24 @@ VideoPlayer::~VideoPlayer()
 
 }
 
+void VideoPlayer::onMouseMove(wxCommandEvent& evt)
+{
+	if (m_state == VideoPlayer::seeking)
+		showTimeLabel(m_positionLabel, m_slider->GetValue());
+	evt.Skip();
+}
+
 void VideoPlayer::onSliderMove(wxScrollEvent& evt)
 {
 	if (m_state == idle)
 		return; ///can't seek if media not open
 
 	m_mutex.Lock();
+
 	wxBeginBusyCursor();
 	m_videoCapture->set(cv::CAP_PROP_POS_FRAMES, m_slider->GetValue());
 	wxEndBusyCursor();
+
 	m_mutex.Unlock();
 }
 
@@ -109,18 +122,14 @@ void VideoPlayer::onSliderClickDown(wxMouseEvent& evt)
 {
 	m_state = VideoPlayer::seeking;
 	evt.Skip();
+	m_timer.Stop(); ///don't update time labels while moving slider
 }
 
 
 void VideoPlayer::onSliderClickUp(wxMouseEvent& evt){
 	m_state = VideoPlayer::playing;
-	m_image->SetFocus(); //avoid ugly focus around slider
 	evt.Skip();
-}
-
-void VideoPlayer::process()
-{
-	m_processCallback(*m_image);
+	m_timer.Start();
 }
 
 template <typename _Tp>
@@ -168,9 +177,12 @@ void VideoPlayer::play()
 	m_playButton->SetLabel(_("Pause"));
 }
 
-void VideoPlayer::play(std::function<void(cv::Mat &)> callback)
+void VideoPlayer::play(
+	std::function<void(cv::Mat &)> preProcessCallback,
+	std::function<void(cv::Mat &)> postProcessCallback)
 {
-	m_image->setPreProcessing(callback);
+	m_preProcessCallback = preProcessCallback;
+	m_postProcessCallback = postProcessCallback;
 	play();
 }
 
@@ -228,16 +240,23 @@ VideoPlayer::Thread::Thread(VideoPlayer* player)
 
 void* VideoPlayer::Thread::Entry()
 {
+	cv::Mat mat;
 	while (!TestDestroy()){
 		int i = (int) m_player->m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);
 		if (i == 0) /// the first frame of a new media source can be loaded with a delay
 			wxBeginBusyCursor();
 
+
 		m_player->m_slider->SetValue(i);
+
 		m_player->m_mutex.Lock();
-		*m_player->m_videoCapture >> *m_player->m_image;
+
+		*m_player->m_videoCapture >> mat;
+		m_player->m_preProcessCallback(mat);
+		*m_player->m_image << mat;
+		m_player->m_postProcessCallback(mat);
+
 		m_player->m_mutex.Unlock();
-		m_player->process();
 
 		if (i == 0) 
 			wxEndBusyCursor();

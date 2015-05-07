@@ -31,9 +31,6 @@ public:
 
 #pragma region control
 
-	/// Called once for each frame
-	virtual void process();
-
 	/// Try to open the named file
 	virtual bool open(const cv::String &filename);
 
@@ -48,7 +45,9 @@ public:
 	virtual void play(); 
 	
 	/// Start media loop and execute callback for each frame
-	virtual void play(std::function<void(cv::Mat &)> callback);
+	virtual void play(
+		std::function<void(cv::Mat &)> callback,
+		std::function<void(cv::Mat &)> postProcessCallback = [](cv::Mat &){});
 
 	/// Pause media loop 
 	virtual void pause();
@@ -67,9 +66,15 @@ public:
 
 	/// The user clicked the playback control button
 	virtual void onPlayClick(wxCommandEvent&);
+
+	/// The user moved the mouse
+	virtual void onMouseMove(wxCommandEvent& evt);
 #pragma endregion event handling
 
 private:
+	std::function<void(cv::Mat &)>
+		m_preProcessCallback = [](cv::Mat &){},
+		m_postProcessCallback = [](cv::Mat &){};
 
 	int 
 		m_fps = 0,
