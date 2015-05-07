@@ -1,9 +1,11 @@
 #include <wx/dcbuffer.h>
 #include "VideoCapture.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include <wx/settings.h>
 using namespace xv;
 
-BEGIN_EVENT_TABLE_TEMPLATE1(Image_, wxPanel,_Tp)
+
+BEGIN_EVENT_TABLE_TEMPLATE1(Image_, wxPanel, _Tp)
 	EVT_PAINT(Image_::paintEvent)
 	EVT_SIZE(Image_::sizeEvent)
 	EVT_ERASE_BACKGROUND(Image_::onEraseBackground)
@@ -11,6 +13,10 @@ BEGIN_EVENT_TABLE_TEMPLATE1(Image_, wxPanel,_Tp)
 	EVT_LEFT_UP(Image_::onMouseUp)
 	EVT_MOTION(Image_::onMouseMove)
 END_EVENT_TABLE()
+
+template <typename _Tp>
+
+const cv::Scalar Image_<_Tp>::PADDING_COLOR(0, 0, 0);
 
 template <typename _Tp>
 void Image_<_Tp>::onMouseDown(wxMouseEvent& evt)
@@ -132,10 +138,10 @@ void Image_<_Tp>::createBitmap()
 		GetSize(&w, &h);
 		if (w < 1 || h < 1)
 			return;
-		m_renderMat = cv::Mat(h, w, CV_8UC3, cv::Scalar(0, 0, 0));
+		m_renderMat = cv::Mat(h, w, CV_8UC3, PADDING_COLOR);
 	}else{
-		m_preProcessCallback(m_cvMat); /// apply any additional pre-defined processing steps
 		m_renderMat = m_cvMat.clone();
+
 		if (m_widgets.size() > 0 )
 		for (auto &w : m_widgets)
 			w->render(m_renderMat);
@@ -182,15 +188,22 @@ void Image_<_Tp>::setBestSizeFit()
 		return;//too small to draw
 
 	cv::resize(m_renderMat, m_renderMat, cv::Size(newCols, newRows));
-	cv::copyMakeBorder(m_renderMat, m_renderMat, m_vBorder, m_vBorder, m_hBorder, m_hBorder, cv::BORDER_ISOLATED, cv::Scalar(0, 0, 0));
+	cv::copyMakeBorder(m_renderMat, m_renderMat, m_vBorder, m_vBorder, m_hBorder, m_hBorder, cv::BORDER_ISOLATED, PADDING_COLOR);
 }
 
 template <typename _Tp>
 void Image_<_Tp>::Refresh(bool eraseBackground, const wxRect *rect)
 {
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < 33)
-		return;//no need to render at more than 30 fps
-	createBitmap();
+	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < 16)
+		return;//no need to render at more than ~60 fps (every 16ms)
 	wxPanel::Refresh(eraseBackground);
+
+}
+
+template <typename _Tp>
+void Image_<_Tp>::render()
+{
+	createBitmap();
+	Refresh();
 }
