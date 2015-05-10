@@ -15,6 +15,7 @@ class VideoPlayer : public wxPanel
 public:
 	static const int LABEL_UPDATE_INTERVAL;
 	static const char* LABEL_DEFAULT_TEXT;
+
 	/// Constructor inherited from wxPanel
 	VideoPlayer(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
@@ -28,6 +29,12 @@ public:
 	VideoPlayer(cv::VideoCapture* videoCapture);
 
 	virtual ~VideoPlayer();
+
+	/// Returns the last frame number read from the media
+	int getCurrentFrameIdx();
+
+	/// Get the xv::Image instance used for rendering
+	Image& getImage();
 
 #pragma region control
 

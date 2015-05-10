@@ -266,3 +266,13 @@ void* VideoPlayer::Thread::Entry()
 	}
 	return NULL;
 }
+
+int VideoPlayer::getCurrentFrameIdx()
+{
+	return m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);
+}
+
+Image& VideoPlayer::getImage()
+{
+	return *m_image;
+}
