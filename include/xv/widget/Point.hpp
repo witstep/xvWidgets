@@ -44,10 +44,7 @@ namespace xv{
 	private:
 	};
 
-	typedef Point_<int> Point2i;
-	typedef Point2i Point;
-	typedef Point_<float> Point2f;
-	typedef Point_<double> Point2d;
+	typedef Point_<int> Point;
 }
 
 #include "Point.tpp"

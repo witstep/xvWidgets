@@ -4,6 +4,9 @@ using namespace xv;
 template <class _Tp>
 const std::string Point_<_Tp>::CLASS_NAME("Point");
 
+template <typename _Tp>
+Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
+
 #pragma region constructors
 
 template <class _Tp>
@@ -96,9 +99,6 @@ void Point_<_Tp>::paint(const cv::Mat& image)
 #endif
 
 }
-
-template <typename _Tp>
-Point_<_Tp> Point_<_Tp>::UNDEFINED = Point_<_Tp>();
 
 template <typename _Tp>
 void Point_<_Tp>::setPosition(cv::Point_<_Tp> position)
