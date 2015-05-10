@@ -5,6 +5,9 @@
 
 using namespace xv;
 
+template <typename _Tp>
+Contour_<_Tp> Contour_<_Tp>::UNDEFINED = Contour_<_Tp>();
+
 template <class _Tp>
 Contour_<_Tp>::Contour_(){
 	m_undefined = true;
@@ -44,6 +47,7 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 template <class _Tp>
 void Contour_<_Tp>::defineContours()
 {
+	//widget contour not the xv::Contour itself
 	m_contour.clear();
 	for (auto p : *this)
 		m_contour.push_back(p);
@@ -117,11 +121,6 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 	for (auto &p : *this)
 		p.onMouseUp(point);//no need to check for bounds?
 
-	cv::Point_<T> middle(0, 0);
-
-	for (auto &p : *this)
-		middle += cv::Point_<T>(p.x / this->size(), p.y / this->size());
-	
 	for (std::vector<Point_<T>>::iterator i = begin(); i != end();i++){
 		if (i->isMouseOverButton(point, cv::Point_<T>(BUTTON_RADIUS, -BUTTON_RADIUS))){
 			insert(i+1, *i + cv::Point_<T>(BUTTON_RADIUS * 2, -BUTTON_RADIUS * 2));
@@ -139,7 +138,9 @@ void Contour_<T>::onMouseUp(const cv::Point& point)
 
 	defineContours();
 
-	setPosition(middle);
+	cv::Point_<T> middle(getMiddlePoint());
+	Widget::setPosition(middle);
+	m_centerPoint.setPosition(middle);
 }
 
 template <class T>
@@ -149,9 +150,7 @@ void Contour_<T>::onMouseMove(const cv::Point& point)
 
 	//when the central anchor point is dragged, move the whole widget and return
 	if (m_centerPoint.isDragging()){
-		for (auto &p : *this){
-			p.setPosition(p.position()+(m_centerPoint-m_position));
-		}
+
 		setPosition(m_centerPoint);
 		return;
 	}
@@ -183,16 +182,50 @@ void Contour_<_Tp>::setMouseOver(bool mouseOver)
 template <typename _Tp>
 void Contour_<_Tp>::setPosition(cv::Point_<_Tp> position)
 {
-
+	shiftPosition(m_position - position);
 	Widget::setPosition(position);
-	if (this->size() == 0){
-		int polygonMargin = MARGIN * 10;
-		push_back(m_position + Point_<_Tp>(-polygonMargin, -polygonMargin));
-		push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
-		push_back(m_position + Point_<_Tp>(polygonMargin, -polygonMargin));
-		defineContours();
-	}
+
+	if (this->size() == 0)
+		setDefaultPoints();
 
 	m_centerPoint.setPosition(m_position);
+}
 
+template <typename _Tp>
+void Contour_<_Tp>::setDefaultPoints()
+{
+	int polygonMargin = MARGIN * 10;
+	push_back(m_position + Point_<_Tp>(-polygonMargin, -polygonMargin));
+	push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
+	push_back(m_position + Point_<_Tp>(polygonMargin, -polygonMargin));
+
+	cv::Point_<_Tp> middle(getMiddlePoint());
+	Widget::setPosition(middle);
+	m_centerPoint.setPosition(middle);
+	defineContours();
+}
+
+template <typename _Tp>
+cv::Point_<_Tp> Contour_<_Tp>::getMiddlePoint()
+{
+	cv::Point_<_Tp> middle(0, 0);
+	for (auto &p : *this)
+		middle += cv::Point_<_Tp>(p.x / this->size(), p.y / this->size());
+	return middle;
+}
+
+template <typename _Tp>
+void Contour_<_Tp>::shiftPosition(cv::Point_<_Tp> shift)
+{
+	for (auto &p : *this)
+		p.setPosition(p.position() - shift);
+}
+
+template <typename _Tp>
+bool Contour_<_Tp>::isEqual(const Contour_<_Tp> &a, const Contour_<_Tp> &b)
+{
+	for (auto p : a) /// check if all points in contour a also exist in b
+		if (std::find(b.begin(), b.end(), p) == b.end())
+			return false;
+	return true;
 }
