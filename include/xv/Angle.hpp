@@ -15,9 +15,14 @@ namespace xv{
 	public:
 #pragma region constructors
 		Angle_<_Tp>();
-
+		Angle_<_Tp>(cv::Point_<_Tp>);
 #pragma endregion constructors
+
 		virtual void setPosition(cv::Point_<_Tp> position);
+
+		operator double() { 
+			return atan2(m_vertex.y - m_pointA.y, m_vertex.x - m_pointA.x);
+		};
 	private:
 		void paint(const cv::Mat&);
 		void onMouseMove(const cv::Point&);
