@@ -4,7 +4,6 @@
 #include <wx/settings.h>
 using namespace xv;
 
-
 BEGIN_EVENT_TABLE_TEMPLATE1(Image_, wxPanel, _Tp)
 	EVT_PAINT(Image_::paintEvent)
 	EVT_SIZE(Image_::sizeEvent)
@@ -109,7 +108,6 @@ Image_<_Tp>::Image_(wxWindow *parent,
 	const wxString &name
 	) :wxPanel(parent,id,pos,size,style,name)
 {
-	SetSizeHints(wxSize(50, 50));
 	SetBackgroundColour(*wxBLACK);
 }
 
