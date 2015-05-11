@@ -20,7 +20,7 @@ Angle_<_Tp>::Angle_()
 template <class _Tp>
 Angle_<_Tp>::Angle_(cv::Point_<_Tp> vertex)
 {
-	m_undefined = true; ///only vertex is known
+	m_undefined = false; ///only vertex is known
 	m_vertex = vertex;
 	m_points.push_back(&m_vertex);
 	m_points.push_back(&m_pointA);
@@ -128,14 +128,14 @@ template <typename _Tp>
 void Angle_<_Tp>::setPosition(cv::Point_<_Tp> position)
 {
 	Widget::setPosition(position);
-
 	
 	if (m_vertex == Point_<_Tp>::UNDEFINED){
-		int polygonMargin = MARGIN * 10;
+		int polygonMargin = MARGIN * 5;
 		m_vertex = m_position;
 		m_pointA = m_position + Point_<_Tp>(0, -polygonMargin);
 		m_pointB = m_position + Point_<_Tp>(polygonMargin, -polygonMargin);
 	}
 
 	m_vertex.setPosition(m_position);
+	m_undefined = false;
 }

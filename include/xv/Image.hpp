@@ -14,18 +14,22 @@
 
 namespace xv{
 
-	class VideoCapture;//forward declaration
+	class VideoCapture; ///forward declaration
 
+	/** @brief Class used to display images and as container of widgets. */
 	template <typename _Tp>
 	class Image_ : public wxPanel
 	{
+		friend Widget<_Tp>;
 	public:
 		/// the color used to pad the frame when the aspect ratio doesn't fit
 		/// the container
 		static const cv::Scalar PADDING_COLOR;
 
-		friend Widget<_Tp>;
+		/// Default constructor
 		Image_();
+
+		/// Constructor inherited from wxPanel
 		Image_(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
 			const wxPoint &pos = wxDefaultPosition,
@@ -34,22 +38,39 @@ namespace xv{
 			const wxString &name = wxPanelNameStr
 		);
 
-		cv::Mat m_cvMat, m_renderMat;
+
+#pragma region operators
+
+		/// Conversation operator for using the class as argument in the OpenCV API
+		operator cv::_InputOutputArray() const { return m_cvMat; }
+
+		/// Conversation operator to cv::Mat
+		operator cv::Mat() const { return m_cvMat; }
+
+		/// Conversation operator to cv::Mat reference
+		operator cv::Mat&() { return m_cvMat; }
+
+		/// Use the image to request user input into a widget
+		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
+
+		/// Display a cv::Mat
+		void operator<<(const cv::Mat&);
+#pragma endregion operators
+
+		/// Redraw an image optionally erasing background first or a limited area
+		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
+
+		/// The scale ratio of the image in relation to the original data
+		float getScale(){ return m_scale; };
+
+	private:
+		cv::Mat 
+			m_cvMat,
+			m_renderMat;
 		void paintEvent(wxPaintEvent&);
 		void sizeEvent(wxSizeEvent&);
 		void onEraseBackground(wxEraseEvent&);
 
-#pragma region operators
-		operator cv::_InputOutputArray() const { return m_cvMat; }
-		operator cv::Mat() const { return m_cvMat; }
-		operator cv::Mat&() { return m_cvMat; }
-		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
-		void operator<<(const cv::Mat&);
-#pragma endregion operators
-
-		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
-		int getScale(){ return m_scale; };
-	private:
 		void render();
 		/// use to provide a reference to the original image and the image afer processing
 		std::function<void(cv::Mat &)>

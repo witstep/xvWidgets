@@ -19,7 +19,7 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 	//paint each point
 	for (auto &p : *this){
 		if (p.isMouseOver())
-			paintAddPointButton(p, m_image->m_renderMat);//cloning buttons
+			paintAddPointButton(p, image);//cloning buttons
 		p.paint(image);
 	}
 

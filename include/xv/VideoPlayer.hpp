@@ -8,14 +8,10 @@ namespace xv{
 
 /** @brief Class to control the playback and processing of media obtained from VideoCapture
 */
-
 class VideoPlayer : public wxPanel
 {
 	friend class Thread;
 public:
-	static const int LABEL_UPDATE_INTERVAL;
-	static const char* LABEL_DEFAULT_TEXT;
-
 	/// Constructor inherited from wxPanel
 	VideoPlayer(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
@@ -79,6 +75,12 @@ public:
 #pragma endregion event handling
 
 private:
+	/// How often to update the timer labels
+	static const int LABEL_UPDATE_INTERVAL;
+
+	/// Displayed in timer labels while duration is not available
+	static const char* LABEL_DEFAULT_TEXT;
+
 	std::function<void(cv::Mat &)>
 		m_preProcessCallback = [](cv::Mat &){},
 		m_postProcessCallback = [](cv::Mat &){};
