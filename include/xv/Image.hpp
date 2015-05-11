@@ -14,7 +14,7 @@
 
 namespace xv{
 
-	class VideoCapture; ///forward declaration
+	class VideoCapture;
 
 	/** @brief Class used to display images and as container of widgets. */
 	template <typename _Tp>

@@ -9,7 +9,7 @@ namespace xv{
 	template <typename _Tp>
 	class Image_;
 
-	/** @brief Widget that describes an angle between 2 points
+	/** @brief Widget that represents an angle between 2 points
 	*/
 	template <class _Tp>
 	class Angle_ : public Widget<_Tp>
