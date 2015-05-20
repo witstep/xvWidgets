@@ -5,6 +5,9 @@
 
 using namespace xv;
 
+template <typename _Tp>
+Angle_<_Tp> Angle_<_Tp>::UNDEFINED = Angle_<_Tp>();
+
 template <class _Tp>
 Angle_<_Tp>::Angle_()
 {
@@ -20,7 +23,7 @@ Angle_<_Tp>::Angle_()
 template <class _Tp>
 Angle_<_Tp>::Angle_(cv::Point_<_Tp> vertex)
 {
-	m_undefined = false; ///only vertex is known
+	m_undefined = true; ///only vertex is known
 	m_vertex = vertex;
 	m_points.push_back(&m_vertex);
 	m_points.push_back(&m_pointA);
@@ -120,8 +123,9 @@ template <class _Tp>
 void Angle_<_Tp>::defineContours()
 {
 	m_contour.clear();
-	for (auto p : m_points)
-	m_contour.push_back(*p);
+	m_contour.push_back(m_vertex);
+	m_contour.push_back(m_pointA);
+	m_contour.push_back(m_pointB);
 }
 
 template <typename _Tp>
@@ -134,8 +138,8 @@ void Angle_<_Tp>::setPosition(cv::Point_<_Tp> position)
 		m_vertex = m_position;
 		m_pointA = m_position + Point_<_Tp>(0, -polygonMargin);
 		m_pointB = m_position + Point_<_Tp>(polygonMargin, -polygonMargin);
+		defineContours();
 	}
 
 	m_vertex.setPosition(m_position);
-	m_undefined = false;
 }
