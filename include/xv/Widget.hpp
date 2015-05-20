@@ -19,23 +19,6 @@ namespace xv {
 		friend Image_<_Tp>;
 	public:
 
-		///widgets for user input
-		friend void operator >> (Image_<_Tp> &image, Widget<_Tp> &widget){
-			if (std::find(image.m_widgets.begin(), image.m_widgets.end(), &widget) == image.m_widgets.end()){
-				if (widget.m_undefined)//center widget with undefined value in the image
-					widget.setPosition(cv::Point_<_Tp>(image.m_cvMat.size()/2));
-				image.m_widgets.push_back(&widget);
-				widget.m_image = &image;
-			}else{
-				assert(("Widget already added to the Image",false));
-			}
-		};
-
-		/// Simple rendering/display of widget without user input
-		void operator >> (Image_<_Tp> &image){
-			this->paint(image);
-		};
-
 		/// Display widget in input mode (with OK/Cancel buttons)
 		virtual void render(const cv::Mat&);
 
@@ -71,6 +54,9 @@ namespace xv {
 
 		/// Check if the mouse pointer is over the widget
 		virtual bool isMouseOver(){ return m_mouseOver; };
+
+		/// Check if Widget is read-only
+		virtual bool isReadOnly(){ return m_readonly; };
 
 		/// Move the widget to the position
 		virtual void setPosition(cv::Point_<_Tp> position);
@@ -117,6 +103,9 @@ namespace xv {
 		bool m_dragging = false;  /*!< The user is dragging the widget */
 		bool m_mouseOver = false; /*!< The mouse pointer is over the widget */
 		bool m_undefined = false; /*!< The member variable that stores a primitive datatype doesn't hold a defined value */
+		bool m_positioned = false;/*!< Was the Widget positioned in a particular place, independently of being undefined */
+		bool m_readonly = false; /*!< The widget can be made visible but the user can't interact with it */
+
 		cv::Point_<_Tp> m_position; /*!< The position of the widget, usually the center point */
 
 	private:

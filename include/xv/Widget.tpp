@@ -48,6 +48,7 @@ template <typename _Tp>
 void Widget<_Tp>::setPosition(cv::Point_<_Tp> position)
 {
 	m_position = position;
+	m_positioned = true;
 }
 
 template <typename _Tp>
@@ -60,6 +61,9 @@ template <typename _Tp>
 bool Widget<_Tp>::isMouseOverButton(cv::Point_<_Tp> mousePosition,
 	cv::Point_<_Tp> buttonPosition)
 {
+	if (m_readonly)
+		return false;
+
 	int d = distance<_Tp>(position() + buttonPosition, mousePosition);
 	if (d < BUTTON_RADIUS)
 		return true;
@@ -69,6 +73,9 @@ bool Widget<_Tp>::isMouseOverButton(cv::Point_<_Tp> mousePosition,
 template <class _Tp>
 void Widget<_Tp>::onMouseMove(const cv::Point& point)
 {
+	if (m_readonly)
+		return;
+
 	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)))
 		m_image->setClickMouseCursor();
 	else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
@@ -78,6 +85,9 @@ void Widget<_Tp>::onMouseMove(const cv::Point& point)
 template <class _Tp>
 void Widget<_Tp>::onMouseUp(const cv::Point& point)
 {
+	if (m_readonly)
+		return;
+
 	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION))){
 		m_undefined = false;
 		m_image = NULL;
@@ -99,7 +109,8 @@ bool Widget<_Tp>::contains(const cv::Point_<_Tp>& point)
 template <typename _Tp>
 void Widget<_Tp>::render(const cv::Mat& image)
 {
-	paintButtons(image);
+	if (!m_readonly)
+		paintButtons(image);
 	paint(image);
 }
 
