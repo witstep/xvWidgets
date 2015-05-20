@@ -23,7 +23,7 @@ void Image_<_Tp>::onMouseDown(wxMouseEvent& evt)
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 	for (auto &w : m_widgets){
-		if (w->contains(point)){
+		if (!w->isReadOnly() && w->contains(point)){
 			w->onMouseDown(point);
 			return;//click only passed to the topmost widget
 		}
@@ -51,13 +51,11 @@ void Image_<_Tp>::onMouseUp(wxMouseEvent& evt)
 template <typename _Tp>
 void Image_<_Tp>::onMouseMove(wxMouseEvent& evt)
 {
-	//if (!evt.Dragging()) return;//to-do: handle mouse-up outside of the app
-
 	wxPoint evtPoint(evt.GetPosition());
 	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
 
 	for (auto &w : m_widgets){
-		if (w->contains(point)){
+		if (!w->isReadOnly() && w->contains(point)){
 			w->setMouseOver(true);
 		} else{
 			w->setMouseOver(false);
@@ -66,7 +64,7 @@ void Image_<_Tp>::onMouseMove(wxMouseEvent& evt)
 		w->onMouseMove(point); 
 	}
 
-	Refresh();
+	render(99);//render if not rendered in the last 99 ms
 }
 
 template <typename _Tp>
@@ -192,16 +190,16 @@ void Image_<_Tp>::setBestSizeFit()
 template <typename _Tp>
 void Image_<_Tp>::Refresh(bool eraseBackground, const wxRect *rect)
 {
-	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
-	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < 16)
-		return;//no need to render at more than ~60 fps (every 16ms)
 	wxPanel::Refresh(eraseBackground);
 
 }
 
 template <typename _Tp>
-void Image_<_Tp>::render()
+void Image_<_Tp>::render(int ms)
 {
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < ms)
+		return;//no need to render at more than ~60 fps (every 16ms)
 	createBitmap();
 	Refresh();
 }

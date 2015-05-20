@@ -41,6 +41,33 @@ namespace xv{
 
 #pragma region operators
 
+		/// Simple rendering/display of widget without user input
+		void operator << (Widget<_Tp> &widget){
+			if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
+				if (!widget.m_positioned)//center widget with undefined value in the image
+					widget.setPosition(cv::Point_<_Tp>(this->m_cvMat.size() / 2));
+				widget.m_readonly = true;
+				this->m_widgets.push_back(&widget);
+				widget.m_image = this;
+			}
+			else{
+				assert(("Widget already added to the Image", false));
+			}
+		};
+
+		///widgets for user input
+		void operator >> (Widget<_Tp> &widget){
+			if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
+				if (!widget.m_positioned)//center widget with undefined value in the image
+					widget.setPosition(cv::Point_<_Tp>(this->m_cvMat.size() / 2));
+				this->m_widgets.push_back(&widget);
+				widget.m_image = this;
+			}
+			else{
+				assert(("Widget already added to the Image", false));
+			}
+		};
+
 		/// Conversation operator for using the class as argument in the OpenCV API
 		operator cv::_InputOutputArray() const { return m_cvMat; }
 
@@ -49,9 +76,6 @@ namespace xv{
 
 		/// Conversation operator to cv::Mat reference
 		operator cv::Mat&() { return m_cvMat; }
-
-		/// Use the image to request user input into a widget
-		friend void operator >> (Image_ &image, Widget<_Tp> &widget);
 
 		/// Display a cv::Mat
 		void operator<<(const cv::Mat&);
@@ -71,7 +95,7 @@ namespace xv{
 		void sizeEvent(wxSizeEvent&);
 		void onEraseBackground(wxEraseEvent&);
 
-		void render();
+		void render(int ms=16);
 		/// use to provide a reference to the original image and the image afer processing
 		std::function<void(cv::Mat &)>
 			m_preProcessCallback = [](cv::Mat &){},
