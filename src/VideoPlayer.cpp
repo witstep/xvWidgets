@@ -12,7 +12,7 @@
 using namespace xv;
 
 const int VideoPlayer::LABEL_UPDATE_INTERVAL = 750;
-const char* VideoPlayer::LABEL_DEFAULT_TEXT = "--:--";
+const char* VideoPlayer::LABEL_DEFAULT_TEXT = "-:-";
 
 BEGIN_EVENT_TABLE(VideoPlayer, wxPanel)
 	EVT_TIMER(wxID_HIGHEST + 1, VideoPlayer::onTimer)
@@ -209,6 +209,8 @@ void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
 	if (m_fps < 1)
 		return; /// property no available
 
+	wxString text;
+	bool sizeChanged = false;
 	int totalSeconds = videoFrame / m_fps;
 
 	int hours = totalSeconds / 3600;
@@ -216,20 +218,27 @@ void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
 	int minutes = totalMinutes % 60;
 	int seconds = totalSeconds % 60;
 
+
+
 	if (hours > 0) /// more than an hour
-		label->SetLabel(
-			wxString::Format("%02d:%02d:%02d",
+		text = wxString::Format("%02d:%02d:%02d",
 			hours,
 			minutes,
-			seconds)
+			seconds
 		);
 	else
-		label->SetLabel(
-			wxString::Format("%02d:%02d",
+		text = wxString::Format("%02d:%02d",
 			minutes,
-			seconds)
+			seconds
 		);
-	//m_sizer->RecalcSizes();
+
+	//sizer needs to reflow the controls
+	sizeChanged = label->GetLabel().Len() != text.Len();
+
+	label->SetLabel(text);
+
+	if (sizeChanged)
+		m_sizer->RecalcSizes();
 }
 
 VideoPlayer::Thread::Thread(VideoPlayer* player)
