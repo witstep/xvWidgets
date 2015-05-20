@@ -1,6 +1,6 @@
 # xvWidgets
 
-An experimental cross-platform C++ GUI toolkit for OpenCV with Qt and wxWidgets bindings
+An experimental cross-platform C++ GUI toolkit for OpenCV with (planned) Qt and wxWidgets bindings
 
 ## Status
 
