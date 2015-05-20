@@ -229,7 +229,7 @@ void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
 			minutes,
 			seconds)
 		);
-	m_sizer->RecalcSizes();
+	//m_sizer->RecalcSizes();
 }
 
 VideoPlayer::Thread::Thread(VideoPlayer* player)
