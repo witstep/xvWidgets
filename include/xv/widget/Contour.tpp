@@ -197,6 +197,7 @@ void Contour_<_Tp>::setDefaultPoints()
 	int polygonMargin = MARGIN * 10;
 	push_back(m_position + Point_<_Tp>(-polygonMargin, -polygonMargin));
 	push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
+	push_back(m_position + Point_<_Tp>(polygonMargin, polygonMargin));
 	push_back(m_position + Point_<_Tp>(polygonMargin, -polygonMargin));
 
 	cv::Point_<_Tp> middle(getMiddlePoint());
