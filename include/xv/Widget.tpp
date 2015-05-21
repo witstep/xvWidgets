@@ -81,6 +81,17 @@ void Widget<_Tp>::onMouseMove(const cv::Point& point)
 	else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)))
 		m_image->setClickMouseCursor();
 }
+template <class _Tp>
+void Widget<_Tp>::onMouseDown(const cv::Point& point)
+{
+	m_accepting = false;
+	m_canceling = false;
+	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION))){
+		m_accepting = true;
+	}else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION))){
+		m_canceling = true;
+	}
+}
 
 template <class _Tp>
 void Widget<_Tp>::onMouseUp(const cv::Point& point)
@@ -88,10 +99,10 @@ void Widget<_Tp>::onMouseUp(const cv::Point& point)
 	if (m_readonly)
 		return;
 
-	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION))){
+	if (isMouseOverButton(point, cv::Point_<_Tp>(OK_POSITION)) && m_accepting){
 		m_undefined = false;
 		m_image = NULL;
-	}else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION))){
+	}else if (isMouseOverButton(point, cv::Point_<_Tp>(CANCEL_POSITION)) && m_canceling){
 		m_undefined = true;
 		m_image = NULL;
 	}

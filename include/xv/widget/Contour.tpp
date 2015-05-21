@@ -99,6 +99,8 @@ void Contour_<_Tp>::paintAddPointButton(const Point_<_Tp>& point, const cv::Mat&
 template <class T>
 void Contour_<T>::onMouseDown(const cv::Point& point)
 {
+	Widget::onMouseDown(point);
+
 	if (m_centerPoint.contains(point)){
 		m_centerPoint.onMouseDown(point);
 		return;

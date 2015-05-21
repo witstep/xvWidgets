@@ -101,6 +101,8 @@ namespace xv {
 		std::vector<cv::Point_<_Tp>> m_contour;
 
 		bool m_dragging = false;  /*!< The user is dragging the widget */
+		bool m_canceling = false;  /*!< The user left clicked over cancel and didn't release the mouse button */
+		bool m_accepting = false;  /*!< The user left clicked over ok and didn't release the mouse button */
 		bool m_mouseOver = false; /*!< The mouse pointer is over the widget */
 		bool m_undefined = false; /*!< The member variable that stores a primitive datatype doesn't hold a defined value */
 		bool m_positioned = false;/*!< Was the Widget positioned in a particular place, independently of being undefined */

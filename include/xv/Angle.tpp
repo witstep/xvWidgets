@@ -57,6 +57,8 @@ void Angle_<_Tp>::paint(const cv::Mat& image)
 template <class T>
 void Angle_<T>::onMouseDown(const cv::Point& point)
 {
+	Widget::onMouseDown(point);
+
 	if (m_vertex.contains(point)){
 		m_vertex.onMouseDown(point);
 		return;
