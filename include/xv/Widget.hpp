@@ -68,6 +68,9 @@ namespace xv {
 		bool isMouseOverButton(cv::Point_<_Tp> mousePosition, cv::Point_<_Tp> buttonPosition);
 
 	protected:
+		/// The thickness of contour lines
+		static const _Tp LINE_THICKNESS;
+
 		/// Generic margin around widget
 		static const _Tp MARGIN;
 

@@ -1,6 +1,6 @@
 #include "Contour.hpp"
 #include "Point.hpp"
-#include "../Image.hpp"
+#include "Image.hpp"
 #include <numeric>
 
 using namespace xv;
@@ -29,7 +29,8 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 			image,
 			(*this)[i],
 			(*this)[i+1],
-			Widget::HIGHLIGHT_COLOR
+			Widget::HIGHLIGHT_COLOR,
+			Widget::LINE_THICKNESS
 			);
 	}
 
@@ -38,7 +39,8 @@ void Contour_<_Tp>::paint(const cv::Mat& image)
 		image,
 		(*this)[0],
 		(*this)[this->size()-1],
-		Widget::HIGHLIGHT_COLOR
+		Widget::HIGHLIGHT_COLOR,
+		Widget::LINE_THICKNESS
 		);
 
 	m_centerPoint.paint(image);
@@ -196,7 +198,7 @@ void Contour_<_Tp>::setPosition(cv::Point_<_Tp> position)
 template <typename _Tp>
 void Contour_<_Tp>::setDefaultPoints()
 {
-	int polygonMargin = MARGIN * 10;
+	int polygonMargin = MARGIN * 6;
 	push_back(m_position + Point_<_Tp>(-polygonMargin, -polygonMargin));
 	push_back(m_position + Point_<_Tp>(-polygonMargin, polygonMargin));
 	push_back(m_position + Point_<_Tp>(polygonMargin, polygonMargin));

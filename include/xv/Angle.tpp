@@ -1,5 +1,5 @@
 #include "Angle.hpp"
-#include "xv/widget/Point.hpp"
+#include "xv/Point.hpp"
 #include "Image.hpp"
 #include <numeric>
 
@@ -41,7 +41,8 @@ void Angle_<_Tp>::paint(const cv::Mat& image)
 		image,
 		m_vertex,
 		distance(m_vertex, m_pointA),
-		Widget::HIGHLIGHT_COLOR
+		Widget::HIGHLIGHT_COLOR,
+		Widget::LINE_THICKNESS
 		);
 
 	//closing line between last and first point
@@ -49,7 +50,8 @@ void Angle_<_Tp>::paint(const cv::Mat& image)
 		image,
 		m_vertex,
 		m_pointA,
-		Widget::HIGHLIGHT_COLOR
+		Widget::HIGHLIGHT_COLOR,
+		Widget::LINE_THICKNESS
 		);
 
 }

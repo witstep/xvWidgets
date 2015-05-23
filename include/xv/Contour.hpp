@@ -2,7 +2,7 @@
 
 #include <list>
 #include <opencv2/core.hpp>
-#include "../Widget.hpp"
+#include "Widget.hpp"
 #include "Point.hpp"
 
 namespace xv{

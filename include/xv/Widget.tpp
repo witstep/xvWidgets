@@ -7,6 +7,9 @@
 using namespace xv;
 
 template <class _Tp>
+const _Tp Widget<_Tp>::LINE_THICKNESS = 2;
+
+template <class _Tp>
 const _Tp Widget<_Tp>::MARGIN = 10;
 
 template <class _Tp>

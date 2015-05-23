@@ -49,6 +49,7 @@ namespace xv{
 				widget.m_readonly = true;
 				this->m_widgets.push_back(&widget);
 				widget.m_image = this;
+				render();
 			}
 			else{
 				assert(("Widget already added to the Image", false));
@@ -62,6 +63,7 @@ namespace xv{
 					widget.setPosition(cv::Point_<_Tp>(this->m_cvMat.size() / 2));
 				this->m_widgets.push_back(&widget);
 				widget.m_image = this;
+				render();
 			}
 			else{
 				assert(("Widget already added to the Image", false));
