@@ -94,7 +94,8 @@ void VideoPlayer::init()
 
 VideoPlayer::~VideoPlayer()
 {
-
+	m_timer.DeletePendingEvents();
+	m_thread->Delete();
 }
 
 void VideoPlayer::onMouseMove(wxCommandEvent& evt)
@@ -108,14 +109,7 @@ void VideoPlayer::onSliderMove(wxScrollEvent& evt)
 {
 	if (m_state == idle)
 		return; ///can't seek if media not open
-
-	m_mutex.Lock();
-
-	wxBeginBusyCursor();
-	m_videoCapture->set(cv::CAP_PROP_POS_FRAMES, m_slider->GetValue());
-	wxEndBusyCursor();
-
-	m_mutex.Unlock();
+	seek(m_slider->GetValue());
 }
 
 void VideoPlayer::onSliderClickDown(wxMouseEvent& evt)
@@ -192,6 +186,15 @@ void VideoPlayer::pause()
 		return; /// can't pause if media not open
 	m_state = VideoPlayer::paused;
 	m_playButton->SetLabel(_("Play"));
+}
+
+void VideoPlayer::seek(int idx)
+{
+	m_mutex.Lock();
+	wxBeginBusyCursor();
+	m_videoCapture->set(cv::CAP_PROP_POS_FRAMES, idx);
+	wxEndBusyCursor();
+	m_mutex.Unlock();
 }
 
 void VideoPlayer::onPlayClick(wxCommandEvent& evt)
@@ -271,7 +274,8 @@ void* VideoPlayer::Thread::Entry()
 			wxEndBusyCursor();
 
 		while (m_player->m_state == VideoPlayer::seeking || m_player->m_state == VideoPlayer::paused)
-			Sleep(1000); /// to-do: why not lock a mutex here or use Pause()?
+			if (!TestDestroy())
+				Sleep(1000); /// to-do: why not lock a mutex here or use Pause()?
 	}
 	return NULL;
 }
