@@ -58,14 +58,20 @@ namespace xv {
 		/// Check if Widget is read-only
 		virtual bool isReadOnly(){ return m_readonly; };
 
-		/// Move the widget to the position
+		/// Move the widget to a point in an image
 		virtual void setPosition(cv::Point_<_Tp> position);
+
+		/// Move the widget to the center of the image
+		virtual void center();
 
 		/// Get the current position
 		virtual cv::Point_<_Tp> position();
 
 		/// Check if the mouse pointer is over a button
 		bool isMouseOverButton(cv::Point_<_Tp> mousePosition, cv::Point_<_Tp> buttonPosition);
+
+		/// Make it disappear from an Image
+		void hide();
 
 	protected:
 		/// The thickness of contour lines

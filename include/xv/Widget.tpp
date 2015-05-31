@@ -44,7 +44,7 @@ _Tp xv::distance<_Tp>(cv::Point_<_Tp> p1, cv::Point_<_Tp> p2)
 {
 	int dx = p1.x - p2.x;
 	int dy = p1.y - p2.y;
-	return (_Tp)fabs(sqrt(dx*dx + dy*dy));
+	return (_Tp)sqrt(dx*dx + dy*dy);
 }
 
 template <typename _Tp>
@@ -55,6 +55,13 @@ void Widget<_Tp>::setPosition(cv::Point_<_Tp> position)
 }
 
 template <typename _Tp>
+void Widget<_Tp>::center()
+{
+	if (m_image)
+		setPosition(cv::Point_<_Tp>(m_image->m_cvMat.size() / 2));
+}
+template <typename _Tp>
+
 cv::Point_<_Tp> Widget<_Tp>::position()
 {
 	return m_position;
@@ -182,4 +189,10 @@ void Widget<_Tp>::paintButtons(const cv::Mat& image)
 		BUTTON_RADIUS,
 		Widget::NEGATIVE_COLOR
 		);
+}
+
+template <typename _Tp>
+void Widget<_Tp>::hide()
+{
+	m_image = NULL;
 }
