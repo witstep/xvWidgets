@@ -12,11 +12,6 @@ template <class _Tp>
 Angle_<_Tp>::Angle_()
 {
 	m_undefined = true;
-
-	m_points.push_back(&m_vertex);
-	m_points.push_back(&m_pointA);
-	m_points.push_back(&m_pointB);
-
 	defineContours();
 }
 
@@ -25,14 +20,13 @@ Angle_<_Tp>::Angle_(cv::Point_<_Tp> vertex)
 {
 	m_undefined = true; ///only vertex is known
 	m_vertex = vertex;
-	m_points.push_back(&m_vertex);
-	m_points.push_back(&m_pointA);
-	m_points.push_back(&m_pointB);
 }
 
 template <class _Tp>
 void Angle_<_Tp>::paint(const cv::Mat& image)
 {
+	m_radius = distance(m_vertex, m_pointA);
+
 	m_vertex.paint(image);
 	m_pointA.paint(image);
 	//m_pointB.paint(image);
@@ -40,7 +34,7 @@ void Angle_<_Tp>::paint(const cv::Mat& image)
 	cv::circle(
 		image,
 		m_vertex,
-		distance(m_vertex, m_pointA),
+		m_radius,
 		Widget::HIGHLIGHT_COLOR,
 		Widget::LINE_THICKNESS
 		);
@@ -61,12 +55,8 @@ void Angle_<T>::onMouseDown(const cv::Point& point)
 {
 	Widget::onMouseDown(point);
 
-	if (m_vertex.contains(point)){
-		m_vertex.onMouseDown(point);
-		return;
-	}
-
-	for (Point_<T> *p : { &m_vertex, &m_pointA, &m_pointB }){
+	/// keep vertex for last in case they are cramped
+	for (Point_<T> *p : { &m_pointA, &m_pointB, &m_vertex }){
 		if (p->contains(point)){
 			p->onMouseDown(point);
 			return;//pass click to the topmost point
@@ -79,7 +69,7 @@ void Angle_<T>::onMouseUp(const cv::Point& point)
 {
 	Widget::onMouseUp(point);
 
-	for (Point_<T> *p : m_points)
+	for (Point_<T> *p : { &m_pointA, &m_pointB, &m_vertex })
 		p->onMouseUp(point);//no need to check for bounds?
 
 	defineContours();
@@ -100,7 +90,7 @@ void Angle_<T>::onMouseMove(const cv::Point& point)
 		return;
 	}
 
-	for (Point_<T>* p : m_points){
+	for (Point_<T>* p : { &m_pointA, &m_pointB, &m_vertex, }){
 		p->onMouseMove(point);
 
 		if (p->contains(point)){
@@ -119,17 +109,19 @@ template <class _Tp>
 void Angle_<_Tp>::setMouseOver(bool mouseOver)
 {
 	Widget::setMouseOver(mouseOver);
-	for (Point_<_Tp> *p : m_points)
+	for (Point_<_Tp> *p : { &m_pointA, &m_pointB, &m_vertex, } )
 		p->setMouseOver(mouseOver);
 }
 
 template <class _Tp>
 void Angle_<_Tp>::defineContours()
 {
+	/// a square with side length equal to the visible circle diameter
 	m_contour.clear();
-	m_contour.push_back(m_vertex);
-	m_contour.push_back(m_pointA);
-	m_contour.push_back(m_pointB);
+	m_contour.push_back(m_position + Point_<_Tp>(-m_radius, -m_radius));
+	m_contour.push_back(m_position + Point_<_Tp>(-m_radius, m_radius));
+	m_contour.push_back(m_position + Point_<_Tp>(m_radius, m_radius));
+	m_contour.push_back(m_position + Point_<_Tp>(m_radius, -m_radius));
 }
 
 template <typename _Tp>
@@ -147,3 +139,4 @@ void Angle_<_Tp>::setPosition(cv::Point_<_Tp> position)
 
 	m_vertex.setPosition(m_position);
 }
+

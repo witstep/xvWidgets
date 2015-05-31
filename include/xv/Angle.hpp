@@ -56,7 +56,7 @@ namespace xv{
 		void defineContours();
 
 		Point_<_Tp> m_vertex, m_pointA, m_pointB;
-		std::list< Point_<_Tp>* >  m_points;
+		int m_radius = 0;
 	};
 
 	typedef Angle_<int> Angle;
