@@ -55,6 +55,9 @@ public:
 	/// Pause media loop 
 	virtual void pause();
 
+	/// Stops the playback thread
+	virtual void stop();
+
 	/// Move playback to frame
 	virtual void seek(int);
 

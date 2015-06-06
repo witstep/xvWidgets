@@ -10,6 +10,7 @@
 #include "xv/VideoPlayer.hpp"
 
 using namespace xv;
+using namespace std;
 
 const int VideoPlayer::LABEL_UPDATE_INTERVAL = 750;
 const char* VideoPlayer::LABEL_DEFAULT_TEXT = "-:-";
@@ -95,7 +96,8 @@ void VideoPlayer::init()
 VideoPlayer::~VideoPlayer()
 {
 	m_timer.DeletePendingEvents();
-	m_thread->Delete();
+	if (m_thread)
+		m_thread->Delete();
 }
 
 void VideoPlayer::onMouseMove(wxCommandEvent& evt)
@@ -188,13 +190,28 @@ void VideoPlayer::pause()
 	m_playButton->SetLabel(_("Play"));
 }
 
+void VideoPlayer::stop()
+{
+	m_thread->Delete();
+	m_thread = NULL;
+	Sleep(250);
+}
+
 void VideoPlayer::seek(int idx)
 {
-	m_mutex.Lock();
+#ifdef _DEBUG
+	cout << "VideoPlayer::seek - locking mutex:" << idx << endl;
+#endif
+
 	wxBeginBusyCursor();
+	m_mutex.Lock();
 	m_videoCapture->set(cv::CAP_PROP_POS_FRAMES, idx);
-	wxEndBusyCursor();
 	m_mutex.Unlock();
+	wxEndBusyCursor();
+
+#ifdef _DEBUG
+	cout << "VideoPlayer::seek - unlocking mutex:" << idx << endl;
+#endif
 }
 
 void VideoPlayer::onPlayClick(wxCommandEvent& evt)
@@ -262,6 +279,8 @@ void* VideoPlayer::Thread::Entry()
 		m_player->m_slider->SetValue(i);
 
 		m_player->m_mutex.Lock();
+		if (TestDestroy())
+			break;
 
 		*m_player->m_videoCapture >> mat;
 		m_player->m_preProcessCallback(mat);
@@ -276,6 +295,8 @@ void* VideoPlayer::Thread::Entry()
 		while (m_player->m_state == VideoPlayer::seeking || m_player->m_state == VideoPlayer::paused)
 			if (!TestDestroy())
 				Sleep(1000); /// to-do: why not lock a mutex here or use Pause()?
+			else
+				break;
 	}
 	return NULL;
 }
