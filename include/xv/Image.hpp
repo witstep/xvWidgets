@@ -45,7 +45,7 @@ namespace xv{
 		void operator << (Widget<_Tp> &widget){
 			if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
 				if (!widget.m_positioned)//center widget with undefined value in the image
-					widget.setPosition(cv::Point_<_Tp>(this->m_cvMat.size() / 2));
+					widget.center();
 				widget.m_readonly = true;
 				this->m_widgets.push_back(&widget);
 				widget.m_image = this;
@@ -88,6 +88,9 @@ namespace xv{
 
 		/// The scale ratio of the image in relation to the original data
 		float getScale(){ return m_scale; };
+
+		/// Immediatelly remove widgets not contained in the image
+		void purge();
 
 	private:
 		cv::Mat 

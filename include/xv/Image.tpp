@@ -43,9 +43,24 @@ void Image_<_Tp>::onMouseUp(wxMouseEvent& evt)
 			i = m_widgets.erase(i);
 			m_mutex.Unlock();
 		}
-		else
+		else///if an element was erased above, there's no need to advance
 			i++;
 	}
+}
+
+template <typename _Tp>
+void Image_<_Tp>::purge()
+{
+	for (std::list<xv::Widget<_Tp>*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
+		if (!(*i)->m_image){
+			m_mutex.Lock();//assure the GUI thread is not iterating
+			i = m_widgets.erase(i);
+			m_mutex.Unlock();
+		}
+		else///if an element was erased above, there's no need to advance
+			i++;///if an element was erased above, there's no need to advance
+	}
+	render();
 }
 
 template <typename _Tp>
