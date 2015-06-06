@@ -157,4 +157,4 @@ namespace xv{
 	typedef Image_<int> Image;
 }
 
-#include "Image.tpp"
+#include "Image.hxx"

@@ -124,4 +124,4 @@ namespace xv {
 	};
 }
 
-#include "Widget.tpp"
+#include "Widget.hxx"

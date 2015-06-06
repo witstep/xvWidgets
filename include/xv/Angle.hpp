@@ -63,4 +63,4 @@ namespace xv{
 
 }
 
-#include "Angle.tpp"
+#include "Angle.hxx"

@@ -65,4 +65,4 @@ namespace xv{
 
 }
 
-#include "Contour.tpp"
+#include "Contour.hxx"

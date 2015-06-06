@@ -72,4 +72,4 @@ namespace xv{
 	typedef Point_<int> Point;
 }
 
-#include "Point.tpp"
+#include "Point.hxx"
