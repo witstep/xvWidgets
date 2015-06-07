@@ -5,18 +5,15 @@
 
 namespace xv {
 
-	template <typename _Tp>
-	_Tp distance(cv::Point_<_Tp>, cv::Point_<_Tp>);
+	class ImageView;
+	int distance(cv::Point, cv::Point);
 
-	template <typename _Tp>
-	class Image_;
 
 	/** @brief Base class for all Widgets
 	*/
 
-	template <typename _Tp>
 	class Widget{
-		friend Image_<_Tp>;
+		friend ImageView;
 	public:
 
 		/// Display widget in input mode (with OK/Cancel buttons)
@@ -26,10 +23,7 @@ namespace xv {
 		virtual void paint(const cv::Mat&) = 0;
 
 		/// Check if point is inside the widget
-		virtual bool contains(const cv::Point_<_Tp>&);
-
-		/// Draw the OK/Cancel buttons
-		virtual void paintButtons(const cv::Mat&);
+		virtual bool contains(const cv::Point&);
 
 		/// The user clicked the left mouse button over the widget
 		virtual void onMouseDown(const cv::Point&) = 0;
@@ -59,26 +53,26 @@ namespace xv {
 		virtual bool isReadOnly(){ return m_readonly; };
 
 		/// Move the widget to a point in an image
-		virtual void setPosition(cv::Point_<_Tp> position);
+		virtual void setPosition(cv::Point position);
 
 		/// Move the widget to the center of the image
 		virtual void center();
 
 		/// Get the current position
-		virtual cv::Point_<_Tp> position();
+		virtual cv::Point position();
 
 		/// Check if the mouse pointer is over a button
-		bool isMouseOverButton(cv::Point_<_Tp> mousePosition, cv::Point_<_Tp> buttonPosition);
+		bool isMouseOverButton(cv::Point mousePosition, cv::Point buttonPosition);
 
 		/// Make it disappear from an Image
 		void hide();
 
 	protected:
 		/// The thickness of contour lines
-		static const _Tp LINE_THICKNESS;
+		static const int LINE_THICKNESS;
 
 		/// Generic margin around widget
-		static const _Tp MARGIN;
+		static const int MARGIN;
 
 		/// Used to define the size of buttons
 		static const int BUTTON_RADIUS;
@@ -104,24 +98,24 @@ namespace xv {
 		virtual ~Widget() = 0;
 
 		/// Pointer to the parent image used to display the widget
-		Image_<_Tp> *m_image = NULL;
+		ImageView *m_image = NULL;
 
 		/// The contours of area occupied by the widget
-		std::vector<cv::Point_<_Tp>> m_contour;
+		std::vector<cv::Point> m_contour;
 
 		bool m_dragging = false;  /*!< The user is dragging the widget */
 		bool m_canceling = false;  /*!< The user left clicked over cancel and didn't release the mouse button */
 		bool m_accepting = false;  /*!< The user left clicked over ok and didn't release the mouse button */
+
 		bool m_mouseOver = false; /*!< The mouse pointer is over the widget */
 		bool m_undefined = false; /*!< The member variable that stores a primitive datatype doesn't hold a defined value */
 		bool m_positioned = false;/*!< Was the Widget positioned in a particular place, independently of being undefined */
 		bool m_readonly = false; /*!< The widget can be made visible but the user can't interact with it */
 
-		cv::Point_<_Tp> m_position; /*!< The position of the widget, usually the center point */
+		cv::Point m_position; /*!< The position of the widget, usually the center point */
 
 	private:
-
+		/// Draw the OK/Cancel buttons
+		virtual void paintButtons(const cv::Mat&);
 	};
 }
-
-#include "Widget.hxx"

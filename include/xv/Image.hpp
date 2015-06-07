@@ -1,160 +1,43 @@
 #pragma once
-#include <wx/wx.h>
-#include <wx/panel.h>
-#include <wx/sizer.h>
 
-#include <opencv2/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include "Widget.hpp"
 
-#include <chrono>
-#include <list>
-#include <functional>
+#ifdef wxUSE_GUI
+	#include <wx/image.h>
+#endif
 
-#include "xv/Widget.hpp"
+namespace xv
+{
 
-namespace xv{
+#ifdef wxUSE_GUI
+	typedef wxImage gui_image_t;
+#endif
 
-	class VideoCapture;
+class Image : public Widget
+{
 
-	/** @brief Class used to display images and as container of widgets. */
-	template <typename _Tp>
-	class Image_ : public wxPanel
-	{
-		friend Widget<_Tp>;
-	public:
-		/// the color used to pad the frame when the aspect ratio doesn't fit
-		/// the container
-		static const cv::Scalar PADDING_COLOR;
+public:
+	Image();
+	virtual ~Image();
+private:
 
-		/// Default constructor
-		Image_();
+	gui_image_t *m_guiImage;
 
-		/// Constructor inherited from wxPanel
-		Image_(wxWindow * parent,
-			wxWindowID id = wxID_ANY,
-			const wxPoint &pos = wxDefaultPosition,
-			const wxSize &size = wxDefaultSize,
-			long style = wxTAB_TRAVERSAL,
-			const wxString &name = wxPanelNameStr
-		);
+	virtual void render(const cv::Mat&);
 
+	/// Display widget in output mode (without OK/Cancel buttons)
+	virtual void paint(const cv::Mat&);
 
-#pragma region operators
+	/// Check if point is inside the widget
+	virtual bool contains(const cv::Point&);
 
-		/// Simple rendering/display of widget without user input
-		void operator << (Widget<_Tp> &widget){
-			if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
-				if (!widget.m_positioned)//center widget with undefined value in the image
-					widget.center();
-				widget.m_readonly = true;
-				this->m_widgets.push_back(&widget);
-				widget.m_image = this;
-				render();
-			}
-			else{
-				assert(("Widget already added to the Image", false));
-			}
-		};
+	/// The user clicked the left mouse button over the widget
+	virtual void onMouseDown(const cv::Point&);
 
-		///widgets for user input
-		void operator >> (Widget<_Tp> &widget){
-			if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
-				if (!widget.m_positioned)//center widget with undefined value in the image
-					widget.setPosition(cv::Point_<_Tp>(this->m_cvMat.size() / 2));
-				this->m_widgets.push_back(&widget);
-				widget.m_image = this;
-				render();
-			}
-			else{
-				assert(("Widget already added to the Image", false));
-			}
-		};
+	/// The user moved the mouse pointer over the widget
+	virtual void onMouseMove(const cv::Point&);
 
-		/// Conversation operator for using the class as argument in the OpenCV API
-		operator cv::_InputOutputArray() const { return m_cvMat; }
-
-		/// Conversation operator to cv::Mat
-		operator cv::Mat() const { return m_cvMat; }
-
-		/// Conversation operator to cv::Mat reference
-		operator cv::Mat&() { return m_cvMat; }
-
-		/// Display a cv::Mat
-		void operator<<(const cv::Mat&);
-#pragma endregion operators
-
-		/// Redraw an image optionally erasing background first or a limited area
-		void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
-
-		/// The scale ratio of the image in relation to the original data
-		float getScale(){ return m_scale; };
-
-		/// Immediatelly remove widgets not contained in the image
-		void purge();
-
-	private:
-		cv::Mat 
-			m_cvMat,
-			m_renderMat;
-		void paintEvent(wxPaintEvent&);
-		void sizeEvent(wxSizeEvent&);
-		void onEraseBackground(wxEraseEvent&);
-
-		void render(int ms=16);
-		/// use to provide a reference to the original image and the image afer processing
-		std::function<void(cv::Mat &)>
-			m_preProcessCallback = [](cv::Mat &){},
-			m_postProcessCallback = [](cv::Mat &){};
-
-		void setClickMouseCursor(){
-			wxSetCursor(wxCURSOR_HAND);
-		};
-		void onMouseMove(wxMouseEvent& evt);
-		void onMouseDown(wxMouseEvent& evt);
-		void onMouseUp(wxMouseEvent& evt);
-		cv::Point getPixelInterpolation(cv::Point);
-
-		bool containsWidget(Widget<_Tp>*);
-
-		std::list<Widget<_Tp>*> m_widgets;
-		std::chrono::steady_clock::time_point m_lastPaintTime;
-		wxMutex m_mutex;
-		wxBitmap m_bitmap;
-		wxImage m_image;
-		wxSizer* m_sizer;
-		inline void createBitmap();
-		void setBestSizeFit();
-
-		friend void operator>>(cv::VideoCapture &videoCapture, Image_<_Tp> &image){
-			image.m_mutex.Lock();
-			videoCapture >> image.m_cvMat;
-			image.m_mutex.Unlock();
-			image.render();
-		}
-
-		friend void operator>>(VideoCapture &videoCapture, Image_<_Tp> &image){
-			image.m_mutex.Lock();
-			videoCapture.m_videoCapture >> image.m_cvMat;
-			image.m_mutex.Unlock();
-			image.render();
-		};
-
-		/// use the xv::Image to display a cv::Mat
-		friend void operator<<(Image_<_Tp> &image,cv::Mat& mat){
-			image.m_mutex.Lock();
-			image.m_cvMat = mat.clone();
-			image.m_mutex.Unlock();
-			image.render();
-		};
-
-		float m_scale = 1;
-		int m_hBorder = 0;
-		int m_vBorder=0;
-
-		DECLARE_EVENT_TABLE()
-	};
-
-	typedef Image_<int> Image;
+	/// The user released the left mouse button over the widget
+	virtual void onMouseUp(const cv::Point&);
+};
 }
-
-#include "Image.hxx"

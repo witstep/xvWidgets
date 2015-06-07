@@ -6,8 +6,8 @@
 namespace xv{
 	
 	/** @brief Widget that represents a point. */
-	template <class _Tp>
-	class Point_ : public Widget<_Tp>, public cv::Point_<_Tp>
+
+	class Point : public Widget, public cv::Point
 	{
 	public:
 
@@ -15,46 +15,46 @@ namespace xv{
 
 #pragma region constructors
 		/// Default constructor.
-		Point_();
+		Point();
 
 		/// Construct point at x,y coordinates.
-		Point_(_Tp _x, _Tp _y);
+		Point(int _x, int _y);
 
 		/// Construct point at same position as pt.
-		Point_(const cv::Point_<_Tp> & pt);
+		Point(const cv::Point & pt);
 
 		/// Construct point and ise width and height as x,y coordinates.
-		Point_(const cv::Size_<_Tp>& sz);
+		Point(const cv::Size_<int>& sz);
 
 		/// Construct point by finding x,y point in the vector.
-		Point_(const cv::Vec<_Tp, 2>& v);
+		Point(const cv::Vec<int, 2>& v);
 #pragma endregion constructors
 
-		static Point_<_Tp> UNDEFINED; /*!< Represents a Point_ for which coordinates were not yet set.  */
+		static Point UNDEFINED; /*!< Represents a Point_ for which coordinates were not yet set.  */
 
 #pragma region operators
 		/// Conversion operator to cv::Point
-		operator cv::Point_<_Tp>() const{ return m_position; };
+		operator cv::Point() const{ return m_position; };
 
 		/// Checks if 2 points are equal.
-		bool operator == (const Point_<_Tp> &b) {
+		bool operator == (const Point &b) {
 			if (this->m_undefined && b.m_undefined)
 				return true;//if both are undefined they are considered equal
 			//compare as a cv::Point_
-			return static_cast<cv::Point_<_Tp>>(*this) == b;
+			return static_cast<cv::Point>(*this) == b;
 		};
 
 		/// Checks if 2 points are different.
-		bool operator != (const Point_<_Tp> &b) {
+		bool operator != (const Point &b) {
 			if (this->m_undefined && b.m_undefined)
 				return false;//if both are undefined they are considered equal
 			//compare as a cv::Point_
-			return static_cast<cv::Point_<_Tp>>(*this) != b;
+			return static_cast<cv::Point>(*this) != b;
 		};
 #pragma endregion operators
 
 		/// Move point widget
-		virtual void setPosition(cv::Point_<_Tp> position);
+		virtual void setPosition(cv::Point position);
 
 		/// Overlay the point widget on an image
 		void paint(const cv::Mat&);
@@ -69,7 +69,4 @@ namespace xv{
 		void onMouseUp(const cv::Point&);
 	};
 
-	typedef Point_<int> Point;
 }
-
-#include "Point.hxx"

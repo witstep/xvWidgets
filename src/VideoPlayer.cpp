@@ -1,3 +1,4 @@
+#pragma once;
 #include <wx/wxprec.h>
 #include <wx/numformatter.h>
 
@@ -8,6 +9,7 @@
 #include <windows.h>
 
 #include "xv/VideoPlayer.hpp"
+#include "xv/ImageView.hpp"
 
 using namespace xv;
 using namespace std;
@@ -59,7 +61,7 @@ void VideoPlayer::init()
 	m_videoCapture = new cv::VideoCapture();
 	m_thread = new Thread(this);
 
-	m_image = new Image(this);
+	m_image = new ImageView(this);
 	m_playButton = new wxButton(this, wxID_ANY, _("Play"));
 	m_playButton->Bind(wxEVT_BUTTON, &VideoPlayer::onPlayClick, this);
 
@@ -306,7 +308,7 @@ int VideoPlayer::getCurrentFrameIdx()
 	return m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);
 }
 
-Image& VideoPlayer::getImage()
+ImageView& VideoPlayer::getImage()
 {
 	return *m_image;
 }

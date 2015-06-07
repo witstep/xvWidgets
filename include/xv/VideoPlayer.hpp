@@ -2,9 +2,14 @@
 
 #include <functional>
 #include <opencv2/highgui.hpp>
-#include "Image.hpp"
+#include <wx/panel.h>
+#include <wx/timer.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
 
 namespace xv{
+
+	class ImageView;
 
 /** @brief Class to control the playback and processing of media obtained from VideoCapture
 */
@@ -30,7 +35,7 @@ public:
 	int getCurrentFrameIdx();
 
 	/// Get the xv::Image instance used for rendering
-	Image& getImage();
+	ImageView& getImage();
 
 #pragma region control
 
@@ -115,7 +120,7 @@ private:
 
 	
 	cv::VideoCapture* m_videoCapture = NULL;
-	Image* m_image;
+	ImageView* m_image;
 	wxButton* m_playButton;
 	wxSlider* m_slider;
 	wxStaticText
@@ -136,8 +141,5 @@ private:
 
 	DECLARE_EVENT_TABLE()
 };
-
-
-
 
 }//namespace

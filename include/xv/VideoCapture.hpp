@@ -13,9 +13,9 @@
 
 #include <map>
 
-#include "xv/Image.hpp"
-
 namespace xv{
+
+	class ImageView;
 
 	/** @brief Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties */
 	class VideoCapture : public wxPanel
@@ -68,7 +68,7 @@ namespace xv{
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
 
 		/// Retrieves a image frame from the opened media into an xv::Image
-		friend void operator>>(VideoCapture&, Image_<int>&);
+		friend void operator>>(VideoCapture&, ImageView&);
 
 #pragma endregion cv::VideoCapture
 
@@ -102,4 +102,3 @@ namespace xv{
 	};
 
 }
-

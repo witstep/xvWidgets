@@ -3,31 +3,30 @@
 #include <list>
 #include <opencv2/core.hpp>
 #include "Widget.hpp"
+#include "Point.hpp"
 
 namespace xv{
 
-	template <typename _Tp>
-	class Image_;
+	class Image;
 
 	/** @brief Widget that represents an angle between 2 points
 	*/
-	template <class _Tp>
-	class Angle_ : public Widget<_Tp>
+	class Angle : public Widget
 	{
 	public:
 		/// Represents an Angle_ for which user input was not collected
-		static Angle_<_Tp> UNDEFINED;
+		static Angle UNDEFINED;
 
 #pragma region constructors
 		/// Default constructor. Creates an undefined angle
-		Angle_<_Tp>();
+		Angle();
 
 		/// Creates an angle with vertex at a specified point
-		Angle_<_Tp>(cv::Point_<_Tp>);
+		Angle(cv::Point);
 #pragma endregion constructors
 
 		/// Moves the widget
-		virtual void setPosition(cv::Point_<_Tp> position);
+		virtual void setPosition(cv::Point position);
 
 		/// Conversion operator that returns the angle as a double expressed in radians
 		operator double() const{ 
@@ -35,14 +34,14 @@ namespace xv{
 		};
 
 		/// Checks if 2 contours are equal
-		bool operator == (const Angle_<_Tp> &b) {
+		bool operator == (const Angle &b) {
 			if (this->m_undefined && b.m_undefined)
 				return true;//if both are undefined they are considered equal
 			return false;
 		};
 
 		/// Checks if 2 contours are different
-		bool operator != (const Angle_<_Tp> &b) {
+		bool operator != (const Angle &b) {
 			if (this->m_undefined && b.m_undefined)
 				return false;//if both are undefined they are considered equal
 			return true;
@@ -55,12 +54,8 @@ namespace xv{
 		void setMouseOver(bool mouseOver);
 		void defineContours();
 
-		Point_<_Tp> m_vertex, m_pointA, m_pointB;
+		Point m_vertex, m_pointA, m_pointB;
 		int m_radius = 0;
 	};
 
-	typedef Angle_<int> Angle;
-
 }
-
-#include "Angle.hxx"
