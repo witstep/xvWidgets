@@ -45,10 +45,6 @@ public:
 	/// Try to open device
 	virtual bool open(int device);
 
-	/// Shared implementation for int and cv::String
-	template <typename _Tp>
-	bool open_(const _Tp &deviceOrFilename);
-	
 	/// Start media loop
 	virtual void play(); 
 	
@@ -86,6 +82,10 @@ public:
 #pragma endregion event handling
 
 private:
+	/// Shared implementation for int and cv::String
+	template <typename _Tp>
+	bool open_(const _Tp &deviceOrFilename);
+
 	/// How often to update the timer labels
 	static const int LABEL_UPDATE_INTERVAL;
 
