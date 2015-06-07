@@ -1,19 +1,18 @@
 # xvWidgets
-
 An experimental cross-platform C++ GUI toolkit for OpenCV with (planned) Qt and wxWidgets bindings
 
 ## Status
-
 The library is in an early development phase, major API and architecture changes can happen at any moment. It should become minimally usable and stable from the moment sample applications appear in the repository.
 
 ## Introduction
-
 The goal of the project is to consolidate the code base and lessons learned from developing desktop applications, with both computer vision and GUI requirements, into a set of reusable components.
 
 The usefulness of some components is not apparent and they may seem pointless. They are being built as a result of enforcing a basic set of conventions, and in the hope they can become useful in the future as building blocks of new, unforeseen applications.
 
-## API
+## Source Code
+The source code is hosted in [GitHub](https://github.com/witstep/xvWidgets).
 
+## Documentation
 The Doxygen generated API reference is hosted in [xvwidgets.witstep.com](http://xvwidgets.witstep.com/).
 
 ## Features
