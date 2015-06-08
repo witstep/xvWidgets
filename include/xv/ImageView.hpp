@@ -10,6 +10,8 @@
 #include <list>
 #include <functional>
 
+#include "Point.hpp"
+
 namespace xv{
 
 	class VideoCapture;
@@ -89,7 +91,7 @@ namespace xv{
 		void onMouseMove(wxMouseEvent& evt);
 		void onMouseDown(wxMouseEvent& evt);
 		void onMouseUp(wxMouseEvent& evt);
-		cv::Point getPixelInterpolation(cv::Point);
+		gui_point_t getPixelInterpolation(gui_point_t);
 
 		bool containsWidget(Widget*);
 

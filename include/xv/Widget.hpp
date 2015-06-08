@@ -3,10 +3,24 @@
 #include <opencv2/core.hpp>
 #include <vector>
 
+#if defined(wxUSE_GUI)
+#include <wx/gdicmn.h>
+#elif defined(QT_GUI_LIB)
+#include <QPoint>
+#endif
+
+
 namespace xv {
 
+#if defined(wxUSE_GUI)
+	typedef wxPoint gui_point_t;
+#elif defined(QT_GUI_LIB)
+	typedef QPoint gui_point_t;
+#endif
+
+	class Point;
 	class ImageView;
-	int distance(cv::Point, cv::Point);
+	int distance(gui_point_t, gui_point_t);
 
 
 	/** @brief Base class for all Widgets
@@ -23,16 +37,16 @@ namespace xv {
 		virtual void paint(const cv::Mat&) = 0;
 
 		/// Check if point is inside the widget
-		virtual bool contains(const cv::Point&);
+		virtual bool contains(const gui_point_t&);
 
 		/// The user clicked the left mouse button over the widget
-		virtual void onMouseDown(const cv::Point&) = 0;
+		virtual void onMouseDown(const gui_point_t&) = 0;
 
 		/// The user moved the mouse pointer over the widget
-		virtual void onMouseMove(const cv::Point&) = 0;
+		virtual void onMouseMove(const gui_point_t&) = 0;
 
 		/// The user released the left mouse button over the widget
-		virtual void onMouseUp(const cv::Point&) = 0;
+		virtual void onMouseUp(const gui_point_t&) = 0;
 
 		/// Signal that the user started dragging the widget
 		void startDragging(){ m_dragging = true; };
@@ -53,16 +67,16 @@ namespace xv {
 		virtual bool isReadOnly(){ return m_readonly; };
 
 		/// Move the widget to a point in an image
-		virtual void setPosition(cv::Point position);
+		virtual void setPosition(gui_point_t position);
 
 		/// Move the widget to the center of the image
 		virtual void center();
 
 		/// Get the current position
-		virtual cv::Point position();
+		virtual gui_point_t position();
 
 		/// Check if the mouse pointer is over a button
-		bool isMouseOverButton(cv::Point mousePosition, cv::Point buttonPosition);
+		bool isMouseOverButton(gui_point_t mousePosition, gui_point_t buttonPosition);
 
 		/// Make it disappear from an Image
 		void hide();
@@ -78,10 +92,10 @@ namespace xv {
 		static const int BUTTON_RADIUS;
 
 		/// Offset of the OK button in relation to the widget position
-		static const cv::Point OK_POSITION;
+		static const gui_point_t OK_POSITION;
 
 		/// Offset of the Cancel button in relation to the widget position
-		static const cv::Point CANCEL_POSITION;
+		static const gui_point_t CANCEL_POSITION;
 
 		/// Color used to draw main components of widget
 		static const cv::Scalar FOREGROUND_COLOR;
@@ -101,7 +115,7 @@ namespace xv {
 		ImageView *m_image = NULL;
 
 		/// The contours of area occupied by the widget
-		std::vector<cv::Point> m_contour;
+		std::vector<gui_point_t> m_contour;
 
 		bool m_dragging = false;  /*!< The user is dragging the widget */
 		bool m_canceling = false;  /*!< The user left clicked over cancel and didn't release the mouse button */
@@ -112,7 +126,7 @@ namespace xv {
 		bool m_positioned = false;/*!< Was the Widget positioned in a particular place, independently of being undefined */
 		bool m_readonly = false; /*!< The widget can be made visible but the user can't interact with it */
 
-		cv::Point m_position; /*!< The position of the widget, usually the center point */
+		gui_point_t m_position; /*!< The position of the widget, usually the center point */
 
 	private:
 		/// Draw the OK/Cancel buttons

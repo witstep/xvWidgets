@@ -2,7 +2,7 @@
 An experimental cross-platform C++ GUI toolkit for OpenCV with (planned) Qt and wxWidgets bindings
 
 ## Status
-The library is in an early development phase, major API and architecture changes can happen at any moment. It should become minimally usable and stable from the moment sample applications appear in the repository.
+The library is in an early development phase, major API and architecture changes can happen at any time. It should become minimally usable and stable from the moment sample applications appear in the repository.
 
 ## Introduction
 The goal of the project is to consolidate the code base and lessons learned from developing desktop applications, with both computer vision and GUI requirements, into a set of reusable components.

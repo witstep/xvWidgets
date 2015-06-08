@@ -21,7 +21,7 @@ const cv::Scalar ImageView::PADDING_COLOR(0, 0, 0);
 void ImageView::onMouseDown(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
-	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
 	for (auto &w : m_widgets){
 		if (!w->isReadOnly() && w->contains(point)){
 			w->onMouseDown(point);
@@ -33,7 +33,7 @@ void ImageView::onMouseDown(wxMouseEvent& evt)
 void ImageView::onMouseUp(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
-	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
 
 	for (std::list<xv::Widget*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		(*i)->onMouseUp(point);//no need to check for bounds
@@ -64,7 +64,7 @@ void ImageView::purge()
 void ImageView::onMouseMove(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
-	cv::Point point = getPixelInterpolation(cv::Point(evtPoint.x, evtPoint.y));
+	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
 
 	for (auto &w : m_widgets){
 		if (!w->isReadOnly() && w->contains(point)){
@@ -79,7 +79,7 @@ void ImageView::onMouseMove(wxMouseEvent& evt)
 	render(99);//render if not rendered in the last 99 ms
 }
 
-cv::Point ImageView::getPixelInterpolation(cv::Point point)
+gui_point_t ImageView::getPixelInterpolation(gui_point_t point)
 {
 	int x = point.x / m_scale - m_hBorder / m_scale;
 	int y = point.y / m_scale - m_vBorder / m_scale;
@@ -94,7 +94,7 @@ cv::Point ImageView::getPixelInterpolation(cv::Point point)
 	if (y < 0)
 		y = 0;
 
-	return cv::Point(x, y);
+	return gui_point_t(x, y);
 }
 
 void ImageView::onEraseBackground(wxEraseEvent&)
@@ -226,7 +226,7 @@ void ImageView::operator << (Widget &widget){
 void ImageView::operator >> (Widget &widget){
 	if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
 		if (!widget.m_positioned)//center widget with undefined value in the image
-			widget.setPosition(cv::Point(this->m_cvMat.size() / 2));
+			widget.setPosition(gui_point_t(m_cvMat.rows / 2, m_cvMat.cols/2));
 		this->m_widgets.push_back(&widget);
 		widget.m_image = this;
 		render();

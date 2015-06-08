@@ -13,6 +13,8 @@ namespace xv
 	typedef wxImage gui_image_t;
 #endif
 
+/** @brief Class that provides storage for images and conversion between the GUI and vision libraries' internal formats */
+
 class Image : public Widget
 {
 

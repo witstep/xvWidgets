@@ -8,31 +8,27 @@ Point Point::UNDEFINED = Point();
 
 #pragma region constructors
 
-Point::Point() : cv::Point() {
+Point::Point() : gui_point_t() {
 	m_undefined = true;
 };
 
-Point::Point(int _x, int _y) : cv::Point(_x, _y)
+Point::Point(int _x, int _y) : gui_point_t(_x, _y)
 {
-	setPosition(cv::Point(_x, _y));
+	setPosition(*this);
 };
 
-Point::Point(const cv::Point & pt) : cv::Point(pt) {
+Point::Point(const gui_point_t &pt) : gui_point_t(pt) {
 	setPosition(pt);
 };
 
-Point::Point(const cv::Size_<int>& sz) : cv::Point(sz){};
-
-Point::Point(const cv::Vec<int, 2>& v) : cv::Point(v){};
-
 #pragma endregion constructors
 
-void Point::onMouseDown(const cv::Point& point)
+void Point::onMouseDown(const gui_point_t& point)
 {
 	m_dragging = true;
 }
 
-void Point::onMouseUp(const cv::Point& point)
+void Point::onMouseUp(const gui_point_t& point)
 {
 	Widget::onMouseUp(point);
 	if (!m_dragging)
@@ -40,7 +36,7 @@ void Point::onMouseUp(const cv::Point& point)
 	m_dragging = false;
 }
 
-void Point::onMouseMove(const cv::Point& point)
+void Point::onMouseMove(const gui_point_t& point)
 {
 	Widget::onMouseMove(point);
 	if (!m_dragging)
@@ -53,25 +49,24 @@ void Point::paint(const cv::Mat& image)
 	int crosshairLen = MARGIN * 3;
 	cv::line(
 		image,
-		position() - cv::Point(0, crosshairLen),
-		position() + cv::Point(0, crosshairLen),
+		Point(position() - Point(0, crosshairLen)),
+		Point(position() + Point(0, crosshairLen)),
 		Widget::FOREGROUND_COLOR
 		);
 
 	cv::line(
 		image,
-		position() - cv::Point(crosshairLen, 0),
-		position() + cv::Point(crosshairLen, 0),
+		Point(position() - Point(crosshairLen, 0)),
+		Point(position() + Point(crosshairLen, 0)),
 		Widget::FOREGROUND_COLOR
 		);
 
 	cv::circle(
 		image,
-		position(),
+		Point(position()),
 		3,
 		Widget::HIGHLIGHT_COLOR
 		);
-
 
 #ifdef	_XDEBUG
 	std::stringstream ss;
@@ -90,16 +85,16 @@ void Point::paint(const cv::Mat& image)
 
 }
 
-void Point::setPosition(cv::Point position)
+void Point::setPosition(gui_point_t position)
 {
 	Widget::setPosition(position);
 	x = position.x;
 	y = position.y;
 
 	m_contour = {
-		position + cv::Point(-MARGIN, -MARGIN),
-		position + cv::Point(-MARGIN, +MARGIN),
-		position + cv::Point(+MARGIN, +MARGIN),
-		position + cv::Point(+MARGIN, -MARGIN),
+		position + gui_point_t(-MARGIN, -MARGIN),
+		position + gui_point_t(-MARGIN, +MARGIN),
+		position + gui_point_t(+MARGIN, +MARGIN),
+		position + gui_point_t(+MARGIN, -MARGIN),
 	};
 }

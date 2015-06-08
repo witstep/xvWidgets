@@ -3,11 +3,12 @@
 #include "Widget.hpp"
 #include <opencv2/core.hpp>
 
-namespace xv{
-	
+namespace xv
+{
+
 	/** @brief Widget that represents a point. */
 
-	class Point : public Widget, public cv::Point
+	class Point : public Widget, public gui_point_t
 	{
 	public:
 
@@ -21,27 +22,21 @@ namespace xv{
 		Point(int _x, int _y);
 
 		/// Construct point at same position as pt.
-		Point(const cv::Point & pt);
-
-		/// Construct point and ise width and height as x,y coordinates.
-		Point(const cv::Size_<int>& sz);
-
-		/// Construct point by finding x,y point in the vector.
-		Point(const cv::Vec<int, 2>& v);
+		Point(const gui_point_t & pt);
 #pragma endregion constructors
 
 		static Point UNDEFINED; /*!< Represents a Point_ for which coordinates were not yet set.  */
 
 #pragma region operators
 		/// Conversion operator to cv::Point
-		operator cv::Point() const{ return m_position; };
+		operator cv::Point() const{ return cv::Point(m_position.x,m_position.y); };
 
 		/// Checks if 2 points are equal.
 		bool operator == (const Point &b) {
 			if (this->m_undefined && b.m_undefined)
 				return true;//if both are undefined they are considered equal
 			//compare as a cv::Point_
-			return static_cast<cv::Point>(*this) == b;
+			return static_cast<gui_point_t>(*this) == b;
 		};
 
 		/// Checks if 2 points are different.
@@ -49,24 +44,24 @@ namespace xv{
 			if (this->m_undefined && b.m_undefined)
 				return false;//if both are undefined they are considered equal
 			//compare as a cv::Point_
-			return static_cast<cv::Point>(*this) != b;
+			return static_cast<gui_point_t>(*this) != b;
 		};
 #pragma endregion operators
 
 		/// Move point widget
-		virtual void setPosition(cv::Point position);
+		virtual void setPosition(gui_point_t position);
 
 		/// Overlay the point widget on an image
 		void paint(const cv::Mat&);
 
 		/// The user moved the mouse pointer over the widget
-		void onMouseMove(const cv::Point&);
+		void onMouseMove(const gui_point_t&);
 
 		/// The user pressed the left mouse button over the widget
-		void onMouseDown(const cv::Point&);
+		void onMouseDown(const gui_point_t&);
 
 		/// The user released the left mouse button over the widget
-		void onMouseUp(const cv::Point&);
+		void onMouseUp(const gui_point_t&);
 	};
 
 }

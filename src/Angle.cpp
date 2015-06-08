@@ -14,7 +14,7 @@ Angle::Angle()
 	defineContours();
 }
 
-Angle::Angle(cv::Point vertex)
+Angle::Angle(gui_point_t vertex)
 {
 	m_undefined = true; ///only vertex is known
 	m_vertex = vertex;
@@ -47,7 +47,7 @@ void Angle::paint(const cv::Mat& image)
 
 }
 
-void Angle::onMouseDown(const cv::Point& point)
+void Angle::onMouseDown(const gui_point_t& point)
 {
 	Widget::onMouseDown(point);
 
@@ -60,7 +60,7 @@ void Angle::onMouseDown(const cv::Point& point)
 	}
 }
 
-void Angle::onMouseUp(const cv::Point& point)
+void Angle::onMouseUp(const gui_point_t& point)
 {
 	Widget::onMouseUp(point);
 
@@ -70,7 +70,7 @@ void Angle::onMouseUp(const cv::Point& point)
 	defineContours();
 }
 
-void Angle::onMouseMove(const cv::Point& point)
+void Angle::onMouseMove(const gui_point_t& point)
 {
 	m_vertex.onMouseMove(point);
 
@@ -116,7 +116,7 @@ void Angle::defineContours()
 	m_contour.push_back(m_position + Point(m_radius, -m_radius));
 }
 
-void Angle::setPosition(cv::Point position)
+void Angle::setPosition(gui_point_t position)
 {
 	Widget::setPosition(position);
 	

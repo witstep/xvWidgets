@@ -7,6 +7,10 @@
 #include <algorithm>
 #include <vector>
 
+#ifdef wxUSE_GUI
+#include <wx/region.h>
+#endif
+
 using namespace xv;
 
 const int Widget::LINE_THICKNESS = 2;
@@ -15,9 +19,9 @@ const int Widget::MARGIN = 10;
 
 const int Widget::BUTTON_RADIUS = 11;
 
-const cv::Point Widget::OK_POSITION = cv::Point(BUTTON_RADIUS * 2, MARGIN * 3);
+const gui_point_t Widget::OK_POSITION = gui_point_t(BUTTON_RADIUS * 2, MARGIN * 3);
 
-const cv::Point Widget::CANCEL_POSITION = cv::Point(BUTTON_RADIUS * 5, MARGIN * 3);
+const gui_point_t Widget::CANCEL_POSITION = gui_point_t(BUTTON_RADIUS * 5, MARGIN * 3);
 
 const cv::Scalar Widget::FOREGROUND_COLOR(255, 0, 0);
 
@@ -32,14 +36,14 @@ Widget::~Widget()
 	
 }
 
-int xv::distance(cv::Point p1, cv::Point p2)
+int xv::distance(gui_point_t p1, gui_point_t p2)
 {
 	int dx = p1.x - p2.x;
 	int dy = p1.y - p2.y;
 	return (int)sqrt(dx*dx + dy*dy);
 }
 
-void Widget::setPosition(cv::Point position)
+void Widget::setPosition(gui_point_t position)
 {
 	m_position = position;
 	m_positioned = true;
@@ -48,16 +52,16 @@ void Widget::setPosition(cv::Point position)
 void Widget::center()
 {
 	if (m_image)
-		setPosition(cv::Point(m_image->m_cvMat.size() / 2));
+		setPosition(gui_point_t(m_image->m_cvMat.rows / 2, m_image->m_cvMat.cols/2));
 }
 
-cv::Point Widget::position()
+gui_point_t Widget::position()
 {
 	return m_position;
 }
 
-bool Widget::isMouseOverButton(cv::Point mousePosition,
-	cv::Point buttonPosition)
+bool Widget::isMouseOverButton(gui_point_t mousePosition,
+	gui_point_t buttonPosition)
 {
 	if (m_readonly)
 		return false;
@@ -68,46 +72,53 @@ bool Widget::isMouseOverButton(cv::Point mousePosition,
 	return false;
 }
 
-void Widget::onMouseMove(const cv::Point& point)
+void Widget::onMouseMove(const gui_point_t& point)
 {
 	if (m_readonly)
 		return;
 
-	if (isMouseOverButton(point, cv::Point(OK_POSITION)))
+	if (isMouseOverButton(point, gui_point_t(OK_POSITION)))
 		m_image->setClickMouseCursor();
-	else if (isMouseOverButton(point, cv::Point(CANCEL_POSITION)))
+	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION)))
 		m_image->setClickMouseCursor();
 }
 
-void Widget::onMouseDown(const cv::Point& point)
+void Widget::onMouseDown(const gui_point_t& point)
 {
 	m_accepting = false;
 	m_canceling = false;
-	if (isMouseOverButton(point, cv::Point(OK_POSITION))){
+	if (isMouseOverButton(point, gui_point_t(OK_POSITION))){
 		m_accepting = true;
-	}else if (isMouseOverButton(point, cv::Point(CANCEL_POSITION))){
+	}
+	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION))){
 		m_canceling = true;
 	}
 }
 
-void Widget::onMouseUp(const cv::Point& point)
+void Widget::onMouseUp(const gui_point_t& point)
 {
 	if (m_readonly)
 		return;
 
-	if (isMouseOverButton(point, cv::Point(OK_POSITION)) && m_accepting){
+	if (isMouseOverButton(point, gui_point_t(OK_POSITION)) && m_accepting){
 		m_undefined = false;
 		m_image = NULL;
-	}else if (isMouseOverButton(point, cv::Point(CANCEL_POSITION)) && m_canceling){
+	}
+	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION)) && m_canceling){
 		m_undefined = true;
 		m_image = NULL;
 	}
 }
 
-bool Widget::contains(const cv::Point& point)
+bool Widget::contains(const gui_point_t& point)
 {
 	assert(("Widget contour empty", m_contour.size() > 0));
-	if( cv::pointPolygonTest(m_contour, point, true) >= -MARGIN )
+#ifdef wxUSE_GUI
+	gui_point_t p = point - gui_point_t(MARGIN,MARGIN);
+	if (
+		wxRegion(m_contour.size(), &m_contour[0]).Contains(p.x,p.y,MARGIN*2,MARGIN*2) != wxOutRegion
+	)
+#endif
 		return true;
 	return false;
 }
@@ -121,8 +132,8 @@ void Widget::render(const cv::Mat& image)
 
 void Widget::paintButtons(const cv::Mat& image)
 {
-	cv::Point pointOK = position() + cv::Point(OK_POSITION);
-	cv::Point pointCancel = position() + cv::Point(CANCEL_POSITION);
+	Point pointOK = position() + OK_POSITION;
+	Point pointCancel = position() + CANCEL_POSITION;
 
 	double radians = 45 * M_PI / 180;
 
@@ -134,19 +145,19 @@ void Widget::paintButtons(const cv::Mat& image)
 		Widget::AFFIRMATIVE_COLOR
 	);
 
-	cv::Point offset(0, BUTTON_RADIUS / 2);
+	Point offset(0, BUTTON_RADIUS / 2);
 
 	cv::line(
 		image,
-		offset + cv::Point(pointOK.x - (int)BUTTON_RADIUS/1.5 * cos(radians), pointOK.y - (int)BUTTON_RADIUS/1.5 * sin(radians)),
-		pointOK + offset,
+		Point(offset + Point(pointOK.x - (int)BUTTON_RADIUS/1.5 * cos(radians), pointOK.y - (int)BUTTON_RADIUS/1.5 * sin(radians))),
+		Point(pointOK + offset),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
 	cv::line(
 		image,
-		pointOK + offset,
-		cv::Point(pointOK.x + (int)BUTTON_RADIUS * cos(radians), pointOK.y - (int)BUTTON_RADIUS * sin(radians)),
+		Point(pointOK + offset),
+		Point(pointOK.x + (int)BUTTON_RADIUS * cos(radians), pointOK.y - (int)BUTTON_RADIUS * sin(radians)),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
@@ -154,15 +165,15 @@ void Widget::paintButtons(const cv::Mat& image)
 	//cancel button
 	cv::line(
 		image,
-		cv::Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
-		cv::Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
 		Widget::NEGATIVE_COLOR
 		);
 
 	cv::line(
 		image,
-		cv::Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
-		cv::Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
 		Widget::NEGATIVE_COLOR
 		);
 
@@ -172,6 +183,7 @@ void Widget::paintButtons(const cv::Mat& image)
 		BUTTON_RADIUS,
 		Widget::NEGATIVE_COLOR
 		);
+
 }
 
 void Widget::hide()

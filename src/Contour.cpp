@@ -53,7 +53,7 @@ void Contour::defineContours()
 
 void Contour::paintAddPointButton(const Point& point, const cv::Mat& image)
 {
-	cv::Point addButtonPosition = point + cv::Point(BUTTON_RADIUS, -BUTTON_RADIUS);
+	Point addButtonPosition = point + gui_point_t(BUTTON_RADIUS, -BUTTON_RADIUS);
 
 	cv::line(
 		image,
@@ -76,7 +76,7 @@ void Contour::paintAddPointButton(const Point& point, const cv::Mat& image)
 		Widget::AFFIRMATIVE_COLOR
 		);
 
-	cv::Point delButtonPosition = point + cv::Point(BUTTON_RADIUS, BUTTON_RADIUS);
+	Point delButtonPosition = point + Point(BUTTON_RADIUS, BUTTON_RADIUS);
 
 	cv::line(
 		image,
@@ -93,7 +93,7 @@ void Contour::paintAddPointButton(const Point& point, const cv::Mat& image)
 		);
 }
 
-void Contour::onMouseDown(const cv::Point& point)
+void Contour::onMouseDown(const gui_point_t& point)
 {
 	Widget::onMouseDown(point);
 
@@ -110,7 +110,7 @@ void Contour::onMouseDown(const cv::Point& point)
 	}
 }
 
-void Contour::onMouseUp(const cv::Point& point)
+void Contour::onMouseUp(const gui_point_t& point)
 {
 	Widget::onMouseUp(point);
 
@@ -119,13 +119,13 @@ void Contour::onMouseUp(const cv::Point& point)
 		p.onMouseUp(point);//no need to check for bounds?
 
 	for (std::vector<Point>::iterator i = begin(); i != end();i++){
-		if (i->isMouseOverButton(point, cv::Point(BUTTON_RADIUS, -BUTTON_RADIUS))){
-			insert(i+1, *i + cv::Point(BUTTON_RADIUS * 2, -BUTTON_RADIUS * 2));
+		if (i->isMouseOverButton(point, gui_point_t(BUTTON_RADIUS, -BUTTON_RADIUS))){
+			insert(i + 1, *i + gui_point_t(BUTTON_RADIUS * 2, -BUTTON_RADIUS * 2));
 			break;
 		}
 
 		if (
-			i->isMouseOverButton(point, cv::Point(BUTTON_RADIUS, BUTTON_RADIUS)) &&
+			i->isMouseOverButton(point, gui_point_t(BUTTON_RADIUS, BUTTON_RADIUS)) &&
 			size() > 3
 			){
 			erase(i);
@@ -135,18 +135,17 @@ void Contour::onMouseUp(const cv::Point& point)
 
 	defineContours();
 
-	cv::Point middle(getMiddlePoint());
+	gui_point_t middle(getMiddlePoint());
 	Widget::setPosition(middle);
 	m_centerPoint.setPosition(middle);
 }
 
-void Contour::onMouseMove(const cv::Point& point)
+void Contour::onMouseMove(const gui_point_t& point)
 {
 	m_centerPoint.onMouseMove(point);
 
 	//when the central anchor point is dragged, move the whole widget and return
 	if (m_centerPoint.isDragging()){
-
 		setPosition(m_centerPoint);
 		return;
 	}
@@ -174,7 +173,7 @@ void Contour::setMouseOver(bool mouseOver)
 	}
 }
 
-void Contour::setPosition(cv::Point position)
+void Contour::setPosition(gui_point_t position)
 {
 	shiftPosition(m_position - position);
 	Widget::setPosition(position);
@@ -193,21 +192,21 @@ void Contour::setDefaultPoints()
 	push_back(m_position + Point(polygonMargin, polygonMargin));
 	push_back(m_position + Point(polygonMargin, -polygonMargin));
 
-	cv::Point middle(getMiddlePoint());
+	gui_point_t middle(getMiddlePoint());
 	Widget::setPosition(middle);
 	m_centerPoint.setPosition(middle);
 	defineContours();
 }
 
-cv::Point Contour::getMiddlePoint()
+gui_point_t Contour::getMiddlePoint()
 {
-	cv::Point middle(0, 0);
+	gui_point_t middle(0, 0);
 	for (auto &p : *this)
-		middle += cv::Point(p.x / (int)this->size(), p.y / (int)this->size());
+		middle += gui_point_t(p.x / (int)this->size(), p.y / (int)this->size());
 	return middle;
 }
 
-void Contour::shiftPosition(cv::Point shift)
+void Contour::shiftPosition(gui_point_t shift)
 {
 	for (auto &p : *this)
 		p.setPosition(p.position() - shift);

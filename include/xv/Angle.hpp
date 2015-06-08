@@ -22,11 +22,11 @@ namespace xv{
 		Angle();
 
 		/// Creates an angle with vertex at a specified point
-		Angle(cv::Point);
+		Angle(gui_point_t);
 #pragma endregion constructors
 
 		/// Moves the widget
-		virtual void setPosition(cv::Point position);
+		virtual void setPosition(gui_point_t position);
 
 		/// Conversion operator that returns the angle as a double expressed in radians
 		operator double() const{ 
@@ -48,9 +48,9 @@ namespace xv{
 		};
 	private:
 		void paint(const cv::Mat&);
-		void onMouseMove(const cv::Point&);
-		void onMouseDown(const cv::Point&);
-		void onMouseUp(const cv::Point&);
+		void onMouseMove(const gui_point_t&);
+		void onMouseDown(const gui_point_t&);
+		void onMouseUp(const gui_point_t&);
 		void setMouseOver(bool mouseOver);
 		void defineContours();
 

@@ -34,18 +34,18 @@ namespace xv{
 		bool operator != (const Contour &b) {
 			if (this->m_undefined && b.m_undefined)
 				return false;//if both are undefined they are considered equal
-			//compare as a cv::Point_
+			//compare as a gui_point_t_
 			return !isEqual(*this, b);
 		};
 
 		/// Moves the widget
-		virtual void setPosition(cv::Point position);
+		virtual void setPosition(gui_point_t position);
 	private:
 		void paint(const cv::Mat&);
 		void paintAddPointButton(const Point&, const cv::Mat& image);
-		void onMouseMove(const cv::Point&);
-		void onMouseDown(const cv::Point&);
-		void onMouseUp(const cv::Point&);
+		void onMouseMove(const gui_point_t&);
+		void onMouseDown(const gui_point_t&);
+		void onMouseUp(const gui_point_t&);
 		void setMouseOver(bool mouseOver);
 		void defineContours();
 		static bool isEqual(const Contour&, const Contour&);
@@ -53,8 +53,8 @@ namespace xv{
 		Point m_centerPoint;
 
 		void setDefaultPoints();
-		cv::Point getMiddlePoint();
-		void shiftPosition(cv::Point);
+		gui_point_t getMiddlePoint();
+		void shiftPosition(gui_point_t);
 	};
 
 }
