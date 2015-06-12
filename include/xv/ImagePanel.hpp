@@ -19,7 +19,7 @@ namespace xv{
 	class Image;
 
 	/** @brief Class used to display images and as container of widgets. */
-	class ImageView : public wxPanel
+	class ImagePanel : public wxPanel
 	{
 		friend Widget;
 	public:
@@ -28,10 +28,10 @@ namespace xv{
 		static const cv::Scalar PADDING_COLOR;
 
 		/// Default constructor
-		ImageView();
+		ImagePanel();
 
 		/// Constructor inherited from wxPanel
-		ImageView(wxWindow * parent,
+		ImagePanel(wxWindow * parent,
 			wxWindowID id = wxID_ANY,
 			const wxPoint &pos = wxDefaultPosition,
 			const wxSize &size = wxDefaultSize,
@@ -105,19 +105,19 @@ namespace xv{
 		inline void createBitmap();
 		void setBestSizeFit();
 
-		friend void operator>>(cv::VideoCapture &videoCapture, ImageView &imageView){
-			imageView.m_mutex.Lock();
-			videoCapture >> imageView.m_cvMat;
-			imageView.m_mutex.Unlock();
-			imageView.render();
+		friend void operator>>(cv::VideoCapture &videoCapture, ImagePanel &imagePanel){
+			imagePanel.m_mutex.Lock();
+			videoCapture >> imagePanel.m_cvMat;
+			imagePanel.m_mutex.Unlock();
+			imagePanel.render();
 		}
 
 		/// use the xv::Image to display a cv::Mat
-		friend void operator<<(ImageView &imageView, cv::Mat& mat){
-			imageView.m_mutex.Lock();
-			imageView.m_cvMat = mat.clone();
-			imageView.m_mutex.Unlock();
-			imageView.render();
+		friend void operator<<(ImagePanel &imagePanel, cv::Mat& mat){
+			imagePanel.m_mutex.Lock();
+			imagePanel.m_cvMat = mat.clone();
+			imagePanel.m_mutex.Unlock();
+			imagePanel.render();
 		};
 
 		double m_scale = 1;

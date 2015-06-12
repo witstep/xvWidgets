@@ -9,7 +9,7 @@
 
 namespace xv{
 
-	class ImageView;
+	class ImagePanel;
 
 /** @brief Class to control the playback and processing of media obtained from VideoCapture
 */
@@ -35,7 +35,7 @@ public:
 	int getCurrentFrameIdx();
 
 	/// Get the xv::Image instance used for rendering
-	ImageView& getImage();
+	ImagePanel& getImage();
 
 #pragma region control
 
@@ -120,7 +120,7 @@ private:
 
 	
 	cv::VideoCapture* m_videoCapture = NULL;
-	ImageView* m_image;
+	ImagePanel* m_image;
 	wxButton* m_playButton;
 	wxSlider* m_slider;
 	wxStaticText

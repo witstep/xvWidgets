@@ -15,7 +15,7 @@
 
 namespace xv{
 
-	class ImageView;
+	class ImagePanel;
 
 	/** @brief Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties */
 	class VideoCapture : public wxPanel
@@ -68,7 +68,7 @@ namespace xv{
 		void VideoCapture::operator>>(cv::Mat& mat){ m_videoCapture >> mat; };
 
 		/// Retrieves a image frame from the opened media into an xv::Image
-		friend void operator>>(VideoCapture&, ImageView&);
+		friend void operator>>(VideoCapture&, ImagePanel&);
 
 #pragma endregion cv::VideoCapture
 

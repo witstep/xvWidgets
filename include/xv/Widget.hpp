@@ -19,7 +19,7 @@ namespace xv {
 #endif
 
 	class Point;
-	class ImageView;
+	class ImagePanel;
 	int distance(gui_point_t, gui_point_t);
 
 
@@ -27,7 +27,7 @@ namespace xv {
 	*/
 
 	class Widget{
-		friend ImageView;
+		friend ImagePanel;
 	public:
 
 		/// Display widget in input mode (with OK/Cancel buttons)
@@ -112,7 +112,7 @@ namespace xv {
 		virtual ~Widget() = 0;
 
 		/// Pointer to the parent image used to display the widget
-		ImageView *m_image = NULL;
+		ImagePanel *m_image = NULL;
 
 		/// The contours of area occupied by the widget
 		std::vector<gui_point_t> m_contour;

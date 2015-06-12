@@ -4,21 +4,21 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <wx/settings.h>
 #include "xv/Widget.hpp"
-#include "xv/ImageView.hpp"
+#include "xv/ImagePanel.hpp"
 using namespace xv;
 
-BEGIN_EVENT_TABLE(ImageView, wxPanel)
-	EVT_PAINT(ImageView::paintEvent)
-	EVT_SIZE(ImageView::sizeEvent)
-	EVT_ERASE_BACKGROUND(ImageView::onEraseBackground)
-	EVT_LEFT_DOWN(ImageView::onMouseDown)
-	EVT_LEFT_UP(ImageView::onMouseUp)
-	EVT_MOTION(ImageView::onMouseMove)
+BEGIN_EVENT_TABLE(ImagePanel, wxPanel)
+	EVT_PAINT(ImagePanel::paintEvent)
+	EVT_SIZE(ImagePanel::sizeEvent)
+	EVT_ERASE_BACKGROUND(ImagePanel::onEraseBackground)
+	EVT_LEFT_DOWN(ImagePanel::onMouseDown)
+	EVT_LEFT_UP(ImagePanel::onMouseUp)
+	EVT_MOTION(ImagePanel::onMouseMove)
 END_EVENT_TABLE()
 
-const cv::Scalar ImageView::PADDING_COLOR(0, 0, 0);
+const cv::Scalar ImagePanel::PADDING_COLOR(0, 0, 0);
 
-void ImageView::onMouseDown(wxMouseEvent& evt)
+void ImagePanel::onMouseDown(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
@@ -30,7 +30,7 @@ void ImageView::onMouseDown(wxMouseEvent& evt)
 	}
 }
 
-void ImageView::onMouseUp(wxMouseEvent& evt)
+void ImagePanel::onMouseUp(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
@@ -47,7 +47,7 @@ void ImageView::onMouseUp(wxMouseEvent& evt)
 	}
 }
 
-void ImageView::purge()
+void ImagePanel::purge()
 {
 	for (std::list<xv::Widget*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		if (!(*i)->m_image){
@@ -61,7 +61,7 @@ void ImageView::purge()
 	render();
 }
 
-void ImageView::onMouseMove(wxMouseEvent& evt)
+void ImagePanel::onMouseMove(wxMouseEvent& evt)
 {
 	wxPoint evtPoint(evt.GetPosition());
 	gui_point_t point = getPixelInterpolation(gui_point_t(evtPoint.x, evtPoint.y));
@@ -79,7 +79,7 @@ void ImageView::onMouseMove(wxMouseEvent& evt)
 	render(99);//render if not rendered in the last 99 ms
 }
 
-gui_point_t ImageView::getPixelInterpolation(gui_point_t point)
+gui_point_t ImagePanel::getPixelInterpolation(gui_point_t point)
 {
 	int x = point.x / m_scale - m_hBorder / m_scale;
 	int y = point.y / m_scale - m_vBorder / m_scale;
@@ -97,17 +97,17 @@ gui_point_t ImageView::getPixelInterpolation(gui_point_t point)
 	return gui_point_t(x, y);
 }
 
-void ImageView::onEraseBackground(wxEraseEvent&)
+void ImagePanel::onEraseBackground(wxEraseEvent&)
 {
 	//avoids flickering
 }
 
-ImageView::ImageView() : wxPanel()
+ImagePanel::ImagePanel() : wxPanel()
 {
 }
 
 
-ImageView::ImageView(wxWindow *parent,
+ImagePanel::ImagePanel(wxWindow *parent,
 	wxWindowID id,
 	const wxPoint &pos,
 	const wxSize &size,
@@ -118,12 +118,12 @@ ImageView::ImageView(wxWindow *parent,
 	SetBackgroundColour(*wxBLACK);
 }
 
-void ImageView::operator<<(const cv::Mat& cvMat)
+void ImagePanel::operator<<(const cv::Mat& cvMat)
 {
 
 }
 
-void ImageView::paintEvent(wxPaintEvent & evt)
+void ImagePanel::paintEvent(wxPaintEvent & evt)
 {
 	m_mutex.Lock();
 	wxBufferedPaintDC dc(this, m_bitmap);
@@ -131,7 +131,7 @@ void ImageView::paintEvent(wxPaintEvent & evt)
 	m_lastPaintTime = std::chrono::steady_clock::now();
 }
 
-void ImageView::createBitmap()
+void ImagePanel::createBitmap()
 {
 	m_mutex.Lock();
 	//create a blank bitmap
@@ -155,12 +155,12 @@ void ImageView::createBitmap()
 	m_mutex.Unlock();
 }
 
-void ImageView::sizeEvent(wxSizeEvent& evt){
+void ImagePanel::sizeEvent(wxSizeEvent& evt){
 	createBitmap();
 	Refresh();
 }
 
-void ImageView::setBestSizeFit()
+void ImagePanel::setBestSizeFit()
 {
 	int cols, newCols, rows, newRows;
 	m_hBorder = 0; m_vBorder = 0; m_scale = 1;
@@ -191,13 +191,13 @@ void ImageView::setBestSizeFit()
 	cv::copyMakeBorder(m_renderMat, m_renderMat, m_vBorder, m_vBorder, m_hBorder, m_hBorder, cv::BORDER_ISOLATED, PADDING_COLOR);
 }
 
-void ImageView::Refresh(bool eraseBackground, const wxRect *rect)
+void ImagePanel::Refresh(bool eraseBackground, const wxRect *rect)
 {
 	wxPanel::Refresh(eraseBackground);
 
 }
 
-void ImageView::render(int ms)
+void ImagePanel::render(int ms)
 {
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(now - m_lastPaintTime).count() < ms)
@@ -208,7 +208,7 @@ void ImageView::render(int ms)
 
 
 /// Simple rendering/display of widget without user input
-void ImageView::operator << (Widget &widget){
+void ImagePanel::operator << (Widget &widget){
 	if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
 		if (!widget.m_positioned)//center widget with undefined value in the image
 			widget.center();
@@ -223,7 +223,7 @@ void ImageView::operator << (Widget &widget){
 };
 
 ///widgets for user input
-void ImageView::operator >> (Widget &widget){
+void ImagePanel::operator >> (Widget &widget){
 	if (std::find(this->m_widgets.begin(), this->m_widgets.end(), &widget) == this->m_widgets.end()){
 		if (!widget.m_positioned)//center widget with undefined value in the image
 			widget.setPosition(gui_point_t(m_cvMat.rows / 2, m_cvMat.cols/2));

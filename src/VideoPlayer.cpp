@@ -9,7 +9,7 @@
 #include <windows.h>
 
 #include "xv/VideoPlayer.hpp"
-#include "xv/ImageView.hpp"
+#include "xv/ImagePanel.hpp"
 
 using namespace xv;
 using namespace std;
@@ -61,7 +61,7 @@ void VideoPlayer::init()
 	m_videoCapture = new cv::VideoCapture();
 	m_thread = new Thread(this);
 
-	m_image = new ImageView(this);
+	m_image = new ImagePanel(this);
 	m_playButton = new wxButton(this, wxID_ANY, _("Play"));
 	m_playButton->Bind(wxEVT_BUTTON, &VideoPlayer::onPlayClick, this);
 
@@ -308,7 +308,7 @@ int VideoPlayer::getCurrentFrameIdx()
 	return m_videoCapture->get(cv::CAP_PROP_POS_FRAMES);
 }
 
-ImageView& VideoPlayer::getImage()
+ImagePanel& VideoPlayer::getImage()
 {
 	return *m_image;
 }

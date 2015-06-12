@@ -1,5 +1,5 @@
 #pragma once //header only mode
-#include "xv/ImageView.hpp"
+#include "xv/ImagePanel.hpp"
 #include "xv/Widget.hpp"
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
