@@ -1,13 +1,13 @@
 # xvWidgets
-An experimental cross-platform C++ GUI toolkit for OpenCV with (planned) Qt and wxWidgets bindings
-
-## Status
-The library is in an early development phase, major API and architecture changes can happen at any time. It should become minimally usable and stable from the moment sample applications appear in the repository.
+An experimental cross-platform C++ GUI toolkit for computer vision applications with (planned) Qt and wxWidgets bindings
 
 ## Introduction
 The goal of the project is to consolidate the code base and lessons learned from developing desktop applications, with both computer vision and GUI requirements, into a set of reusable components.
+The initials xv stand for an arbitrary GUI toolkit (x) and vision (v).
 
-The usefulness of some components is not apparent and they may seem pointless. They are being built as a result of enforcing a basic set of conventions, and in the hope they can become useful in the future as building blocks of new, unforeseen applications.
+## Status
+The library is in an early development phase, major API and architecture changes can happen at any time. It should become minimally usable and stable from the moment sample applications appear in the repository.
+The initial OpenCV centric architecture is being dropped in favor of an approach that doesn't depend on any particular CV library. OpenCV is still supported and most sample code will be based on it.
 
 ## Source Code
 The source code is hosted in [GitHub](https://github.com/witstep/xvWidgets).
@@ -15,68 +15,61 @@ The source code is hosted in [GitHub](https://github.com/witstep/xvWidgets).
 ## Documentation
 The Doxygen generated API reference is hosted in [xvwidgets.witstep.com](http://xvwidgets.witstep.com/).
 
-## Features
-* Conventions
-* User Input
-	* Primitives
-	* Composites
-* Visualization
-* Helper Classes
+## Usage
+The main *raison d'etre* of the library was the need for a simple and intuitive way of accepting user input for primitive 2D shapes, as exemplified bellow.
 
+* User input of an area contour using a Polygon widget and an OpenCV matrix
 
-### Conventions
-The toolkit follows a set of conventions intended to make usage intuitive and coherent with OpenCV programming.
-
-* Widgets are named after the data structures or algorithms for which the graphical representation is being provided. For example the graphical representation of cv::Mat is provided by xv::Mat, in the same way, function cv::Canny is represented by the class xv::Canny.
-
-* The data type and number of parameters passed to xvWidgets' contructors are the same as the OpenCV counterpart data structures and functions.
-
-* xvWidgets representing functions provide the method run() to execute the underlying algorithm and return values.
-
-* Argument omissions result in user input.
-
-For example, consider the function cv::pointPolygonTest with the following prototype
+![Polygon Input](http://xvwidgets.witstep.com/Polygon_clip.gif "Polygon clip")  
+Clip from Tears of Steel | (CC) Blender Foundation | [mango.blender.org](http://mango.blender.org)
 
 ~~~~~~~~~~~~~~~{.cpp}
-double cv::pointPolygonTest(InputArray contour, Point2f pt, bool measureDist);
-~~~~~~~~~~~~~~~
+cv::Mat cvMatrix;
+xv::ImagePanel imagePanel; 
+xv::Polygon polygon;
 
-Resulting in the following constructor declarations and run method for xv::pointPolygonTest
-~~~~~~~~~~~~~~~{.cpp}
-pointPolygonTest(cv::InputArray contour);
-pointPolygonTest(cv::InputArray contour, cv::Point2f pt = Point2f::NULL_POINT);
-pointPolygonTest(cv::InputArray contour, cv::Point2f pt, bool measureDist);
-double pointPolygonTest::run();
+//...it is assumed an image was loaded into the cvMatrix
+
+imagePanel << cvMatrix; //display the image on screen
+imagePanel >> polygon; //lets the user define the polygon within the image
+
+//The above operation is asynchronous, typically the state of the widget is checked, bellow, on a different thread
+if(polygon != xv::Polygon::UNDEFINED) //the user clicked the ok button on the widget
+	std::cout << "The polygon is defined by " << polygon.size() << " points." << std::endl;
 
 ~~~~~~~~~~~~~~~
 
-Constructing xv::pointPolygonTest with all the arguments set followed by a call to run(), is analogous to calling cv::pointPolygonTest directly.
-
+* Displaying an Angle
 ~~~~~~~~~~~~~~~{.cpp}
-double distance;
-std::vector<cv::Point2f> contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );
-distance = xv::pointPolygonTest ppt(contours, Point2f(10,20), true).run();
+cv::Mat cvMatrix;
+xv::ImagePanel imagePanel; 
+xv::Angle angle(
+	xv::Point(100,100), //vertex
+	xv::Point(150,100)  //first ray
+);
 
-//in this case we might as well call OpenCV directly, the result would be the same.
-distance = cv::pointPolygonTest(contours, Point2f(10,20), true);
+//...it is assumed an image was loaded into the cvMatrix
+
+// show the OpenCV image and the representation of the angle on the GUI panel
+imagePanel << cvMatrix << angle;
+
 ~~~~~~~~~~~~~~~
 
-xvWidgets becomes useful only when we ommit arguments.
-If any of the constructor parameters is omitted or empty, the user is prompted for it through a GUI.
+## Modules
 
-~~~~~~~~~~~~~~~{.cpp}
-std::vector<cv::Point2f> contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );
-std::vector<cv::Point2f> emptyContours();
-
-//A pop-up dialog asks if the distance should be measured
-xv::pointPolygonTest ppt1(contours, Point2f(10,20));
-
-//The user is offered a graphical interface to draw a polygon
-xv::pointPolygonTest ppt2(NULL, Point2f(10,20), true);
-
-//The user is asked to draw a polygon and select a point
-xv::pointPolygonTest ppt3(emptyContours, Point2f::NULL_POINT, true);
-
-//The user will need to input all 3 parameters
-xv::pointPolygonTest ppt4();
-~~~~~~~~~~~~~~~
+* [ Image Representation ](http://xvwidgets.witstep.com/group___image_representation.html)
+	* Image
+	* ImageTranslator
+* [ Widgets ](http://xvwidgets.witstep.com/group___widgets.html)
+	* Point
+	* Line
+	* Ellipse
+	* Polygon
+	* Angle
+	* Label
+* [ Rendering ](http://xvwidgets.witstep.com/group___Rendering.html)
+	* ImagePanel
+	* VideoPlayer
+* [Media I/O](http://xvwidgets.witstep.com/group___MediaIO.html)
+	* VideoCapture
+	* VideoWriter	
