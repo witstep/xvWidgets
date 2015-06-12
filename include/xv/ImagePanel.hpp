@@ -1,4 +1,9 @@
 #pragma once
+/*!
+ * \defgroup Rendering Rendering
+ * \brief On screen representation of images and video
+ */
+
 #include <wx/wx.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
@@ -18,10 +23,10 @@ namespace xv{
 	class Widget;
 	class Image;
 
-/** @addtogroup ImageRepresentation */
-/*@{*/
-
-/** @brief Class used to display images and as container of widgets. */
+/*!
+ * \brief Class used to display images and as container of widgets.
+ * \ingroup Rendering
+ */
 class ImagePanel : public wxPanel
 {
 	friend Widget;

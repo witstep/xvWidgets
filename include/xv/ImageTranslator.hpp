@@ -1,11 +1,10 @@
 #pragma once
 
 namespace xv{
-/** @addtogroup ImageRepresentation */
 
-/*@{*/
-
-/** @brief Class used to convert between image formats */
+/*!
+ * \brief Class used to convert between image formats
+ */
 class ImageTranslator
 {
 public:
@@ -13,6 +12,6 @@ public:
 	virtual ~ImageTranslator();
 };
 
-/*@}*/
+
 
 }

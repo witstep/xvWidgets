@@ -1,17 +1,17 @@
-#include "xv/Contour.hpp"
+#include "xv/Polygon.hpp"
 #include "xv/Point.hpp"
 #include <numeric>
 #include <opencv2/imgproc.hpp>
 
 using namespace xv;
 
-Contour Contour::UNDEFINED = Contour();
+Polygon Polygon::UNDEFINED = Polygon();
 
-Contour::Contour(){
+Polygon::Polygon(){
 	m_undefined = true;
 }
 
-void Contour::paint(const cv::Mat& image)
+void Polygon::paint(const cv::Mat& image)
 {
 	//paint each point
 	for (auto &p : *this){
@@ -43,15 +43,14 @@ void Contour::paint(const cv::Mat& image)
 	m_centerPoint.paint(image);
 }
 
-void Contour::defineContours()
+void Polygon::defineContours()
 {
-	//widget contour not the xv::Contour itself
 	m_contour.clear();
 	for (auto p : *this)
 		m_contour.push_back(p);
 }
 
-void Contour::paintAddPointButton(const Point& point, const cv::Mat& image)
+void Polygon::paintAddPointButton(const Point& point, const cv::Mat& image)
 {
 	Point addButtonPosition = point + gui_point_t(BUTTON_RADIUS, -BUTTON_RADIUS);
 
@@ -93,7 +92,7 @@ void Contour::paintAddPointButton(const Point& point, const cv::Mat& image)
 		);
 }
 
-void Contour::onMouseDown(const gui_point_t& point)
+void Polygon::onMouseDown(const gui_point_t& point)
 {
 	Widget::onMouseDown(point);
 
@@ -110,7 +109,7 @@ void Contour::onMouseDown(const gui_point_t& point)
 	}
 }
 
-void Contour::onMouseUp(const gui_point_t& point)
+void Polygon::onMouseUp(const gui_point_t& point)
 {
 	Widget::onMouseUp(point);
 
@@ -140,7 +139,7 @@ void Contour::onMouseUp(const gui_point_t& point)
 	m_centerPoint.setPosition(middle);
 }
 
-void Contour::onMouseMove(const gui_point_t& point)
+void Polygon::onMouseMove(const gui_point_t& point)
 {
 	m_centerPoint.onMouseMove(point);
 
@@ -165,7 +164,7 @@ void Contour::onMouseMove(const gui_point_t& point)
 
 }
 
-void Contour::setMouseOver(bool mouseOver)
+void Polygon::setMouseOver(bool mouseOver)
 {
 	Widget::setMouseOver(mouseOver);
 	for (auto &p : *this){
@@ -173,7 +172,7 @@ void Contour::setMouseOver(bool mouseOver)
 	}
 }
 
-void Contour::setPosition(gui_point_t position)
+void Polygon::setPosition(gui_point_t position)
 {
 	shiftPosition(m_position - position);
 	Widget::setPosition(position);
@@ -184,7 +183,7 @@ void Contour::setPosition(gui_point_t position)
 	m_centerPoint.setPosition(m_position);
 }
 
-void Contour::setDefaultPoints()
+void Polygon::setDefaultPoints()
 {
 	int polygonMargin = MARGIN * 6;
 	push_back(m_position + Point(-polygonMargin, -polygonMargin));
@@ -198,7 +197,7 @@ void Contour::setDefaultPoints()
 	defineContours();
 }
 
-gui_point_t Contour::getMiddlePoint()
+gui_point_t Polygon::getMiddlePoint()
 {
 	gui_point_t middle(0, 0);
 	for (auto &p : *this)
@@ -206,15 +205,15 @@ gui_point_t Contour::getMiddlePoint()
 	return middle;
 }
 
-void Contour::shiftPosition(gui_point_t shift)
+void Polygon::shiftPosition(gui_point_t shift)
 {
 	for (auto &p : *this)
 		p.setPosition(p.position() - shift);
 }
 
-bool Contour::isEqual(const Contour &a, const Contour &b)
+bool Polygon::isEqual(const Polygon &a, const Polygon &b)
 {
-	for (auto p : a) /// check if all points in contour a also exist in b
+	for (auto p : a) /// check if all points in Polygon a also exist in b
 		if (std::find(b.begin(), b.end(), p) == b.end())
 			return false;
 	return true;

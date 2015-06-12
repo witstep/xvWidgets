@@ -11,8 +11,10 @@ namespace xv{
 
 	class ImagePanel;
 
-/** @brief Class to control the playback and processing of media obtained from VideoCapture
-*/
+/*! 
+ * \brief Class to control the playback and processing of media obtained from VideoCapture
+ * \ingroup Rendering
+ */
 class VideoPlayer : public wxPanel
 {
 	friend class Thread;

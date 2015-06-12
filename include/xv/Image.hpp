@@ -1,6 +1,6 @@
 #pragma once
 /** @defgroup ImageRepresentation Image Representation
-* @brief Storage, visualization and conversion of image data
+* @brief Storage, visualization and conversion of images
 *
 * Classes in this module are responsible for storing, displaying and converting image data
 */
@@ -22,8 +22,7 @@ namespace xv
 /** @addtogroup ImageRepresentation */
 /*@{*/
 
-/** @brief Class that provides storage for images and conversion between the
-* GUI and vision libraries' internal formats 
+/** @brief An off-screen image representation native to the selected GUI
 */
 class Image : public Widget
 {

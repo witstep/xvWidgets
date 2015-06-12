@@ -6,7 +6,9 @@
 namespace xv
 {
 
-	/** @brief Widget that represents a point. */
+	/*! \brief Widget that represents a point.
+	 *  \ingroup Widgets
+	 */
 
 	class Point : public Widget, public gui_point_t
 	{
