@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -61,7 +62,7 @@
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classxv_1_1_angle-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">xv::Angle Class Reference</div>  </div>
+<div class="title">xv::Angle Class Reference<div class="ingroups"><a class="el" href="group___widgets.html">Widgets</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -85,14 +86,14 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#af7805ef81183672e1eecb97454f142af">Angle</a> ()</td></tr>
 <tr class="memdesc:af7805ef81183672e1eecb97454f142af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Creates an undefined angle. <br /></td></tr>
 <tr class="separator:af7805ef81183672e1eecb97454f142af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a7983567e98d9adc221a12420f6db27"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a7983567e98d9adc221a12420f6db27"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#a3a7983567e98d9adc221a12420f6db27">Angle</a> (cv::Point)</td></tr>
-<tr class="memdesc:a3a7983567e98d9adc221a12420f6db27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an angle with vertex at a specified point. <br /></td></tr>
-<tr class="separator:a3a7983567e98d9adc221a12420f6db27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35fb518334558724683fb59d96f5a53e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a35fb518334558724683fb59d96f5a53e"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#a35fb518334558724683fb59d96f5a53e">setPosition</a> (cv::Point <a class="el" href="classxv_1_1_widget.html#a2825f5583f737b6ee3ca1eea02a79174">position</a>)</td></tr>
-<tr class="memdesc:a35fb518334558724683fb59d96f5a53e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the widget. <br /></td></tr>
-<tr class="separator:a35fb518334558724683fb59d96f5a53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae54f627b1bdeb2ea42b61f8ed8160395"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae54f627b1bdeb2ea42b61f8ed8160395"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#ae54f627b1bdeb2ea42b61f8ed8160395">Angle</a> (gui_point_t)</td></tr>
+<tr class="memdesc:ae54f627b1bdeb2ea42b61f8ed8160395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an angle with vertex at a specified point. <br /></td></tr>
+<tr class="separator:ae54f627b1bdeb2ea42b61f8ed8160395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c83f61bf57c4d0a59fd2aba407f2113"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c83f61bf57c4d0a59fd2aba407f2113"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#a7c83f61bf57c4d0a59fd2aba407f2113">setPosition</a> (gui_point_t <a class="el" href="classxv_1_1_widget.html#a7170522783861db8550c12982bd123a5">position</a>)</td></tr>
+<tr class="memdesc:a7c83f61bf57c4d0a59fd2aba407f2113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the widget. <br /></td></tr>
+<tr class="separator:a7c83f61bf57c4d0a59fd2aba407f2113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a954c425be6fc095f6147aa697df1eece"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a954c425be6fc095f6147aa697df1eece"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_angle.html#a954c425be6fc095f6147aa697df1eece">operator double</a> () const </td></tr>
 <tr class="memdesc:a954c425be6fc095f6147aa697df1eece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion operator that returns the angle as a double expressed in radians. <br /></td></tr>
@@ -110,10 +111,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a4175ff3c7ecc47cd4df95f8b3b1a577e">render</a> (const cv::Mat &amp;)</td></tr>
 <tr class="memdesc:a4175ff3c7ecc47cd4df95f8b3b1a577e inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display widget in input mode (with OK/Cancel buttons) <br /></td></tr>
 <tr class="separator:a4175ff3c7ecc47cd4df95f8b3b1a577e inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54c2f4f2442ba872b8b0264c80638681 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54c2f4f2442ba872b8b0264c80638681"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a54c2f4f2442ba872b8b0264c80638681">contains</a> (const cv::Point &amp;)</td></tr>
-<tr class="memdesc:a54c2f4f2442ba872b8b0264c80638681 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if point is inside the widget. <br /></td></tr>
-<tr class="separator:a54c2f4f2442ba872b8b0264c80638681 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c9c0da8dc7f0278e967e627aaf667a inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9c9c0da8dc7f0278e967e627aaf667a"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ad9c9c0da8dc7f0278e967e627aaf667a">contains</a> (const gui_point_t &amp;)</td></tr>
+<tr class="memdesc:ad9c9c0da8dc7f0278e967e627aaf667a inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if point is inside the widget. <br /></td></tr>
+<tr class="separator:ad9c9c0da8dc7f0278e967e627aaf667a inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2871bde5db8f9516f274aeaa28fd96b1 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2871bde5db8f9516f274aeaa28fd96b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2871bde5db8f9516f274aeaa28fd96b1">startDragging</a> ()</td></tr>
 <tr class="memdesc:a2871bde5db8f9516f274aeaa28fd96b1 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that the user started dragging the widget. <br /></td></tr>
@@ -138,17 +139,17 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ab149d3c7de0ec4a4a8b53e566bb9c9f6">center</a> ()</td></tr>
 <tr class="memdesc:ab149d3c7de0ec4a4a8b53e566bb9c9f6 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the widget to the center of the image. <br /></td></tr>
 <tr class="separator:ab149d3c7de0ec4a4a8b53e566bb9c9f6 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2825f5583f737b6ee3ca1eea02a79174 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2825f5583f737b6ee3ca1eea02a79174"></a>
-virtual cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2825f5583f737b6ee3ca1eea02a79174">position</a> ()</td></tr>
-<tr class="memdesc:a2825f5583f737b6ee3ca1eea02a79174 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current position. <br /></td></tr>
-<tr class="separator:a2825f5583f737b6ee3ca1eea02a79174 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f9989978465e41d732b05dd7eef3ada inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f9989978465e41d732b05dd7eef3ada"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2f9989978465e41d732b05dd7eef3ada">isMouseOverButton</a> (cv::Point mousePosition, cv::Point buttonPosition)</td></tr>
-<tr class="memdesc:a2f9989978465e41d732b05dd7eef3ada inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the mouse pointer is over a button. <br /></td></tr>
-<tr class="separator:a2f9989978465e41d732b05dd7eef3ada inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7170522783861db8550c12982bd123a5 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7170522783861db8550c12982bd123a5"></a>
+virtual gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a7170522783861db8550c12982bd123a5">position</a> ()</td></tr>
+<tr class="memdesc:a7170522783861db8550c12982bd123a5 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current position. <br /></td></tr>
+<tr class="separator:a7170522783861db8550c12982bd123a5 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a872a0e32bd8bde0f7c1d84f5fab16a54 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a872a0e32bd8bde0f7c1d84f5fab16a54"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a872a0e32bd8bde0f7c1d84f5fab16a54">isMouseOverButton</a> (gui_point_t mousePosition, gui_point_t buttonPosition)</td></tr>
+<tr class="memdesc:a872a0e32bd8bde0f7c1d84f5fab16a54 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the mouse pointer is over a button. <br /></td></tr>
+<tr class="separator:a872a0e32bd8bde0f7c1d84f5fab16a54 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a048962ad3900d7946e1955e23c50b9e9 inherit pub_methods_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a048962ad3900d7946e1955e23c50b9e9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a048962ad3900d7946e1955e23c50b9e9">hide</a> ()</td></tr>
-<tr class="memdesc:a048962ad3900d7946e1955e23c50b9e9 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make it disappear from an <a class="el" href="classxv_1_1_image.html" title="Class that provides storage for images and conversion between the GUI and vision libraries&#39; internal ...">Image</a>. <br /></td></tr>
+<tr class="memdesc:a048962ad3900d7946e1955e23c50b9e9 inherit pub_methods_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make it disappear from an <a class="el" href="classxv_1_1_image.html" title="An off-screen image representation native to the selected GUI. ">Image</a>. <br /></td></tr>
 <tr class="separator:a048962ad3900d7946e1955e23c50b9e9 inherit pub_methods_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -161,14 +162,14 @@ static <a class="el" href="classxv_1_1_angle.html">Angle</a>&#160;</td><td class
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classxv_1_1_widget"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classxv_1_1_widget')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classxv_1_1_widget.html">xv::Widget</a></td></tr>
-<tr class="memitem:aa051d743712dee4f332d7ad337cb5c38 inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa051d743712dee4f332d7ad337cb5c38"></a>
-<a class="el" href="classxv_1_1_image_view.html">ImageView</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aa051d743712dee4f332d7ad337cb5c38">m_image</a> = NULL</td></tr>
-<tr class="memdesc:aa051d743712dee4f332d7ad337cb5c38 inherit pro_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the parent image used to display the widget. <br /></td></tr>
-<tr class="separator:aa051d743712dee4f332d7ad337cb5c38 inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f399746cd5bbdc7b505f0e9b735f01 inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69f399746cd5bbdc7b505f0e9b735f01"></a>
-std::vector&lt; cv::Point &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a69f399746cd5bbdc7b505f0e9b735f01">m_contour</a></td></tr>
-<tr class="memdesc:a69f399746cd5bbdc7b505f0e9b735f01 inherit pro_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contours of area occupied by the widget. <br /></td></tr>
-<tr class="separator:a69f399746cd5bbdc7b505f0e9b735f01 inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72881c39dcd124596cd282d10cfcbac inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab72881c39dcd124596cd282d10cfcbac"></a>
+<a class="el" href="classxv_1_1_image_panel.html">ImagePanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ab72881c39dcd124596cd282d10cfcbac">m_image</a> = NULL</td></tr>
+<tr class="memdesc:ab72881c39dcd124596cd282d10cfcbac inherit pro_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the parent image used to display the widget. <br /></td></tr>
+<tr class="separator:ab72881c39dcd124596cd282d10cfcbac inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85a530397c773c9179e2caa2144f5b2e inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85a530397c773c9179e2caa2144f5b2e"></a>
+std::vector&lt; gui_point_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a85a530397c773c9179e2caa2144f5b2e">m_contour</a></td></tr>
+<tr class="memdesc:a85a530397c773c9179e2caa2144f5b2e inherit pro_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contours of area occupied by the widget. <br /></td></tr>
+<tr class="separator:a85a530397c773c9179e2caa2144f5b2e inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7746193c7944e456cd42cb67ac95068d inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a7746193c7944e456cd42cb67ac95068d">m_dragging</a> = false</td></tr>
 <tr class="separator:a7746193c7944e456cd42cb67ac95068d inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3044f35840cafc72d0adb9cb17fa0255 inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a3044f35840cafc72d0adb9cb17fa0255">m_canceling</a> = false</td></tr>
@@ -183,8 +184,8 @@ std::vector&lt; cv::Point &gt;&#160;</td><td class="memItemRight" valign="bottom
 <tr class="separator:aa5041a1fe652e81e91102ee711b4f10e inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a379d296052859e4fc54ed1e93718eb0f inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a379d296052859e4fc54ed1e93718eb0f">m_readonly</a> = false</td></tr>
 <tr class="separator:a379d296052859e4fc54ed1e93718eb0f inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada300d3701d5fca32e62d4f8ea40cc53 inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top">cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ada300d3701d5fca32e62d4f8ea40cc53">m_position</a></td></tr>
-<tr class="separator:ada300d3701d5fca32e62d4f8ea40cc53 inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec9bd6141ba9664c0d4782357bc4cffd inherit pro_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top">gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aec9bd6141ba9664c0d4782357bc4cffd">m_position</a></td></tr>
+<tr class="separator:aec9bd6141ba9664c0d4782357bc4cffd inherit pro_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_attribs_classxv_1_1_widget"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classxv_1_1_widget')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classxv_1_1_widget.html">xv::Widget</a></td></tr>
 <tr class="memitem:aef46c9dead943a4ed983235aefa10e7d inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aef46c9dead943a4ed983235aefa10e7d"></a>
 static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aef46c9dead943a4ed983235aefa10e7d">LINE_THICKNESS</a></td></tr>
@@ -198,14 +199,14 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a4cf8c64e2a313b72c6c90a134fb8b335">BUTTON_RADIUS</a></td></tr>
 <tr class="memdesc:a4cf8c64e2a313b72c6c90a134fb8b335 inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to define the size of buttons. <br /></td></tr>
 <tr class="separator:a4cf8c64e2a313b72c6c90a134fb8b335 inherit pro_static_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5509e1167550ca8d1aa3c6c690647f3 inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5509e1167550ca8d1aa3c6c690647f3"></a>
-static const cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ae5509e1167550ca8d1aa3c6c690647f3">OK_POSITION</a></td></tr>
-<tr class="memdesc:ae5509e1167550ca8d1aa3c6c690647f3 inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the OK button in relation to the widget position. <br /></td></tr>
-<tr class="separator:ae5509e1167550ca8d1aa3c6c690647f3 inherit pro_static_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2833d86c093bbea50f5bb35f40489c9 inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad2833d86c093bbea50f5bb35f40489c9"></a>
-static const cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ad2833d86c093bbea50f5bb35f40489c9">CANCEL_POSITION</a></td></tr>
-<tr class="memdesc:ad2833d86c093bbea50f5bb35f40489c9 inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the Cancel button in relation to the widget position. <br /></td></tr>
-<tr class="separator:ad2833d86c093bbea50f5bb35f40489c9 inherit pro_static_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b058d33288d6dc5f0311d605ebf4e0f inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b058d33288d6dc5f0311d605ebf4e0f"></a>
+static const gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2b058d33288d6dc5f0311d605ebf4e0f">OK_POSITION</a></td></tr>
+<tr class="memdesc:a2b058d33288d6dc5f0311d605ebf4e0f inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the OK button in relation to the widget position. <br /></td></tr>
+<tr class="separator:a2b058d33288d6dc5f0311d605ebf4e0f inherit pro_static_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8c1eca533da583d227cf0492ad3caf inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d8c1eca533da583d227cf0492ad3caf"></a>
+static const gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a0d8c1eca533da583d227cf0492ad3caf">CANCEL_POSITION</a></td></tr>
+<tr class="memdesc:a0d8c1eca533da583d227cf0492ad3caf inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the Cancel button in relation to the widget position. <br /></td></tr>
+<tr class="separator:a0d8c1eca533da583d227cf0492ad3caf inherit pro_static_attribs_classxv_1_1_widget"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d181f10382c11f0df6bf372c5312c66 inherit pro_static_attribs_classxv_1_1_widget"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d181f10382c11f0df6bf372c5312c66"></a>
 static const cv::Scalar&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a4d181f10382c11f0df6bf372c5312c66">FOREGROUND_COLOR</a></td></tr>
 <tr class="memdesc:a4d181f10382c11f0df6bf372c5312c66 inherit pro_static_attribs_classxv_1_1_widget"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color used to draw main components of widget. <br /></td></tr>

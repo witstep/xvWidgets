@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -62,7 +63,7 @@
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classxv_1_1_widget-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">xv::Widget Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">xv::Widget Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group___widgets.html">Widgets</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -76,10 +77,10 @@ Inheritance diagram for xv::Widget:</div>
  <div class="center">
   <img src="classxv_1_1_widget.png" usemap="#xv::Widget_map" alt=""/>
   <map id="xv::Widget_map" name="xv::Widget_map">
-<area href="classxv_1_1_angle.html" title="Widget that represents an angle between 2 points. " alt="xv::Angle" shape="rect" coords="0,56,76,80"/>
-<area href="classxv_1_1_contour.html" title="Widget that represents a contour defined by a set of points. " alt="xv::Contour" shape="rect" coords="86,56,162,80"/>
-<area href="classxv_1_1_image.html" title="Class that provides storage for images and conversion between the GUI and vision libraries&#39; internal ..." alt="xv::Image" shape="rect" coords="172,56,248,80"/>
-<area href="classxv_1_1_point.html" title="Widget that represents a point. " alt="xv::Point" shape="rect" coords="258,56,334,80"/>
+<area href="classxv_1_1_angle.html" title="Widget that represents an angle between 2 points. " alt="xv::Angle" shape="rect" coords="0,56,77,80"/>
+<area href="classxv_1_1_image.html" title="An off-screen image representation native to the selected GUI. " alt="xv::Image" shape="rect" coords="87,56,164,80"/>
+<area href="classxv_1_1_point.html" title="Widget that represents a point. " alt="xv::Point" shape="rect" coords="174,56,251,80"/>
+<area href="classxv_1_1_polygon.html" title="Widget that represents a polygon defined by a set of points. " alt="xv::Polygon" shape="rect" coords="261,56,338,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -93,22 +94,22 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aea909d06539b116f0dc44688c1eaa9eb">paint</a> (const cv::Mat &amp;)=0</td></tr>
 <tr class="memdesc:aea909d06539b116f0dc44688c1eaa9eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display widget in output mode (without OK/Cancel buttons) <br /></td></tr>
 <tr class="separator:aea909d06539b116f0dc44688c1eaa9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54c2f4f2442ba872b8b0264c80638681"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54c2f4f2442ba872b8b0264c80638681"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a54c2f4f2442ba872b8b0264c80638681">contains</a> (const cv::Point &amp;)</td></tr>
-<tr class="memdesc:a54c2f4f2442ba872b8b0264c80638681"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if point is inside the widget. <br /></td></tr>
-<tr class="separator:a54c2f4f2442ba872b8b0264c80638681"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc982b167bc9c135c152d24205c69322"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc982b167bc9c135c152d24205c69322"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#acc982b167bc9c135c152d24205c69322">onMouseDown</a> (const cv::Point &amp;)=0</td></tr>
-<tr class="memdesc:acc982b167bc9c135c152d24205c69322"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user clicked the left mouse button over the widget. <br /></td></tr>
-<tr class="separator:acc982b167bc9c135c152d24205c69322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a451ff6703d1445d9ed06d7de96109f0a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a451ff6703d1445d9ed06d7de96109f0a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a451ff6703d1445d9ed06d7de96109f0a">onMouseMove</a> (const cv::Point &amp;)=0</td></tr>
-<tr class="memdesc:a451ff6703d1445d9ed06d7de96109f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user moved the mouse pointer over the widget. <br /></td></tr>
-<tr class="separator:a451ff6703d1445d9ed06d7de96109f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72d3cfc5245ff1f448a1e32b9a996c8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72d3cfc5245ff1f448a1e32b9a996c8e"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a72d3cfc5245ff1f448a1e32b9a996c8e">onMouseUp</a> (const cv::Point &amp;)=0</td></tr>
-<tr class="memdesc:a72d3cfc5245ff1f448a1e32b9a996c8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user released the left mouse button over the widget. <br /></td></tr>
-<tr class="separator:a72d3cfc5245ff1f448a1e32b9a996c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9c9c0da8dc7f0278e967e627aaf667a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9c9c0da8dc7f0278e967e627aaf667a"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ad9c9c0da8dc7f0278e967e627aaf667a">contains</a> (const gui_point_t &amp;)</td></tr>
+<tr class="memdesc:ad9c9c0da8dc7f0278e967e627aaf667a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if point is inside the widget. <br /></td></tr>
+<tr class="separator:ad9c9c0da8dc7f0278e967e627aaf667a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea4986e9552b41f4507b950fcc30a04f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea4986e9552b41f4507b950fcc30a04f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aea4986e9552b41f4507b950fcc30a04f">onMouseDown</a> (const gui_point_t &amp;)=0</td></tr>
+<tr class="memdesc:aea4986e9552b41f4507b950fcc30a04f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user clicked the left mouse button over the widget. <br /></td></tr>
+<tr class="separator:aea4986e9552b41f4507b950fcc30a04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3f7e29507e16894331f3499ccf65caf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3f7e29507e16894331f3499ccf65caf"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ae3f7e29507e16894331f3499ccf65caf">onMouseMove</a> (const gui_point_t &amp;)=0</td></tr>
+<tr class="memdesc:ae3f7e29507e16894331f3499ccf65caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user moved the mouse pointer over the widget. <br /></td></tr>
+<tr class="separator:ae3f7e29507e16894331f3499ccf65caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8de226291b1c5de623f89d9a1e3f6d98"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8de226291b1c5de623f89d9a1e3f6d98"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a8de226291b1c5de623f89d9a1e3f6d98">onMouseUp</a> (const gui_point_t &amp;)=0</td></tr>
+<tr class="memdesc:a8de226291b1c5de623f89d9a1e3f6d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user released the left mouse button over the widget. <br /></td></tr>
+<tr class="separator:a8de226291b1c5de623f89d9a1e3f6d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2871bde5db8f9516f274aeaa28fd96b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2871bde5db8f9516f274aeaa28fd96b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2871bde5db8f9516f274aeaa28fd96b1">startDragging</a> ()</td></tr>
 <tr class="memdesc:a2871bde5db8f9516f274aeaa28fd96b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal that the user started dragging the widget. <br /></td></tr>
@@ -133,37 +134,37 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a0670fb6aacaf3241524b739e84bdbe65">isReadOnly</a> ()</td></tr>
 <tr class="memdesc:a0670fb6aacaf3241524b739e84bdbe65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if <a class="el" href="classxv_1_1_widget.html" title="Base class for all Widgets. ">Widget</a> is read-only. <br /></td></tr>
 <tr class="separator:a0670fb6aacaf3241524b739e84bdbe65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a81cedaff6139b2c8c6f918ba57cc0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1a81cedaff6139b2c8c6f918ba57cc0f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a1a81cedaff6139b2c8c6f918ba57cc0f">setPosition</a> (cv::Point <a class="el" href="classxv_1_1_widget.html#a2825f5583f737b6ee3ca1eea02a79174">position</a>)</td></tr>
-<tr class="memdesc:a1a81cedaff6139b2c8c6f918ba57cc0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the widget to a point in an image. <br /></td></tr>
-<tr class="separator:a1a81cedaff6139b2c8c6f918ba57cc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae377296edc132dfd953d2fa58e66bc8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae377296edc132dfd953d2fa58e66bc8e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ae377296edc132dfd953d2fa58e66bc8e">setPosition</a> (gui_point_t <a class="el" href="classxv_1_1_widget.html#a7170522783861db8550c12982bd123a5">position</a>)</td></tr>
+<tr class="memdesc:ae377296edc132dfd953d2fa58e66bc8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the widget to a point in an image. <br /></td></tr>
+<tr class="separator:ae377296edc132dfd953d2fa58e66bc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab149d3c7de0ec4a4a8b53e566bb9c9f6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab149d3c7de0ec4a4a8b53e566bb9c9f6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ab149d3c7de0ec4a4a8b53e566bb9c9f6">center</a> ()</td></tr>
 <tr class="memdesc:ab149d3c7de0ec4a4a8b53e566bb9c9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move the widget to the center of the image. <br /></td></tr>
 <tr class="separator:ab149d3c7de0ec4a4a8b53e566bb9c9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2825f5583f737b6ee3ca1eea02a79174"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2825f5583f737b6ee3ca1eea02a79174"></a>
-virtual cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2825f5583f737b6ee3ca1eea02a79174">position</a> ()</td></tr>
-<tr class="memdesc:a2825f5583f737b6ee3ca1eea02a79174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current position. <br /></td></tr>
-<tr class="separator:a2825f5583f737b6ee3ca1eea02a79174"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f9989978465e41d732b05dd7eef3ada"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2f9989978465e41d732b05dd7eef3ada"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2f9989978465e41d732b05dd7eef3ada">isMouseOverButton</a> (cv::Point mousePosition, cv::Point buttonPosition)</td></tr>
-<tr class="memdesc:a2f9989978465e41d732b05dd7eef3ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the mouse pointer is over a button. <br /></td></tr>
-<tr class="separator:a2f9989978465e41d732b05dd7eef3ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7170522783861db8550c12982bd123a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7170522783861db8550c12982bd123a5"></a>
+virtual gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a7170522783861db8550c12982bd123a5">position</a> ()</td></tr>
+<tr class="memdesc:a7170522783861db8550c12982bd123a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current position. <br /></td></tr>
+<tr class="separator:a7170522783861db8550c12982bd123a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a872a0e32bd8bde0f7c1d84f5fab16a54"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a872a0e32bd8bde0f7c1d84f5fab16a54"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a872a0e32bd8bde0f7c1d84f5fab16a54">isMouseOverButton</a> (gui_point_t mousePosition, gui_point_t buttonPosition)</td></tr>
+<tr class="memdesc:a872a0e32bd8bde0f7c1d84f5fab16a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the mouse pointer is over a button. <br /></td></tr>
+<tr class="separator:a872a0e32bd8bde0f7c1d84f5fab16a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a048962ad3900d7946e1955e23c50b9e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a048962ad3900d7946e1955e23c50b9e9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a048962ad3900d7946e1955e23c50b9e9">hide</a> ()</td></tr>
-<tr class="memdesc:a048962ad3900d7946e1955e23c50b9e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make it disappear from an <a class="el" href="classxv_1_1_image.html" title="Class that provides storage for images and conversion between the GUI and vision libraries&#39; internal ...">Image</a>. <br /></td></tr>
+<tr class="memdesc:a048962ad3900d7946e1955e23c50b9e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make it disappear from an <a class="el" href="classxv_1_1_image.html" title="An off-screen image representation native to the selected GUI. ">Image</a>. <br /></td></tr>
 <tr class="separator:a048962ad3900d7946e1955e23c50b9e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:aa051d743712dee4f332d7ad337cb5c38"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa051d743712dee4f332d7ad337cb5c38"></a>
-<a class="el" href="classxv_1_1_image_view.html">ImageView</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aa051d743712dee4f332d7ad337cb5c38">m_image</a> = NULL</td></tr>
-<tr class="memdesc:aa051d743712dee4f332d7ad337cb5c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the parent image used to display the widget. <br /></td></tr>
-<tr class="separator:aa051d743712dee4f332d7ad337cb5c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f399746cd5bbdc7b505f0e9b735f01"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69f399746cd5bbdc7b505f0e9b735f01"></a>
-std::vector&lt; cv::Point &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a69f399746cd5bbdc7b505f0e9b735f01">m_contour</a></td></tr>
-<tr class="memdesc:a69f399746cd5bbdc7b505f0e9b735f01"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contours of area occupied by the widget. <br /></td></tr>
-<tr class="separator:a69f399746cd5bbdc7b505f0e9b735f01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab72881c39dcd124596cd282d10cfcbac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab72881c39dcd124596cd282d10cfcbac"></a>
+<a class="el" href="classxv_1_1_image_panel.html">ImagePanel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ab72881c39dcd124596cd282d10cfcbac">m_image</a> = NULL</td></tr>
+<tr class="memdesc:ab72881c39dcd124596cd282d10cfcbac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the parent image used to display the widget. <br /></td></tr>
+<tr class="separator:ab72881c39dcd124596cd282d10cfcbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85a530397c773c9179e2caa2144f5b2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a85a530397c773c9179e2caa2144f5b2e"></a>
+std::vector&lt; gui_point_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a85a530397c773c9179e2caa2144f5b2e">m_contour</a></td></tr>
+<tr class="memdesc:a85a530397c773c9179e2caa2144f5b2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The contours of area occupied by the widget. <br /></td></tr>
+<tr class="separator:a85a530397c773c9179e2caa2144f5b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7746193c7944e456cd42cb67ac95068d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a7746193c7944e456cd42cb67ac95068d">m_dragging</a> = false</td></tr>
 <tr class="separator:a7746193c7944e456cd42cb67ac95068d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3044f35840cafc72d0adb9cb17fa0255"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a3044f35840cafc72d0adb9cb17fa0255">m_canceling</a> = false</td></tr>
@@ -178,8 +179,8 @@ std::vector&lt; cv::Point &gt;&#160;</td><td class="memItemRight" valign="bottom
 <tr class="separator:aa5041a1fe652e81e91102ee711b4f10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a379d296052859e4fc54ed1e93718eb0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a379d296052859e4fc54ed1e93718eb0f">m_readonly</a> = false</td></tr>
 <tr class="separator:a379d296052859e4fc54ed1e93718eb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada300d3701d5fca32e62d4f8ea40cc53"><td class="memItemLeft" align="right" valign="top">cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ada300d3701d5fca32e62d4f8ea40cc53">m_position</a></td></tr>
-<tr class="separator:ada300d3701d5fca32e62d4f8ea40cc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec9bd6141ba9664c0d4782357bc4cffd"><td class="memItemLeft" align="right" valign="top">gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#aec9bd6141ba9664c0d4782357bc4cffd">m_position</a></td></tr>
+<tr class="separator:aec9bd6141ba9664c0d4782357bc4cffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -195,14 +196,14 @@ static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 static const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a4cf8c64e2a313b72c6c90a134fb8b335">BUTTON_RADIUS</a></td></tr>
 <tr class="memdesc:a4cf8c64e2a313b72c6c90a134fb8b335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to define the size of buttons. <br /></td></tr>
 <tr class="separator:a4cf8c64e2a313b72c6c90a134fb8b335"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5509e1167550ca8d1aa3c6c690647f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5509e1167550ca8d1aa3c6c690647f3"></a>
-static const cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ae5509e1167550ca8d1aa3c6c690647f3">OK_POSITION</a></td></tr>
-<tr class="memdesc:ae5509e1167550ca8d1aa3c6c690647f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the OK button in relation to the widget position. <br /></td></tr>
-<tr class="separator:ae5509e1167550ca8d1aa3c6c690647f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2833d86c093bbea50f5bb35f40489c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad2833d86c093bbea50f5bb35f40489c9"></a>
-static const cv::Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#ad2833d86c093bbea50f5bb35f40489c9">CANCEL_POSITION</a></td></tr>
-<tr class="memdesc:ad2833d86c093bbea50f5bb35f40489c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the Cancel button in relation to the widget position. <br /></td></tr>
-<tr class="separator:ad2833d86c093bbea50f5bb35f40489c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b058d33288d6dc5f0311d605ebf4e0f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b058d33288d6dc5f0311d605ebf4e0f"></a>
+static const gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a2b058d33288d6dc5f0311d605ebf4e0f">OK_POSITION</a></td></tr>
+<tr class="memdesc:a2b058d33288d6dc5f0311d605ebf4e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the OK button in relation to the widget position. <br /></td></tr>
+<tr class="separator:a2b058d33288d6dc5f0311d605ebf4e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d8c1eca533da583d227cf0492ad3caf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d8c1eca533da583d227cf0492ad3caf"></a>
+static const gui_point_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a0d8c1eca533da583d227cf0492ad3caf">CANCEL_POSITION</a></td></tr>
+<tr class="memdesc:a0d8c1eca533da583d227cf0492ad3caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of the Cancel button in relation to the widget position. <br /></td></tr>
+<tr class="separator:a0d8c1eca533da583d227cf0492ad3caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d181f10382c11f0df6bf372c5312c66"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d181f10382c11f0df6bf372c5312c66"></a>
 static const cv::Scalar&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_widget.html#a4d181f10382c11f0df6bf372c5312c66">FOREGROUND_COLOR</a></td></tr>
 <tr class="memdesc:a4d181f10382c11f0df6bf372c5312c66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Color used to draw main components of widget. <br /></td></tr>
@@ -307,7 +308,7 @@ static const cv::Scalar&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
-<a class="anchor" id="ada300d3701d5fca32e62d4f8ea40cc53"></a>
+<a class="anchor" id="aec9bd6141ba9664c0d4782357bc4cffd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -315,7 +316,7 @@ static const cv::Scalar&#160;</td><td class="memItemRight" valign="bottom"><a cl
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">cv::Point xv::Widget::m_position</td>
+          <td class="memname">gui_point_t xv::Widget::m_position</td>
         </tr>
       </table>
   </td>

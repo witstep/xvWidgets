@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -48,64 +49,78 @@
 <div class="title">xvWidgets Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>An experimental cross-platform C++ GUI toolkit for OpenCV with (planned) Qt and wxWidgets bindings</p>
-<h2>Status</h2>
-<p>The library is in an early development phase, major API and architecture changes can happen at any time. It should become minimally usable and stable from the moment sample applications appear in the repository.</p>
+<div class="textblock"><p>An experimental cross-platform C++ GUI toolkit for computer vision applications with (planned) Qt and wxWidgets bindings</p>
 <h2>Introduction</h2>
-<p>The goal of the project is to consolidate the code base and lessons learned from developing desktop applications, with both computer vision and GUI requirements, into a set of reusable components.</p>
-<p>The usefulness of some components is not apparent and they may seem pointless. They are being built as a result of enforcing a basic set of conventions, and in the hope they can become useful in the future as building blocks of new, unforeseen applications.</p>
+<p>The goal of the project is to consolidate the code base and lessons learned from developing desktop applications, with both computer vision and GUI requirements, into a set of reusable components. The initials xv stand for an arbitrary GUI toolkit (x) and vision (v).</p>
+<h2>Status</h2>
+<p>The library is in an early development phase, major API and architecture changes can happen at any time. It should become minimally usable and stable from the moment sample applications appear in the repository. The initial OpenCV centric architecture is being dropped in favor of an approach that doesn't depend on any particular CV library. OpenCV is still supported and most sample code will be based on it.</p>
 <h2>Source Code</h2>
 <p>The source code is hosted in <a href="https://github.com/witstep/xvWidgets">GitHub</a>.</p>
 <h2>Documentation</h2>
 <p>The Doxygen generated API reference is hosted in <a href="http://xvwidgets.witstep.com/">xvwidgets.witstep.com</a>.</p>
-<h2>Features</h2>
+<h2>Usage</h2>
+<p>The main <em>raison d'etre</em> of the library was the need for a simple and intuitive way of accepting user input for primitive 2D shapes, as exemplified bellow.</p>
 <ul>
-<li>Conventions</li>
-<li>User Input<ul>
-<li>Primitives</li>
-<li>Composites</li>
+<li>User input of an area contour using a Polygon widget and an OpenCV matrix</li>
+</ul>
+<div class="image">
+<img src="http://xvwidgets.witstep.com/Polygon_clip.gif"  alt="Polygon Input" title="Polygon clip"/>
+</div>
+<p> Clip from Tears of Steel | (CC) Blender Foundation | <a href="http://mango.blender.org">mango.blender.org</a></p>
+<div class="fragment"><div class="line">cv::Mat cvMatrix;</div>
+<div class="line"><a class="code" href="classxv_1_1_image_panel.html">xv::ImagePanel</a> imagePanel; </div>
+<div class="line"><a class="code" href="classxv_1_1_polygon.html">xv::Polygon</a> polygon;</div>
+<div class="line"></div>
+<div class="line"><span class="comment">//...it is assumed an image was loaded into the cvMatrix</span></div>
+<div class="line"></div>
+<div class="line">imagePanel &lt;&lt; cvMatrix; <span class="comment">//display the image on screen</span></div>
+<div class="line">imagePanel &gt;&gt; polygon; <span class="comment">//lets the user define the polygon within the image</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">//The above operation is asynchronous, typically the state of the widget is checked, bellow, on a different thread</span></div>
+<div class="line"><span class="keywordflow">if</span>(polygon != <a class="code" href="classxv_1_1_polygon.html#af61b5c7d1f012deaba4623929953e110">xv::Polygon::UNDEFINED</a>) <span class="comment">//the user clicked the ok button on the widget</span></div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The polygon is defined by &quot;</span> &lt;&lt; polygon.size() &lt;&lt; <span class="stringliteral">&quot; points.&quot;</span> &lt;&lt; std::endl;</div>
+</div><!-- fragment --><ul>
+<li>Displaying an Angle <div class="fragment"><div class="line">cv::Mat cvMatrix;</div>
+<div class="line"><a class="code" href="classxv_1_1_image_panel.html">xv::ImagePanel</a> imagePanel; </div>
+<div class="line"><a class="code" href="classxv_1_1_angle.html">xv::Angle</a> angle(</div>
+<div class="line">    <a class="code" href="classxv_1_1_point.html">xv::Point</a>(100,100), <span class="comment">//vertex</span></div>
+<div class="line">    <a class="code" href="classxv_1_1_point.html">xv::Point</a>(150,100)  <span class="comment">//first ray</span></div>
+<div class="line">);</div>
+<div class="line"></div>
+<div class="line"><span class="comment">//...it is assumed an image was loaded into the cvMatrix</span></div>
+<div class="line"></div>
+<div class="line"><span class="comment">// show the OpenCV image and the representation of the angle on the GUI panel</span></div>
+<div class="line">imagePanel &lt;&lt; cvMatrix &lt;&lt; angle;</div>
+</div><!-- fragment --></li>
+</ul>
+<h2>Modules</h2>
+<ul>
+<li><a href="http://xvwidgets.witstep.com/group___image_representation.html">Image Representation</a><ul>
+<li>Image</li>
+<li>ImageTranslator</li>
 </ul>
 </li>
-<li>Visualization</li>
-<li>Helper Classes</li>
+<li><a href="http://xvwidgets.witstep.com/group___widgets.html">Widgets</a><ul>
+<li>Point</li>
+<li>Line</li>
+<li>Ellipse</li>
+<li>Polygon</li>
+<li>Angle</li>
+<li>Label</li>
 </ul>
-<h3>Conventions</h3>
-<p>The toolkit follows a set of conventions intended to make usage intuitive and coherent with OpenCV programming.</p>
-<ul>
-<li>Widgets are named after the data structures or algorithms for which the graphical representation is being provided. For example the graphical representation of cv::Mat is provided by xv::Mat, in the same way, function cv::Canny is represented by the class xv::Canny.</li>
-<li>The data type and number of parameters passed to xvWidgets' contructors are the same as the OpenCV counterpart data structures and functions.</li>
-<li>xvWidgets representing functions provide the method run() to execute the underlying algorithm and return values.</li>
-<li>Argument omissions result in user input.</li>
+</li>
+<li><a href="http://xvwidgets.witstep.com/group___Rendering.html">Rendering</a><ul>
+<li>ImagePanel</li>
+<li>VideoPlayer</li>
 </ul>
-<p>For example, consider the function cv::pointPolygonTest with the following prototype</p>
-<div class="fragment"><div class="line"><span class="keywordtype">double</span> cv::pointPolygonTest(InputArray contour, Point2f pt, <span class="keywordtype">bool</span> measureDist);</div>
-</div><!-- fragment --><p>Resulting in the following constructor declarations and run method for xv::pointPolygonTest </p><div class="fragment"><div class="line">pointPolygonTest(cv::InputArray contour);</div>
-<div class="line">pointPolygonTest(cv::InputArray contour, cv::Point2f pt = Point2f::NULL_POINT);</div>
-<div class="line">pointPolygonTest(cv::InputArray contour, cv::Point2f pt, <span class="keywordtype">bool</span> measureDist);</div>
-<div class="line"><span class="keywordtype">double</span> pointPolygonTest::run();</div>
-</div><!-- fragment --><p>Constructing xv::pointPolygonTest with all the arguments set followed by a call to run(), is analogous to calling cv::pointPolygonTest directly.</p>
-<div class="fragment"><div class="line"><span class="keywordtype">double</span> distance;</div>
-<div class="line">std::vector&lt;cv::Point2f&gt; contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );</div>
-<div class="line">distance = xv::pointPolygonTest ppt(contours, Point2f(10,20), <span class="keyword">true</span>).run();</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//in this case we might as well call OpenCV directly, the result would be the same.</span></div>
-<div class="line">distance = cv::pointPolygonTest(contours, Point2f(10,20), <span class="keyword">true</span>);</div>
-</div><!-- fragment --><p>xvWidgets becomes useful only when we ommit arguments. If any of the constructor parameters is omitted or empty, the user is prompted for it through a GUI.</p>
-<div class="fragment"><div class="line">std::vector&lt;cv::Point2f&gt; contours( { Point2f(40,20), Point2f(25,60), Point2f(65,65) } );</div>
-<div class="line">std::vector&lt;cv::Point2f&gt; emptyContours();</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//A pop-up dialog asks if the distance should be measured</span></div>
-<div class="line">xv::pointPolygonTest ppt1(contours, Point2f(10,20));</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//The user is offered a graphical interface to draw a polygon</span></div>
-<div class="line">xv::pointPolygonTest ppt2(NULL, Point2f(10,20), <span class="keyword">true</span>);</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//The user is asked to draw a polygon and select a point</span></div>
-<div class="line">xv::pointPolygonTest ppt3(emptyContours, Point2f::NULL_POINT, <span class="keyword">true</span>);</div>
-<div class="line"></div>
-<div class="line"><span class="comment">//The user will need to input all 3 parameters</span></div>
-<div class="line">xv::pointPolygonTest ppt4();</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+</li>
+<li><a href="http://xvwidgets.witstep.com/group___MediaIO.html">Media I/O</a><ul>
+<li>VideoCapture</li>
+<li>VideoWriter </li>
+</ul>
+</li>
+</ul>
+</div></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

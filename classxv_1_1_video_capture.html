@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -61,11 +62,11 @@
 <a href="#friends">Friends</a> &#124;
 <a href="classxv_1_1_video_capture-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">xv::VideoCapture Class Reference</div>  </div>
+<div class="title">xv::VideoCapture Class Reference<div class="ingroups"><a class="el" href="group___media_i_o.html">Media I/O</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties.  
+<p>GUI component to capture video from files and devices.  
  <a href="classxv_1_1_video_capture.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_video_capture_8hpp_source.html">VideoCapture.hpp</a>&gt;</code></p>
@@ -122,11 +123,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ab9979338f242e4b4c3f4fd0bcfc1ca54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab27350007f72f936c4168fbdd11e6fe5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab27350007f72f936c4168fbdd11e6fe5"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_capture.html#ab27350007f72f936c4168fbdd11e6fe5">get</a> (int propId)</td></tr>
-<tr class="memdesc:ab27350007f72f936c4168fbdd11e6fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified <a class="el" href="classxv_1_1_video_capture.html" title="Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties. ">VideoCapture</a> property. <br /></td></tr>
+<tr class="memdesc:ab27350007f72f936c4168fbdd11e6fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified <a class="el" href="classxv_1_1_video_capture.html" title="GUI component to capture video from files and devices. ">VideoCapture</a> property. <br /></td></tr>
 <tr class="separator:ab27350007f72f936c4168fbdd11e6fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a516152c11502a27756fb7b830fcbd9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a516152c11502a27756fb7b830fcbd9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_capture.html#a8a516152c11502a27756fb7b830fcbd9">set</a> (int propId, double value)</td></tr>
-<tr class="memdesc:a8a516152c11502a27756fb7b830fcbd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a property in the <a class="el" href="classxv_1_1_video_capture.html" title="Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties. ">VideoCapture</a>. <br /></td></tr>
+<tr class="memdesc:a8a516152c11502a27756fb7b830fcbd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a property in the <a class="el" href="classxv_1_1_video_capture.html" title="GUI component to capture video from files and devices. ">VideoCapture</a>. <br /></td></tr>
 <tr class="separator:a8a516152c11502a27756fb7b830fcbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a089290d6a898ee886d009fdd49bfd4cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a089290d6a898ee886d009fdd49bfd4cf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_capture.html#a089290d6a898ee886d009fdd49bfd4cf">VideoCapture::operator&gt;&gt;</a> (cv::Mat &amp;mat)</td></tr>
@@ -135,13 +136,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a01a7c9103d380ee8e49b57c6ee3116e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01a7c9103d380ee8e49b57c6ee3116e6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_capture.html#a01a7c9103d380ee8e49b57c6ee3116e6">operator&gt;&gt;</a> (<a class="el" href="classxv_1_1_video_capture.html">VideoCapture</a> &amp;, <a class="el" href="classxv_1_1_image_view.html">ImageView</a> &amp;)</td></tr>
-<tr class="memdesc:a01a7c9103d380ee8e49b57c6ee3116e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a image frame from the opened media into an <a class="el" href="classxv_1_1_image.html" title="Class that provides storage for images and conversion between the GUI and vision libraries&#39; internal ...">xv::Image</a>. <br /></td></tr>
-<tr class="separator:a01a7c9103d380ee8e49b57c6ee3116e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c409368cb0f9c2909c98ab5e83b742"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3c409368cb0f9c2909c98ab5e83b742"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_capture.html#ad3c409368cb0f9c2909c98ab5e83b742">operator&gt;&gt;</a> (<a class="el" href="classxv_1_1_video_capture.html">VideoCapture</a> &amp;, <a class="el" href="classxv_1_1_image_panel.html">ImagePanel</a> &amp;)</td></tr>
+<tr class="memdesc:ad3c409368cb0f9c2909c98ab5e83b742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a image frame from the opened media into an <a class="el" href="classxv_1_1_image.html" title="An off-screen image representation native to the selected GUI. ">xv::Image</a>. <br /></td></tr>
+<tr class="separator:ad3c409368cb0f9c2909c98ab5e83b742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties. </p>
+<div class="textblock"><p>GUI component to capture video from files and devices. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/xv/<a class="el" href="_video_capture_8hpp_source.html">VideoCapture.hpp</a></li>
 </ul>

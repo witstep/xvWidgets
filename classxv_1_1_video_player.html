@@ -38,6 +38,7 @@
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
@@ -62,11 +63,11 @@
 <a href="#friends">Friends</a> &#124;
 <a href="classxv_1_1_video_player-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">xv::VideoPlayer Class Reference</div>  </div>
+<div class="title">xv::VideoPlayer Class Reference<div class="ingroups"><a class="el" href="group___rendering.html">Rendering</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Class to control the playback and processing of media obtained from <a class="el" href="classxv_1_1_video_capture.html" title="Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties. ">VideoCapture</a>.  
+<p>Class to control the playback and processing of media obtained from <a class="el" href="classxv_1_1_video_capture.html" title="GUI component to capture video from files and devices. ">VideoCapture</a>.  
  <a href="classxv_1_1_video_player.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_video_player_8hpp_source.html">VideoPlayer.hpp</a>&gt;</code></p>
@@ -93,10 +94,10 @@ Public Member Functions</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a323933139d9096d602ff573e00bd28b3">getCurrentFrameIdx</a> ()</td></tr>
 <tr class="memdesc:a323933139d9096d602ff573e00bd28b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last frame number read from the media. <br /></td></tr>
 <tr class="separator:a323933139d9096d602ff573e00bd28b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69b72f39ec9147da00554343f39a7c52"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69b72f39ec9147da00554343f39a7c52"></a>
-<a class="el" href="classxv_1_1_image_view.html">ImageView</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a69b72f39ec9147da00554343f39a7c52">getImage</a> ()</td></tr>
-<tr class="memdesc:a69b72f39ec9147da00554343f39a7c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classxv_1_1_image.html" title="Class that provides storage for images and conversion between the GUI and vision libraries&#39; internal ...">xv::Image</a> instance used for rendering. <br /></td></tr>
-<tr class="separator:a69b72f39ec9147da00554343f39a7c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7f9dfb154929b84a78b541997071fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab7f9dfb154929b84a78b541997071fd"></a>
+<a class="el" href="classxv_1_1_image_panel.html">ImagePanel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#aab7f9dfb154929b84a78b541997071fd">getImage</a> ()</td></tr>
+<tr class="memdesc:aab7f9dfb154929b84a78b541997071fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classxv_1_1_image.html" title="An off-screen image representation native to the selected GUI. ">xv::Image</a> instance used for rendering. <br /></td></tr>
+<tr class="separator:aab7f9dfb154929b84a78b541997071fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b00da5f39b1ee6edf3006535bee408"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10b00da5f39b1ee6edf3006535bee408"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a10b00da5f39b1ee6edf3006535bee408">open</a> (const cv::String &amp;filename)</td></tr>
 <tr class="memdesc:a10b00da5f39b1ee6edf3006535bee408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to open the named file. <br /></td></tr>
@@ -105,11 +106,6 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a41d8767c7c7d52d355bdb7beb3eaaf2e">open</a> (int device)</td></tr>
 <tr class="memdesc:a41d8767c7c7d52d355bdb7beb3eaaf2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try to open device. <br /></td></tr>
 <tr class="separator:a41d8767c7c7d52d355bdb7beb3eaaf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28370e8631b5de83273b245eb0959e2c"><td class="memTemplParams" colspan="2"><a class="anchor" id="a28370e8631b5de83273b245eb0959e2c"></a>
-template&lt;typename _Tp &gt; </td></tr>
-<tr class="memitem:a28370e8631b5de83273b245eb0959e2c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a28370e8631b5de83273b245eb0959e2c">open_</a> (const _Tp &amp;deviceOrFilename)</td></tr>
-<tr class="memdesc:a28370e8631b5de83273b245eb0959e2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared implementation for int and cv::String. <br /></td></tr>
-<tr class="separator:a28370e8631b5de83273b245eb0959e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a639e9784df45155a03edade831b61da2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a639e9784df45155a03edade831b61da2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_video_player.html#a639e9784df45155a03edade831b61da2">play</a> ()</td></tr>
 <tr class="memdesc:a639e9784df45155a03edade831b61da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start media loop. <br /></td></tr>
@@ -158,7 +154,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Thread</b></td></tr>
 <tr class="separator:adbc148eaddd341d7ae4d07c9e9e33bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class to control the playback and processing of media obtained from <a class="el" href="classxv_1_1_video_capture.html" title="Analogue to cv::VideoCapture but providing a GUI with file picker and display of properties. ">VideoCapture</a>. </p>
+<div class="textblock"><p>Class to control the playback and processing of media obtained from <a class="el" href="classxv_1_1_video_capture.html" title="GUI component to capture video from files and devices. ">VideoCapture</a>. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/xv/<a class="el" href="_video_player_8hpp_source.html">VideoPlayer.hpp</a></li>
 </ul>
