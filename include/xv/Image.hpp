@@ -1,4 +1,10 @@
 #pragma once
+/** @defgroup ImageRepresentation Image Representation
+* @brief Storage, visualization and conversion of image data
+*
+* Classes in this module are responsible for storing, displaying and converting image data
+*/
+
 
 #include "Widget.hpp"
 
@@ -13,8 +19,12 @@ namespace xv
 	typedef wxImage gui_image_t;
 #endif
 
-/** @brief Class that provides storage for images and conversion between the GUI and vision libraries' internal formats */
+/** @addtogroup ImageRepresentation */
+/*@{*/
 
+/** @brief Class that provides storage for images and conversion between the
+* GUI and vision libraries' internal formats 
+*/
 class Image : public Widget
 {
 
@@ -42,4 +52,5 @@ private:
 	/// The user released the left mouse button over the widget
 	virtual void onMouseUp(const cv::Point&);
 };
+/*@}*/
 }
