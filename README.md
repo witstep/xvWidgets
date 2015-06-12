@@ -67,9 +67,9 @@ imagePanel << cvMatrix << angle;
 	* Polygon
 	* Angle
 	* Label
-* [ Rendering ](http://xvwidgets.witstep.com/group___Rendering.html)
+* [ Rendering ](http://xvwidgets.witstep.com/group___rendering.html)
 	* ImagePanel
 	* VideoPlayer
-* [Media I/O](http://xvwidgets.witstep.com/group___MediaIO.html)
+* [Media I/O](http://xvwidgets.witstep.com/group___media_i_o.html)
 	* VideoCapture
 	* VideoWriter	
