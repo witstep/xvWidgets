@@ -16,12 +16,12 @@ The source code is hosted in [GitHub](https://github.com/witstep/xvWidgets).
 The Doxygen generated API reference is hosted in [xvwidgets.witstep.com](http://xvwidgets.witstep.com/).
 
 ## Usage
-The main *raison d'etre* of the library was the need for a simple and intuitive way of accepting user input for primitive 2D shapes, as exemplified bellow.
-
-* User input of an area contour using a Polygon widget and an OpenCV matrix
+The *raison d'etre* of the library was the need for a simple and intuitive way of accepting user input for basic 2D shapes, as exemplified bellow.
 
 ![Polygon Input](http://xvwidgets.witstep.com/Polygon_clip.gif "Polygon clip")  
 Clip from Tears of Steel | (CC) Blender Foundation | [mango.blender.org](http://mango.blender.org)
+
+* User input of an area contour using a Polygon widget and an OpenCV matrix
 
 ~~~~~~~~~~~~~~~{.cpp}
 cv::Mat cvMatrix;
