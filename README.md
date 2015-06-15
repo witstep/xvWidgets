@@ -22,7 +22,6 @@ The *raison d'etre* of the library was the need for a simple and intuitive way o
 Clip from Tears of Steel | (CC) Blender Foundation | [mango.blender.org](http://mango.blender.org)
 
 * User input of an area contour using a Polygon widget and an OpenCV matrix
-
 ~~~~~~~~~~~~~~~{.cpp}
 cv::Mat cvMatrix;
 xv::ImagePanel imagePanel; 
