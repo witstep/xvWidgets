@@ -2,7 +2,7 @@
 /** @defgroup ImageRepresentation Image Representation
 * @brief Storage, visualization and conversion of images
 *
-* Classes in this module are responsible for storing, displaying and converting image data
+* Classes in this module are responsible for storing, displaying and converting image data.
 */
 
 
@@ -19,11 +19,10 @@ namespace xv
 	typedef wxImage gui_image_t;
 #endif
 
-/** @addtogroup ImageRepresentation */
-/*@{*/
-
-/** @brief An off-screen image representation native to the selected GUI
-*/
+/*!
+ * \brief An off-screen image representation native to the selected GUI
+ * \ingroup ImageRepresentation
+ */
 class Image : public Widget
 {
 
