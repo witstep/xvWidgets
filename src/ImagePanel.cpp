@@ -38,9 +38,9 @@ void ImagePanel::onMouseUp(wxMouseEvent& evt)
 	for (std::list<xv::Widget*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		(*i)->onMouseUp(point);//no need to check for bounds
 		if (!(*i)->m_image){
-			m_mutex.Lock();//assure the GUI thread is not iterating
+			m_mutex.lock();//assure the GUI thread is not iterating
 			i = m_widgets.erase(i);
-			m_mutex.Unlock();
+			m_mutex.unlock();
 		}
 		else///if an element was erased above, there's no need to advance
 			i++;
@@ -51,9 +51,9 @@ void ImagePanel::purge()
 {
 	for (std::list<xv::Widget*>::iterator i = m_widgets.begin(); i != m_widgets.end();){
 		if (!(*i)->m_image){
-			m_mutex.Lock();//assure the GUI thread is not iterating
+			m_mutex.lock();//assure the GUI thread is not iterating
 			i = m_widgets.erase(i);
-			m_mutex.Unlock();
+			m_mutex.unlock();
 		}
 		else///if an element was erased above, there's no need to advance
 			i++;///if an element was erased above, there's no need to advance
@@ -125,15 +125,15 @@ void ImagePanel::operator<<(const cv::Mat& cvMat)
 
 void ImagePanel::paintEvent(wxPaintEvent & evt)
 {
-	m_mutex.Lock();
+	m_mutex.lock();
 	wxBufferedPaintDC dc(this, m_bitmap);
-	m_mutex.Unlock();
+	m_mutex.unlock();
 	m_lastPaintTime = std::chrono::steady_clock::now();
 }
 
 void ImagePanel::createBitmap()
 {
-	m_mutex.Lock();
+	m_mutex.lock();
 	//create a blank bitmap
 	if (m_cvMat.empty()){
 		int w, h;
@@ -152,7 +152,7 @@ void ImagePanel::createBitmap()
 	}
 	m_image = wxImage(m_renderMat.cols, m_renderMat.rows, (unsigned char*)m_renderMat.data, true);
 	m_bitmap = wxBitmap(m_image);
-	m_mutex.Unlock();
+	m_mutex.unlock();
 }
 
 void ImagePanel::sizeEvent(wxSizeEvent& evt){

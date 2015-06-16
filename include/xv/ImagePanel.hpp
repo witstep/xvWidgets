@@ -14,7 +14,9 @@
 #include <chrono>
 #include <list>
 #include <functional>
+#include <mutex>
 
+#include "Image.hpp"
 #include "Point.hpp"
 
 namespace xv{
@@ -81,12 +83,16 @@ public:
 private:
 
 	cv::Mat 
-		m_cvMat,
-		m_renderMat;
+		m_cvMat, //the original image
+		m_renderMat; //the image transformed for display
+
+#if defined(wxUSE_GUI)
 	void paintEvent(wxPaintEvent&);
 	void sizeEvent(wxSizeEvent&);
 	void onEraseBackground(wxEraseEvent&);
+#endif
 
+	//the ms threshold since last rendering avoid processing transformation that are not perceptible
 	void render(int ms=16);
 	/// use to provide a reference to the original image and the image afer processing
 	std::function<void(cv::Mat &)>
@@ -105,26 +111,25 @@ private:
 
 	std::list<Widget*> m_widgets;
 	std::chrono::steady_clock::time_point m_lastPaintTime;
-	wxMutex m_mutex;
+	std::mutex m_mutex;
 	wxBitmap m_bitmap;
-	wxImage m_image;
-	//wxImage m_image;
+	gui_image_t m_image;
 	wxSizer* m_sizer;
 	inline void createBitmap();
 	void setBestSizeFit();
 
 	friend void operator>>(cv::VideoCapture &videoCapture, ImagePanel &imagePanel){
-		imagePanel.m_mutex.Lock();
+		imagePanel.m_mutex.lock();
 		videoCapture >> imagePanel.m_cvMat;
-		imagePanel.m_mutex.Unlock();
+		imagePanel.m_mutex.unlock();
 		imagePanel.render();
 	}
 
 	/// use the xv::Image to display a cv::Mat
 	friend void operator<<(ImagePanel &imagePanel, cv::Mat& mat){
-		imagePanel.m_mutex.Lock();
+		imagePanel.m_mutex.lock();
 		imagePanel.m_cvMat = mat.clone();
-		imagePanel.m_mutex.Unlock();
+		imagePanel.m_mutex.unlock();
 		imagePanel.render();
 	};
 
