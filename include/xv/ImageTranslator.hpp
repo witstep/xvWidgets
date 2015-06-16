@@ -4,6 +4,7 @@ namespace xv{
 
 /*!
  * \brief Class used to convert between image formats
+ * \ingroup ImageRepresentation
  */
 class ImageTranslator
 {
