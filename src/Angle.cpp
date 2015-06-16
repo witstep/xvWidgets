@@ -11,6 +11,7 @@ Angle Angle::UNDEFINED = Angle();
 Angle::Angle()
 {
 	m_undefined = true;
+	setPosition(gui_point_t(0, 0));
 	defineContours();
 }
 
@@ -18,6 +19,8 @@ Angle::Angle(gui_point_t vertex)
 {
 	m_undefined = true; ///only vertex is known
 	m_vertex = vertex;
+	setPosition(gui_point_t(0, 0));
+	defineContours();
 }
 
 void Angle::paint(const cv::Mat& image)
