@@ -1,23 +1,26 @@
 #pragma once
-/** @defgroup ImageRepresentation Image Representation
-* @brief Storage, visualization and conversion of images
-*
-* Classes in this module are responsible for storing, displaying and converting image data.
-*/
-
+/*! 
+ *
+ * \defgroup ImageRepresentation Image Representation
+ * \brief Storage, visualization and conversion of images
+ *
+ * Classes in this module are responsible for storing, displaying and converting image data.
+ *
+ * To support the different GUI frameworks, it relies on the **QT_GUI_LIB** and **wxUSE_GUI** pre-processor macros.
+ *
+ * |            | wxWidgets                                                       | Qt
+ * | ---------- | --------------------------------------------------------------- | -------------
+ * | off-screen | [wxImage](http://docs.wxwidgets.org/trunk/classwx_image.html)   | [QPixmap] (http://doc.qt.io/qt-5/qpixmap.html)
+ * | on-screen  | [wxBitmap](http://docs.wxwidgets.org/trunk/classwx_bitmap.html) | [QImage] (http://doc.qt.io/qt-5/qimage.html)
+ *
+ * Note that although wxImage and QImage share similar names, they play different roles on each GUI framework.
+ */
 
 #include "Widget.hpp"
-
-#ifdef wxUSE_GUI
-	#include <wx/image.h>
-#endif
+#include "ImageTranslator.hpp"
 
 namespace xv
 {
-
-#ifdef wxUSE_GUI
-	typedef wxImage gui_image_t;
-#endif
 
 /*!
  * \brief An off-screen image representation native to the selected GUI
