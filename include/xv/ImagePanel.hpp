@@ -33,9 +33,6 @@ class ImagePanel : public wxPanel
 {
 	friend Widget;
 public:
-	/// the color used to pad the frame when the aspect ratio doesn't fit
-	/// the container
-	static const cv::Scalar PADDING_COLOR;
 
 	/// Default constructor
 	ImagePanel();
@@ -59,13 +56,13 @@ public:
 	void operator >> (Widget &widget);
 
 	/// Conversation operator for using the class as argument in the OpenCV API
-	operator cv::_InputOutputArray() const { return m_cvMat; }
+	operator cv::_InputOutputArray() const { return m_image.m_cvMat; }
 
 	/// Conversation operator to cv::Mat
-	operator cv::Mat() const { return m_cvMat; }
+	operator cv::Mat() const { return m_image.m_cvMat; }
 
 	/// Conversation operator to cv::Mat reference
-	operator cv::Mat&() { return m_cvMat; }
+	operator cv::Mat&() { return m_image.m_cvMat; }
 
 	/// Display a cv::Mat
 	void operator<<(const cv::Mat&);
@@ -77,14 +74,7 @@ public:
 	/// The scale ratio of the image in relation to the original data
 	float getScale(){ return m_scale; };
 
-	/// Immediatelly remove widgets not contained in the image
-	void purge();
-
 private:
-
-	cv::Mat 
-		m_cvMat, //the original image
-		m_renderMat; //the image transformed for display
 
 #if defined(wxUSE_GUI)
 	void paintEvent(wxPaintEvent&);
@@ -99,28 +89,22 @@ private:
 		m_preProcessCallback = [](cv::Mat &){},
 		m_postProcessCallback = [](cv::Mat &){};
 
-	void setClickMouseCursor(){
-		wxSetCursor(wxCURSOR_HAND);
-	};
 	void onMouseMove(wxMouseEvent& evt);
 	void onMouseDown(wxMouseEvent& evt);
 	void onMouseUp(wxMouseEvent& evt);
-	gui_point_t getPixelInterpolation(gui_point_t);
 
 	bool containsWidget(Widget*);
 
-	std::list<Widget*> m_widgets;
+	//std::list<Widget*> m_widgets;
 	std::chrono::steady_clock::time_point m_lastPaintTime;
 	std::mutex m_mutex;
-	wxBitmap m_bitmap;
-	gui_image_t m_image;
+	Image m_image;
 	wxSizer* m_sizer;
 	inline void createBitmap();
-	void setBestSizeFit();
 
 	friend void operator>>(cv::VideoCapture &videoCapture, ImagePanel &imagePanel){
 		imagePanel.m_mutex.lock();
-		videoCapture >> imagePanel.m_cvMat;
+		videoCapture >> imagePanel.m_image.m_cvMat; // to-do: refactor
 		imagePanel.m_mutex.unlock();
 		imagePanel.render();
 	}
@@ -128,7 +112,7 @@ private:
 	/// use the xv::Image to display a cv::Mat
 	friend void operator<<(ImagePanel &imagePanel, cv::Mat& mat){
 		imagePanel.m_mutex.lock();
-		imagePanel.m_cvMat = mat.clone();
+		imagePanel.m_image.m_cvMat = mat.clone(); // to-do: refactor
 		imagePanel.m_mutex.unlock();
 		imagePanel.render();
 	};
@@ -139,5 +123,5 @@ private:
 
 	DECLARE_EVENT_TABLE()
 };
-/*@}*/
+
 }

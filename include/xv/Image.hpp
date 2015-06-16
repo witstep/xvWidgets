@@ -28,13 +28,45 @@ namespace xv
  */
 class Image : public Widget
 {
-
+	friend ImagePanel;
 public:
+	/// the color used to pad the frame when the aspect ratio doesn't fit
+	/// the container
+	static const cv::Scalar PADDING_COLOR;
+
 	Image();
 	virtual ~Image();
-private:
 
-	gui_image_t *m_guiImage;
+	///load data into the image container
+	inline void setImage(gui_image_t data){ m_guiImage = data; };
+
+	/// returns stored image data
+	inline gui_image_t getImage(){ return m_guiImage; };
+	inline gui_bitmap_t& getBitmap(){ return m_bitmap; };
+
+	/// Fits the image to a new size using black borders to mantain aspect ratio
+	void setBestSizeFit(int w, int h);
+
+	/// Maps a pixel position in the original image to the transformed image,
+	/// taking scale and padding into consideration
+	gui_point_t Image::getPixelInterpolation(gui_point_t point);
+
+	/// Makes the stored image ready for display
+	void createBitmap(int w, int h);
+
+	/// to-do: refactor
+	cv::Mat
+		m_cvMat,     //the original image
+		m_renderMat; //the image transformed for display*/
+private:
+	/// For thread safe updating of image data and handling of children list
+	std::mutex m_mutex;
+
+	/// The off-screen image container
+	gui_image_t m_guiImage;
+
+	/// The on-screen image container
+	gui_bitmap_t m_bitmap;
 
 	virtual void render(const cv::Mat&);
 
@@ -42,16 +74,17 @@ private:
 	virtual void paint(const cv::Mat&);
 
 	/// Check if point is inside the widget
-	virtual bool contains(const cv::Point&);
+	virtual bool contains(const gui_point_t&);
 
-	/// The user clicked the left mouse button over the widget
-	virtual void onMouseDown(const cv::Point&);
+	/// horizontal padding used to mantain aspect ratio
+	int m_hBorder = 0;
 
-	/// The user moved the mouse pointer over the widget
-	virtual void onMouseMove(const cv::Point&);
+	/// vertical padding used to mantain aspect ratio
+	int m_vBorder = 0;
 
-	/// The user released the left mouse button over the widget
-	virtual void onMouseUp(const cv::Point&);
+	/// Scale of the display image in relation to original
+	double m_scale = 1;
+
 };
-/*@}*/
+
 }
