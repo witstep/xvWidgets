@@ -49,12 +49,6 @@ void Widget::setPosition(gui_point_t position)
 	m_positioned = true;
 }
 
-void Widget::center()
-{
-	if (m_image)
-		setPosition(gui_point_t(m_image->m_cvMat.rows / 2, m_image->m_cvMat.cols/2));
-}
-
 gui_point_t Widget::position()
 {
 	return m_position;
@@ -77,14 +71,22 @@ void Widget::onMouseMove(const gui_point_t& point)
 	if (m_readonly)
 		return;
 
-	if (isMouseOverButton(point, gui_point_t(OK_POSITION)))
-		m_image->setClickMouseCursor();
-	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION)))
-		m_image->setClickMouseCursor();
+	for (auto &w : m_children){
+		if (!w->isReadOnly() && w->contains(point)){
+			w->setMouseOver(true);
+		} else{
+			w->setMouseOver(false);
+		}
+		//not checking for bounds because the widget may have been dragged away
+		w->onMouseMove(point);
+	}
 }
 
 void Widget::onMouseDown(const gui_point_t& point)
 {
+	if (m_readonly)
+		return;
+
 	m_accepting = false;
 	m_canceling = false;
 	if (isMouseOverButton(point, gui_point_t(OK_POSITION))){
@@ -92,6 +94,13 @@ void Widget::onMouseDown(const gui_point_t& point)
 	}
 	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION))){
 		m_canceling = true;
+	}
+
+	for (auto &w : m_children){
+		if (!w->isReadOnly() && w->contains(point)){
+			w->onMouseDown(point);
+			return;//click only passed to the topmost widget
+		}
 	}
 }
 
@@ -102,17 +111,36 @@ void Widget::onMouseUp(const gui_point_t& point)
 
 	if (isMouseOverButton(point, gui_point_t(OK_POSITION)) && m_accepting){
 		m_undefined = false;
-		m_image = NULL;
+		m_parent = NULL;
 	}
 	else if (isMouseOverButton(point, gui_point_t(CANCEL_POSITION)) && m_canceling){
 		m_undefined = true;
-		m_image = NULL;
+		m_parent = NULL;
+	}
+
+	//not checking for bounds because the widget moved from original position
+	for (auto &w : m_children){
+		if ( !w->isReadOnly() )
+			w->onMouseUp(point);
+	}
+
+	for (std::list<xv::Widget*>::iterator i = m_children.begin(); i != m_children.end();){
+		(*i)->onMouseUp(point);//no need to check for bounds
+		if (!(*i)->m_parent){
+			//m_mutex.lock();//assure the GUI thread is not iterating
+			i = m_children.erase(i);
+			//m_mutex.unlock();
+		}
+		else///if an element was erased above, there's no need to advance
+			i++;
 	}
 }
 
 bool Widget::contains(const gui_point_t& point)
 {
-	assert(("Widget contour empty", m_contour.size() > 0));
+	if(m_contour.size() == 0)
+		return true;
+	//assert(("Widget contour empty", m_contour.size() > 0));
 #ifdef wxUSE_GUI
 	gui_point_t p = point - gui_point_t(MARGIN,MARGIN);
 	if (
@@ -188,5 +216,15 @@ void Widget::paintButtons(const cv::Mat& image)
 
 void Widget::hide()
 {
-	m_image = NULL;
+	m_parent = NULL;
+}
+
+void Widget::addChild(Widget &widget, bool readOnly)
+{
+	widget.m_readonly = readOnly;
+	widget.m_parent = this;
+	if (std::find(m_children.begin(), m_children.end(), &widget) == m_children.end())
+		m_children.push_back(&widget);
+	else
+		assert(("Adding the same child widget more than once!", false));
 }

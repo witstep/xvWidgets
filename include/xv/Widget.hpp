@@ -7,9 +7,10 @@
  *
  */
 
-
 #include <opencv2/core.hpp>
 #include <vector>
+#include <list>
+#include <mutex>
 
 #if defined(wxUSE_GUI)
 #include <wx/gdicmn.h>
@@ -28,6 +29,7 @@ namespace xv {
 
 	class Point;
 	class ImagePanel;
+	class Image;
 	int distance(gui_point_t, gui_point_t);
 
 
@@ -38,6 +40,8 @@ namespace xv {
 class Widget{
 	friend ImagePanel;
 public:
+	/// Add a child widget
+	virtual void addChild(Widget &, bool readOnly = true);
 
 	/// Display widget in input mode (with OK/Cancel buttons)
 	virtual void render(const cv::Mat&);
@@ -49,13 +53,13 @@ public:
 	virtual bool contains(const gui_point_t&);
 
 	/// The user clicked the left mouse button over the widget
-	virtual void onMouseDown(const gui_point_t&) = 0;
+	virtual void onMouseDown(const gui_point_t&);
 
 	/// The user moved the mouse pointer over the widget
-	virtual void onMouseMove(const gui_point_t&) = 0;
+	virtual void onMouseMove(const gui_point_t&);
 
 	/// The user released the left mouse button over the widget
-	virtual void onMouseUp(const gui_point_t&) = 0;
+	virtual void onMouseUp(const gui_point_t&);
 
 	/// Signal that the user started dragging the widget
 	void startDragging(){ m_dragging = true; };
@@ -78,9 +82,6 @@ public:
 	/// Move the widget to a point in an image
 	virtual void setPosition(gui_point_t position);
 
-	/// Move the widget to the center of the image
-	virtual void center();
-
 	/// Get the current position
 	virtual gui_point_t position();
 
@@ -91,6 +92,9 @@ public:
 	void hide();
 
 protected:
+	/// Other widgets inside the widget
+	std::list<Widget*> m_children;
+
 	/// The thickness of contour lines
 	static const int LINE_THICKNESS;
 
@@ -121,7 +125,7 @@ protected:
 	virtual ~Widget() = 0;
 
 	/// Pointer to the parent image used to display the widget
-	ImagePanel *m_image = NULL;
+	Widget *m_parent = NULL;
 
 	/// The contours of area occupied by the widget
 	std::vector<gui_point_t> m_contour;
@@ -136,10 +140,10 @@ protected:
 	bool m_readonly = false; /*!< The widget can be made visible but the user can't interact with it */
 
 	gui_point_t m_position; /*!< The position of the widget, usually the center point */
-
 private:
 	/// Draw the OK/Cancel buttons
 	virtual void paintButtons(const cv::Mat&);
+	
 };
 
 }
