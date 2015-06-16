@@ -60,10 +60,23 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_image.html">xv::Image</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An off-screen image representation native to the selected GUI.  <a href="classxv_1_1_image.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxv_1_1_image_translator.html">xv::ImageTranslator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class used to convert between image formats.  <a href="classxv_1_1_image_translator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Storage, visualization and conversion of images. </p>
-<p>Classes in this module are responsible for storing, displaying and converting image data </p>
+<p>Classes in this module are responsible for storing, displaying and converting image data.</p>
+<p>To support the different GUI frameworks, it relies on the <b>QT_GUI_LIB</b> and <b>wxUSE_GUI</b> pre-processor macros.</p>
+<table class="doxtable">
+<tr>
+<th></th><th>wxWidgets </th><th>Qt  </th></tr>
+<tr>
+<td>off-screen </td><td><a href="http://docs.wxwidgets.org/trunk/classwx_image.html">wxImage</a> </td><td><a href="http://doc.qt.io/qt-5/qpixmap.html">QPixmap</a> </td></tr>
+<tr>
+<td>on-screen </td><td><a href="http://docs.wxwidgets.org/trunk/classwx_bitmap.html">wxBitmap</a> </td><td><a href="http://doc.qt.io/qt-5/qimage.html">QImage</a> </td></tr>
+</table>
+<p>Note that although wxImage and QImage share similar names, they play different roles on each GUI framework. </p>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->

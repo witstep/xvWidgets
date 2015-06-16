@@ -60,20 +60,33 @@
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacexv.html">xv</a>{</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &lt;opencv2/core.hpp&gt;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classxv_1_1_image_translator.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a>();</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a>();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;};</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#ifdef wxUSE_GUI</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;wx/image.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;wx/bitmap.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacexv.html">xv</a>{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifdef wxUSE_GUI</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">typedef</span> wxImage gui_image_t;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">typedef</span> wxBitmap gui_bitmap_t;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
-<div class="ttc" id="classxv_1_1_image_translator_html"><div class="ttname"><a href="classxv_1_1_image_translator.html">xv::ImageTranslator</a></div><div class="ttdoc">Class used to convert between image formats. </div><div class="ttdef"><b>Definition:</b> ImageTranslator.hpp:8</div></div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classxv_1_1_image_translator.html">   21</a></span>&#160;<span class="keyword">class </span><a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classxv_1_1_image_translator.html">ImageTranslator</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">static</span> gui_image_t <a class="code" href="classxv_1_1_image_translator.html#aacb30ba743855c6db8446e25038b15b8">toNativeGui</a>(<span class="keyword">const</span> cv::Mat&amp;);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="ttc" id="classxv_1_1_image_translator_html"><div class="ttname"><a href="classxv_1_1_image_translator.html">xv::ImageTranslator</a></div><div class="ttdoc">Class used to convert between image formats. </div><div class="ttdef"><b>Definition:</b> ImageTranslator.hpp:21</div></div>
 <div class="ttc" id="namespacexv_html"><div class="ttname"><a href="namespacexv.html">xv</a></div><div class="ttdef"><b>Definition:</b> Angle.hpp:8</div></div>
+<div class="ttc" id="classxv_1_1_image_translator_html_aacb30ba743855c6db8446e25038b15b8"><div class="ttname"><a href="classxv_1_1_image_translator.html#aacb30ba743855c6db8446e25038b15b8">xv::ImageTranslator::toNativeGui</a></div><div class="ttdeci">static gui_image_t toNativeGui(const cv::Mat &amp;)</div><div class="ttdoc">convert cv::Mat to the native GUI class </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->

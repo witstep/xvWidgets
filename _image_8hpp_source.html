@@ -60,46 +60,67 @@
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;Widget.hpp&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifdef wxUSE_GUI</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">    #include &lt;wx/image.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacexv.html">xv</a></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifdef wxUSE_GUI</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">typedef</span> wxImage gui_image_t;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;Widget.hpp&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;ImageTranslator.hpp&quot;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacexv.html">xv</a></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="classxv_1_1_image.html">Image</a> : <span class="keyword">public</span> <a class="code" href="classxv_1_1_widget.html">Widget</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classxv_1_1_image.html">Image</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classxv_1_1_image.html">Image</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    gui_image_t *m_guiImage;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="classxv_1_1_image.html">Image</a> : <span class="keyword">public</span> <a class="code" href="classxv_1_1_widget.html">Widget</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">friend</span> <a class="code" href="classxv_1_1_image_panel.html">ImagePanel</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html#ac98e3e48f2b8026dfb4bd3b3489cc880">   35</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> cv::Scalar <a class="code" href="classxv_1_1_image.html#ac98e3e48f2b8026dfb4bd3b3489cc880">PADDING_COLOR</a>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> render(<span class="keyword">const</span> cv::Mat&amp;);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> paint(<span class="keyword">const</span> cv::Mat&amp;);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> cv::Point&amp;);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> onMouseDown(<span class="keyword">const</span> cv::Point&amp;);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> onMouseMove(<span class="keyword">const</span> cv::Point&amp;);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> onMouseUp(<span class="keyword">const</span> cv::Point&amp;);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
-<div class="ttc" id="classxv_1_1_image_html"><div class="ttname"><a href="classxv_1_1_image.html">xv::Image</a></div><div class="ttdoc">An off-screen image representation native to the selected GUI. </div><div class="ttdef"><b>Definition:</b> Image.hpp:27</div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="classxv_1_1_image.html">Image</a>();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classxv_1_1_image.html">Image</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html#ac954121c6d25178c3ad8b1df31507a8c">   41</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="classxv_1_1_image.html#ac954121c6d25178c3ad8b1df31507a8c">setImage</a>(gui_image_t data){ m_guiImage = data; };</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html#a89fe70c9fd5e33f9e550342f41d238b8">   44</a></span>&#160;    <span class="keyword">inline</span> gui_image_t <a class="code" href="classxv_1_1_image.html#a89fe70c9fd5e33f9e550342f41d238b8">getImage</a>(){ <span class="keywordflow">return</span> m_guiImage; };</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">inline</span> gui_bitmap_t&amp; getBitmap(){ <span class="keywordflow">return</span> m_bitmap; };</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classxv_1_1_image.html#a5aee97803e4a30d23b2d17c970faab60">setBestSizeFit</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    gui_point_t Image::getPixelInterpolation(gui_point_t point);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classxv_1_1_image.html#a7f396a505d3375006882bb5d544c5785">createBitmap</a>(<span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    cv::Mat</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classxv_1_1_image.html#a4325af34e52128e03932a88f3a852f2a">   59</a></span>&#160;        <a class="code" href="classxv_1_1_image.html#a4325af34e52128e03932a88f3a852f2a">m_cvMat</a>,     <span class="comment">//the original image</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        m_renderMat; <span class="comment">//the image transformed for display*/</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::mutex m_mutex;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    gui_image_t m_guiImage;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    gui_bitmap_t m_bitmap;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> render(<span class="keyword">const</span> cv::Mat&amp;);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> paint(<span class="keyword">const</span> cv::Mat&amp;);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> contains(<span class="keyword">const</span> gui_point_t&amp;);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">int</span> m_hBorder = 0;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">int</span> m_vBorder = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">double</span> m_scale = 1;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="ttc" id="classxv_1_1_image_html_a7f396a505d3375006882bb5d544c5785"><div class="ttname"><a href="classxv_1_1_image.html#a7f396a505d3375006882bb5d544c5785">xv::Image::createBitmap</a></div><div class="ttdeci">void createBitmap(int w, int h)</div><div class="ttdoc">Makes the stored image ready for display. </div></div>
+<div class="ttc" id="classxv_1_1_image_html_a89fe70c9fd5e33f9e550342f41d238b8"><div class="ttname"><a href="classxv_1_1_image.html#a89fe70c9fd5e33f9e550342f41d238b8">xv::Image::getImage</a></div><div class="ttdeci">gui_image_t getImage()</div><div class="ttdoc">returns stored image data </div><div class="ttdef"><b>Definition:</b> Image.hpp:44</div></div>
+<div class="ttc" id="classxv_1_1_image_html_ac954121c6d25178c3ad8b1df31507a8c"><div class="ttname"><a href="classxv_1_1_image.html#ac954121c6d25178c3ad8b1df31507a8c">xv::Image::setImage</a></div><div class="ttdeci">void setImage(gui_image_t data)</div><div class="ttdoc">load data into the image container </div><div class="ttdef"><b>Definition:</b> Image.hpp:41</div></div>
+<div class="ttc" id="classxv_1_1_image_html_ac98e3e48f2b8026dfb4bd3b3489cc880"><div class="ttname"><a href="classxv_1_1_image.html#ac98e3e48f2b8026dfb4bd3b3489cc880">xv::Image::PADDING_COLOR</a></div><div class="ttdeci">static const cv::Scalar PADDING_COLOR</div><div class="ttdef"><b>Definition:</b> Image.hpp:35</div></div>
+<div class="ttc" id="classxv_1_1_image_panel_html"><div class="ttname"><a href="classxv_1_1_image_panel.html">xv::ImagePanel</a></div><div class="ttdoc">Class used to display images and as container of widgets. </div><div class="ttdef"><b>Definition:</b> ImagePanel.hpp:32</div></div>
+<div class="ttc" id="classxv_1_1_image_html"><div class="ttname"><a href="classxv_1_1_image.html">xv::Image</a></div><div class="ttdoc">An off-screen image representation native to the selected GUI. </div><div class="ttdef"><b>Definition:</b> Image.hpp:29</div></div>
+<div class="ttc" id="classxv_1_1_image_html_a4325af34e52128e03932a88f3a852f2a"><div class="ttname"><a href="classxv_1_1_image.html#a4325af34e52128e03932a88f3a852f2a">xv::Image::m_cvMat</a></div><div class="ttdeci">cv::Mat m_cvMat</div><div class="ttdoc">to-do: refactor </div><div class="ttdef"><b>Definition:</b> Image.hpp:59</div></div>
 <div class="ttc" id="namespacexv_html"><div class="ttname"><a href="namespacexv.html">xv</a></div><div class="ttdef"><b>Definition:</b> Angle.hpp:8</div></div>
-<div class="ttc" id="classxv_1_1_widget_html"><div class="ttname"><a href="classxv_1_1_widget.html">xv::Widget</a></div><div class="ttdoc">Base class for all Widgets. </div><div class="ttdef"><b>Definition:</b> Widget.hpp:38</div></div>
+<div class="ttc" id="classxv_1_1_image_html_a5aee97803e4a30d23b2d17c970faab60"><div class="ttname"><a href="classxv_1_1_image.html#a5aee97803e4a30d23b2d17c970faab60">xv::Image::setBestSizeFit</a></div><div class="ttdeci">void setBestSizeFit(int w, int h)</div><div class="ttdoc">Fits the image to a new size using black borders to mantain aspect ratio. </div></div>
+<div class="ttc" id="classxv_1_1_widget_html"><div class="ttname"><a href="classxv_1_1_widget.html">xv::Widget</a></div><div class="ttdoc">Base class for all Widgets. </div><div class="ttdef"><b>Definition:</b> Widget.hpp:40</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.9.1-->
 <!-- start footer part -->
