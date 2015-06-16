@@ -9,6 +9,7 @@ Polygon Polygon::UNDEFINED = Polygon();
 
 Polygon::Polygon(){
 	m_undefined = true;
+	setPosition(gui_point_t(0, 0));
 }
 
 void Polygon::paint(const cv::Mat& image)

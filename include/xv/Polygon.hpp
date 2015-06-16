@@ -37,7 +37,11 @@ public:
 	/// Checks if 2 Polygons are different
 	bool operator != (const Polygon &b) {
 		if (this->m_undefined && b.m_undefined)
-			return false;//if both are undefined they are considered equal
+			return false; //if both are undefined they are considered equal
+
+		if (this->m_undefined == !b.m_undefined)
+			return true; //opposite undefined state
+
 		//compare as a gui_point_t_
 		return !isEqual(*this, b);
 	};
