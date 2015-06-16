@@ -118,7 +118,12 @@ private:
 		playing,//ongoing playback
 		paused, //video is paused
 		seeking //looking for a frame
-	} m_state = paused;
+	} 
+	m_state = paused,
+	m_previousState = paused;
+
+	/// sets a new state and remembers previous
+	void setState(playbackState);
 
 	
 	cv::VideoCapture* m_videoCapture = NULL;

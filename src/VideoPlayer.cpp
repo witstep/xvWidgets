@@ -81,8 +81,6 @@ void VideoPlayer::init()
 	
 	//controls
 	controlSizer->Add(m_playButton);
-	m_slider->Bind(wxEVT_LEFT_DOWN, &VideoPlayer::onSliderClickDown, this);
-
 	controlSizer->Add(m_slider, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL);
 	controlSizer->Add(m_positionLabel, 0, wxALIGN_CENTER_VERTICAL);
 	controlSizer->Add(separator, 0, wxALIGN_CENTER_VERTICAL);
@@ -118,14 +116,22 @@ void VideoPlayer::onSliderMove(wxScrollEvent& evt)
 
 void VideoPlayer::onSliderClickDown(wxMouseEvent& evt)
 {
-	m_state = VideoPlayer::seeking;
-	evt.Skip();
 	m_timer.Stop(); ///don't update time labels while moving slider
+	if (m_state != VideoPlayer::seeking){
+		m_previousState = m_state;
+		setState(VideoPlayer::seeking);
+		pause();
+	}
+	evt.Skip();
 }
 
 
 void VideoPlayer::onSliderClickUp(wxMouseEvent& evt){
-	m_state = VideoPlayer::playing;
+	setState(m_previousState); // return to the state it was before sliding
+	if (m_previousState == playbackState::playing)
+		play();
+	else if (m_previousState == playbackState::paused)
+		pause();
 	evt.Skip();
 	m_timer.Start();
 }
@@ -143,12 +149,12 @@ bool VideoPlayer::open_(const _Tp &deviceOrFilename)
 		showTimeLabel(m_durationLabel, m_frameCount);
 		m_slider->SetRange(1, (int)m_frameCount);
 		m_timer.Start(LABEL_UPDATE_INTERVAL);
-		m_state = playbackState::paused;
+		setState(playbackState::paused);
 		return true;
 	}
 	m_timer.Stop();
 	m_slider->SetRange(0, 1);
-	m_state = playbackState::idle;
+	setState(playbackState::idle);
 	return false;
 }
 
@@ -171,7 +177,7 @@ void VideoPlayer::play()
 	if (!m_thread->IsRunning())
 		m_thread->Run();
 
-	m_state = VideoPlayer::playing;
+	setState(VideoPlayer::playing);
 	m_playButton->SetLabel(_("Pause"));
 }
 
@@ -188,7 +194,7 @@ void VideoPlayer::pause()
 {
 	if (m_state == playbackState::idle)
 		return; /// can't pause if media not open
-	m_state = VideoPlayer::paused;
+	setState(VideoPlayer::paused);
 	m_playButton->SetLabel(_("Play"));
 }
 
@@ -277,14 +283,13 @@ void* VideoPlayer::Thread::Entry()
 		if (i == 0) /// the first frame of a new media source can be loaded with a delay
 			wxBeginBusyCursor();
 
-
-		m_player->m_slider->SetValue(i);
-
 		m_player->m_mutex.Lock();
 		if (TestDestroy())
 			break;
 
 		*m_player->m_videoCapture >> mat;
+		if (mat.empty())
+			continue;
 		m_player->m_preProcessCallback(mat);
 		*m_player->m_image << mat;
 		m_player->m_postProcessCallback(mat);
@@ -299,6 +304,8 @@ void* VideoPlayer::Thread::Entry()
 				Sleep(1000); /// to-do: why not lock a mutex here or use Pause()?
 			else
 				break;
+
+		m_player->m_slider->SetValue(i);
 	}
 	return NULL;
 }
@@ -311,4 +318,9 @@ int VideoPlayer::getCurrentFrameIdx()
 ImagePanel& VideoPlayer::getImage()
 {
 	return *m_image;
+}
+
+void VideoPlayer::setState(playbackState state)
+{
+	m_state = state;
 }
