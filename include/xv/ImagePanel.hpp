@@ -111,7 +111,6 @@ private:
 
 	bool containsWidget(Widget*);
 
-	//std::list<Widget*> m_widgets;
 	std::chrono::steady_clock::time_point m_lastPaintTime;
 	std::mutex m_mutex;
 	Image m_image;
