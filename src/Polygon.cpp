@@ -57,15 +57,15 @@ void Polygon::paintAddPointButton(const Point& point, const cv::Mat& image)
 
 	cv::line(
 		image,
-		cv::Point(addButtonPosition.x + (int)BUTTON_RADIUS / 2, addButtonPosition.y),
-		cv::Point(addButtonPosition.x - (int)BUTTON_RADIUS / 2, addButtonPosition.y),
+		cv::Point(addButtonPosition.x() + (int)BUTTON_RADIUS / 2, addButtonPosition.y()),
+		cv::Point(addButtonPosition.x() - (int)BUTTON_RADIUS / 2, addButtonPosition.y()),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
 	cv::line(
 		image,
-		cv::Point(addButtonPosition.x, addButtonPosition.y - (int)BUTTON_RADIUS / 2),
-		cv::Point(addButtonPosition.x , addButtonPosition.y + (int)BUTTON_RADIUS / 2),
+		cv::Point(addButtonPosition.x(), addButtonPosition.y() - (int)BUTTON_RADIUS / 2),
+		cv::Point(addButtonPosition.x(), addButtonPosition.y() + (int)BUTTON_RADIUS / 2),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
@@ -80,8 +80,8 @@ void Polygon::paintAddPointButton(const Point& point, const cv::Mat& image)
 
 	cv::line(
 		image,
-		cv::Point(delButtonPosition.x + (int)BUTTON_RADIUS / 2, delButtonPosition.y),
-		cv::Point(delButtonPosition.x - (int)BUTTON_RADIUS / 2, delButtonPosition.y),
+		cv::Point(delButtonPosition.x() + (int)BUTTON_RADIUS / 2, delButtonPosition.y()),
+		cv::Point(delButtonPosition.x() - (int)BUTTON_RADIUS / 2, delButtonPosition.y()),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
@@ -202,7 +202,7 @@ gui_point_t Polygon::getMiddlePoint()
 {
 	gui_point_t middle(0, 0);
 	for (auto &p : *this)
-		middle += gui_point_t(p.x / (int)this->size(), p.y / (int)this->size());
+		middle += gui_point_t(p.x() / (int)this->size(), p.y() / (int)this->size());
 	return middle;
 }
 

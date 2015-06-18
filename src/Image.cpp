@@ -64,8 +64,8 @@ void Image::setBestSizeFit(int cols, int rows)
 
 gui_point_t Image::getPixelInterpolation(gui_point_t point)
 {
-	int x = point.x / m_scale - m_hBorder / m_scale;
-	int y = point.y / m_scale - m_vBorder / m_scale;
+	int x = point.x() / m_scale - m_hBorder / m_scale;
+	int y = point.y() / m_scale - m_vBorder / m_scale;
 
 	if (x > m_cvMat.cols - 1)
 		x = m_cvMat.cols - 1;
@@ -99,6 +99,8 @@ void Image::createBitmap(int w, int h)
 		cv::cvtColor(m_renderMat, m_renderMat, cv::COLOR_BGR2RGB);
 		setBestSizeFit(w,h);
 	}
+#if defined(wxUSE_GUI)
 	m_bitmap = ImageTranslator::toNativeGui(m_renderMat);
+#endif
 	m_mutex.unlock();
 }

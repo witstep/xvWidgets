@@ -1,4 +1,3 @@
-#pragma once //header only mode
 #include "xv/ImagePanel.hpp"
 #include "xv/Widget.hpp"
 #include <opencv2/core.hpp>
@@ -6,6 +5,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <cassert>
 
 #ifdef wxUSE_GUI
 #include <wx/region.h>
@@ -31,6 +31,17 @@ const cv::Scalar Widget::AFFIRMATIVE_COLOR(0, 255, 0);
 
 const cv::Scalar Widget::NEGATIVE_COLOR(0, 0, 255);
 
+#if defined(wxUSE_GUI)
+gui_point_t xv::operator + (const gui_point_t &p1, const gui_point_t &p2)
+{
+	return gui_point_t(p1.x() + p2.x(), p1.y() + p2.y());
+};
+gui_point_t xv::operator - (const gui_point_t &p1, const gui_point_t &p2)
+{
+	return gui_point_t(p1.x() - p2.x(), p1.y() - p2.y());
+};
+#endif
+
 Widget::~Widget()
 {
 	
@@ -38,8 +49,8 @@ Widget::~Widget()
 
 int xv::distance(gui_point_t p1, gui_point_t p2)
 {
-	int dx = p1.x - p2.x;
-	int dy = p1.y - p2.y;
+	int dx = p1.x() - p2.x();
+	int dy = p1.y() - p2.y();
 	return (int)sqrt(dx*dx + dy*dy);
 }
 
@@ -144,7 +155,7 @@ bool Widget::contains(const gui_point_t& point)
 #ifdef wxUSE_GUI
 	gui_point_t p = point - gui_point_t(MARGIN,MARGIN);
 	if (
-		wxRegion(m_contour.size(), &m_contour[0]).Contains(p.x,p.y,MARGIN*2,MARGIN*2) != wxOutRegion
+		wxRegion(m_contour.size(), &m_contour[0]).Contains(p.x(), p.y(), MARGIN * 2, MARGIN * 2) != wxOutRegion
 	)
 #endif
 		return true;
@@ -177,7 +188,7 @@ void Widget::paintButtons(const cv::Mat& image)
 
 	cv::line(
 		image,
-		Point(offset + Point(pointOK.x - (int)BUTTON_RADIUS/1.5 * cos(radians), pointOK.y - (int)BUTTON_RADIUS/1.5 * sin(radians))),
+		Point(offset + Point(pointOK.x() - (int)BUTTON_RADIUS / 1.5 * cos(radians), pointOK.y() - (int)BUTTON_RADIUS / 1.5 * sin(radians))),
 		Point(pointOK + offset),
 		Widget::AFFIRMATIVE_COLOR
 		);
@@ -185,7 +196,7 @@ void Widget::paintButtons(const cv::Mat& image)
 	cv::line(
 		image,
 		Point(pointOK + offset),
-		Point(pointOK.x + (int)BUTTON_RADIUS * cos(radians), pointOK.y - (int)BUTTON_RADIUS * sin(radians)),
+		Point(pointOK.x() + (int)BUTTON_RADIUS * cos(radians), pointOK.y() - (int)BUTTON_RADIUS * sin(radians)),
 		Widget::AFFIRMATIVE_COLOR
 		);
 
@@ -193,15 +204,15 @@ void Widget::paintButtons(const cv::Mat& image)
 	//cancel button
 	cv::line(
 		image,
-		Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
-		Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x() + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y() + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x() - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y() - (int)BUTTON_RADIUS / 2 * sin(radians)),
 		Widget::NEGATIVE_COLOR
 		);
 
 	cv::line(
 		image,
-		Point(pointCancel.x + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y - (int)BUTTON_RADIUS / 2 * sin(radians)),
-		Point(pointCancel.x - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y + (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x() + (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y() - (int)BUTTON_RADIUS / 2 * sin(radians)),
+		Point(pointCancel.x() - (int)BUTTON_RADIUS / 2 * cos(radians), pointCancel.y() + (int)BUTTON_RADIUS / 2 * sin(radians)),
 		Widget::NEGATIVE_COLOR
 		);
 

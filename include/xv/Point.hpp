@@ -27,11 +27,20 @@ namespace xv
 		Point(const gui_point_t & pt);
 #pragma endregion constructors
 
+#if defined(wxUSE_GUI)
+		/// Sets the x coordinate of this point.
+		void setX(int a) { wxPoint::x = a; };
+
+		/// Sets the y coordinate of this point.
+		void setY(int a) { wxPoint::y = a; };
+#endif
+
 		static Point UNDEFINED; /*!< Represents a Point_ for which coordinates were not yet set.  */
 
 #pragma region operators
 		/// Conversion operator to cv::Point
-		operator cv::Point() const{ return cv::Point(m_position.x,m_position.y); };
+		operator cv::Point() const{ return cv::Point(m_position.x(),m_position.y()); };
+		operator gui_point_t() const{ return gui_point_t(m_position.x(), m_position.y()); };
 
 		/// Checks if 2 points are equal.
 		bool operator == (const Point &b) {

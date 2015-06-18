@@ -4,9 +4,13 @@
  * \brief On screen representation of images and video
  */
 
-#include <wx/wx.h>
-#include <wx/panel.h>
-#include <wx/sizer.h>
+#if defined(wxUSE_GUI)
+	#include <wx/wx.h>
+	#include <wx/panel.h>
+	#include <wx/sizer.h>
+#elif defined(QT_GUI_LIB)
+	#include <QtWidgets/QWidget>
+#endif
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -21,6 +25,14 @@
 
 namespace xv{
 
+#if defined(wxUSE_GUI)
+	typedef wxPanel gui_panel_t;
+	typedef wxMouseEvent& gui_mouseEvent_t;
+#elif defined(QT_GUI_LIB)
+	typedef QWidget gui_panel_t;
+	typedef QMouseEvent* gui_mouseEvent_t;
+#endif
+
 	class VideoCapture;
 	class Widget;
 	class Image;
@@ -29,7 +41,7 @@ namespace xv{
  * \brief Class used to display images and as container of widgets.
  * \ingroup Rendering
  */
-class ImagePanel : public wxPanel
+class ImagePanel : public gui_panel_t
 {
 	friend Widget;
 public:
@@ -37,6 +49,7 @@ public:
 	/// Default constructor
 	ImagePanel();
 
+#if defined(wxUSE_GUI)
 	/// Constructor inherited from wxPanel
 	ImagePanel(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
@@ -46,6 +59,11 @@ public:
 		const wxString &name = wxPanelNameStr
 	);
 
+	/// Redraw an image optionally erasing background first or a limited area
+	void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
+#elif defined(QT_GUI_LIB)
+	void Refresh();
+#endif
 
 #pragma region operators
 
@@ -68,9 +86,6 @@ public:
 	void operator<<(const cv::Mat&);
 #pragma endregion operators
 
-	/// Redraw an image optionally erasing background first or a limited area
-	void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
-
 	/// The scale ratio of the image in relation to the original data
 	float getScale(){ return m_scale; };
 
@@ -80,6 +95,7 @@ private:
 	void paintEvent(wxPaintEvent&);
 	void sizeEvent(wxSizeEvent&);
 	void onEraseBackground(wxEraseEvent&);
+	DECLARE_EVENT_TABLE()
 #endif
 
 	//the ms threshold since last rendering avoid processing transformation that are not perceptible
@@ -89,9 +105,9 @@ private:
 		m_preProcessCallback = [](cv::Mat &){},
 		m_postProcessCallback = [](cv::Mat &){};
 
-	void onMouseMove(wxMouseEvent& evt);
-	void onMouseDown(wxMouseEvent& evt);
-	void onMouseUp(wxMouseEvent& evt);
+	void onMouseMove(gui_mouseEvent_t evt);
+	void onMouseDown(gui_mouseEvent_t evt);
+	void onMouseUp(gui_mouseEvent_t evt);
 
 	bool containsWidget(Widget*);
 
@@ -99,7 +115,6 @@ private:
 	std::chrono::steady_clock::time_point m_lastPaintTime;
 	std::mutex m_mutex;
 	Image m_image;
-	wxSizer* m_sizer;
 	inline void createBitmap();
 
 	friend void operator>>(cv::VideoCapture &videoCapture, ImagePanel &imagePanel){
@@ -121,7 +136,6 @@ private:
 	int m_hBorder = 0;
 	int m_vBorder=0;
 
-	DECLARE_EVENT_TABLE()
 };
 
 }

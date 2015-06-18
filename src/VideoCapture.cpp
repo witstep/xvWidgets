@@ -1,13 +1,17 @@
 #pragma once;
-#include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
 
-#include <wx/sizer.h>
+#if defined(wxUSE_GUI)
+	#include <wx/wxprec.h>
+	#ifndef WX_PRECOMP
+		#include "wx/wx.h"
+	#endif
+#elif defined(QT_GUI_LIB)
+
+#endif
 
 #include "xv/VideoCapture.hpp"
 #include <sstream>
+#include <map>
 
 using namespace xv;
 using namespace std;
@@ -22,6 +26,7 @@ const map <int, string > VideoCapture::PROPERTY_MAP({
 	pair < int, string >(cv::CAP_PROP_FRAME_HEIGHT, "CAP_PROP_FRAME_HEIGHT")
 });
 
+#if defined(wxUSE_GUI)
 VideoCapture::VideoCapture(wxWindow *parent,
 	wxWindowID id,
 	const wxPoint &pos,
@@ -33,20 +38,24 @@ VideoCapture::VideoCapture(wxWindow *parent,
 {
 	init();
 }
+#endif
 
 VideoCapture::VideoCapture() :
 	m_selfHosted(true)
 {
+#if defined(wxUSE_GUI)
 	init();
 	static_cast<wxDialog*>(m_parent)->ShowModal();
+#endif
 }
 
 VideoCapture::VideoCapture(const std::string& filename) :
 	m_filename(filename)
 {
 	m_videoCapture.open(m_filename.string());
-
+#if defined(wxUSE_GUI)
 	init();
+#endif
 }
 
 VideoCapture::VideoCapture(int device) :
@@ -57,8 +66,9 @@ VideoCapture::VideoCapture(int device) :
 	m_filename = ss.str();
 
 	m_videoCapture.open(device);
-
+#if defined(wxUSE_GUI)
 	init();
+#endif
 }
 
 bool VideoCapture::open(const string& filename)
@@ -67,6 +77,8 @@ bool VideoCapture::open(const string& filename)
 	return m_videoCapture.open(filename);
 }
 
+
+#if defined(wxUSE_GUI)
 
 #pragma region layout
 void VideoCapture::init()
@@ -133,6 +145,7 @@ void VideoCapture::initButtons(wxSizer* mainSizer)
 }
 #pragma endregion layout
 
+
 #pragma region event handling
 void VideoCapture::evtFilePickerChanged(wxFileDirPickerEvent& event){
 	m_filename = event.GetPath();
@@ -192,3 +205,4 @@ void VideoCapture::clearProperties()
 	m_propertyGrid->Refresh();
 }
 
+#endif

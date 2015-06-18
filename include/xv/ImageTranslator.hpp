@@ -2,16 +2,22 @@
 
 #include <opencv2/core.hpp>
 
-#ifdef wxUSE_GUI
-#include <wx/image.h>
-#include <wx/bitmap.h>
+#if defined(wxUSE_GUI)
+	#include <wx/image.h>
+	#include <wx/bitmap.h>
+#elif defined(QT_GUI_LIB)
+	#include <QImage>
+	#include <QPixmap>
 #endif
 
 namespace xv{
 
-#ifdef wxUSE_GUI
+#if defined(wxUSE_GUI)
 	typedef wxImage gui_image_t;
 	typedef wxBitmap gui_bitmap_t;
+#elif defined(QT_GUI_LIB)
+	typedef QPixmap gui_image_t;
+	typedef QImage gui_bitmap_t;
 #endif
 
 /*!

@@ -2,24 +2,31 @@
 
 #include <functional>
 #include <opencv2/highgui.hpp>
-#include <wx/panel.h>
-#include <wx/timer.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
+
+#if defined(wxUSE_GUI)
+	#include <wx/panel.h>
+	#include <wx/timer.h>
+	#include <wx/stattext.h>
+	#include <wx/button.h>
+#elif defined(QT_GUI_LIB)
+	
+#endif
+
+#include "ImagePanel.hpp"
 
 namespace xv{
 
-	class ImagePanel;
 
 /*! 
  * \brief Class to control the playback and processing of media obtained from VideoCapture
  * \ingroup Rendering
  */
-class VideoPlayer : public wxPanel
+class VideoPlayer : public gui_panel_t
 {
 	friend class Thread;
 public:
 	/// Constructor inherited from wxPanel
+#if defined(wxUSE_GUI)
 	VideoPlayer(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
 		const wxPoint &pos = wxDefaultPosition,
@@ -27,7 +34,7 @@ public:
 		long style = wxTAB_TRAVERSAL,
 		const wxString &name = wxPanelNameStr
 		);
-
+#endif
 	/// Construct a video player and use videoCapture as media source
 	VideoPlayer(cv::VideoCapture* videoCapture);
 
@@ -38,6 +45,7 @@ public:
 
 	/// Get the xv::Image instance used for rendering
 	ImagePanel& getImage();
+
 
 #pragma region control
 
@@ -66,6 +74,7 @@ public:
 
 #pragma endregion control
 
+#if defined(wxUSE_GUI)
 #pragma region event handling
 	/// The user dragged the slider
 	virtual void onSliderMove(wxScrollEvent&);
@@ -82,6 +91,7 @@ public:
 	/// The user moved the mouse
 	virtual void onMouseMove(wxCommandEvent& evt);
 #pragma endregion event handling
+#endif
 
 private:
 	/// Shared implementation for int and cv::String
@@ -102,6 +112,7 @@ private:
 		m_fps = 0,
 		m_frameCount = 0;
 
+#if defined(wxUSE_GUI)
 	wxTimer m_timer;
 
 	/// used to handle redraw after a resize
@@ -110,6 +121,7 @@ private:
 
 	/// populate the label with hh::mm::ss corresponding to the frame
 	void showTimeLabel(wxStaticText* label,int frame);
+#endif
 
 	std::function<void(cv::Mat &)> m_processCallback = [](cv::Mat &){};
 
@@ -128,6 +140,8 @@ private:
 	
 	cv::VideoCapture* m_videoCapture = NULL;
 	ImagePanel* m_image;
+	void init();
+#if defined(wxUSE_GUI)
 	wxButton* m_playButton;
 	wxSlider* m_slider;
 	wxStaticText
@@ -136,6 +150,8 @@ private:
 	wxSizer *m_sizer;
 
 	wxMutex m_mutex;
+
+
 	class Thread : public wxThread{
 	public:
 		Thread(VideoPlayer* const);
@@ -144,9 +160,10 @@ private:
 		VideoPlayer *m_player;
 	} *m_thread;
 
-	void init();
+	
 
 	DECLARE_EVENT_TABLE()
+#endif
 };
 
 }//namespace

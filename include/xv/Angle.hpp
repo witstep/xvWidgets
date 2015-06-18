@@ -32,7 +32,7 @@ public:
 
 	/// Conversion operator that returns the angle as a double expressed in radians
 	operator double() const{ 
-		return atan2(m_vertex.y - m_pointA.y, m_vertex.x - m_pointA.x);
+		return atan2(m_vertex.y() - m_pointA.y(), m_vertex.x() - m_pointA.x());
 	};
 
 	/// Checks if 2 contours are equal

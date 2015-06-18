@@ -2,10 +2,14 @@
 
 #include <filesystem>
 
-#include "wx/wx.h"
-#include <wx/panel.h>
-#include <wx/filepicker.h>
-#include <wx/propgrid/propgrid.h>
+#if defined(wxUSE_GUI)
+	#include "wx/wx.h"
+	#include <wx/panel.h>
+	#include <wx/filepicker.h>
+	#include <wx/propgrid/propgrid.h>
+#elif defined(QT_GUI_LIB)
+
+#endif
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -19,21 +23,24 @@
 
 #include <map>
 
+#include "ImagePanel.hpp"
+
 namespace xv{
 
-class ImagePanel;
+
 
 /*! 
  * \brief GUI component to capture video from files and devices
  * \ingroup MediaIO
  */
-class VideoCapture : public wxPanel
+class VideoCapture : public gui_panel_t
 {
 
 public:
 	/// Default constructor
 	VideoCapture();
 
+#if defined(wxUSE_GUI)
 	/// Constructor inherited from wxPanel
 	VideoCapture(wxWindow * parent,
 		wxWindowID id = wxID_ANY,
@@ -42,7 +49,9 @@ public:
 		long style = wxTAB_TRAVERSAL,
 		const wxString &name = wxPanelNameStr
 	);
+#elif defined(QT_GUI_LIB)
 
+#endif
 	/// Constructor inherited from cv::VideoCapture
 	VideoCapture(const std::string& filename);
 
@@ -83,9 +92,12 @@ public:
 
 private:
 	const static std::map <int, std::string> PROPERTY_MAP;
-	const std::map < int, wxPGProperty*>  m_properties;
+
 	static const std::string CLASS_NAME;
 	cv::VideoCapture m_videoCapture;
+
+#if defined(wxUSE_GUI)
+	const std::map < int, wxPGProperty*>  m_properties;
 
 #pragma region layout
 	void init();
@@ -99,15 +111,19 @@ private:
 	void evtOK(wxCommandEvent&);
 	void evtCancel(wxCommandEvent&);
 #pragma endregion event handling
-		
+
+	void loadProperties();
+	void clearProperties();
+
 	wxFilePickerCtrl* m_filePickerCtrl;
 	wxPropertyGrid* m_propertyGrid;
+
+#endif		
+
 	std::tr2::sys::path m_filename;
 	int m_device;
 	bool m_selfHosted;//created its own parent window or embbeded in another control
 
-	void loadProperties();
-	void clearProperties();
 };
 
 }

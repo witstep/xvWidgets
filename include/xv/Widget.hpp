@@ -22,7 +22,17 @@
 namespace xv {
 
 #if defined(wxUSE_GUI)
-	typedef wxPoint gui_point_t;
+	class gui_point_t : public wxPoint
+	{
+	public:
+		gui_point_t() : wxPoint(){};
+		gui_point_t( int x, int y ) : wxPoint( x, y ){};
+		int x() const { return wxPoint::x; };
+		int y() const { return wxPoint::y; };
+	};
+
+	gui_point_t operator+ (const gui_point_t &p1, const gui_point_t &p2);
+	gui_point_t operator- (const gui_point_t &p1, const gui_point_t &p2);
 #elif defined(QT_GUI_LIB)
 	typedef QPoint gui_point_t;
 #endif

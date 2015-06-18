@@ -13,7 +13,7 @@
  * | off-screen | [wxImage](http://docs.wxwidgets.org/trunk/classwx_image.html)   | [QPixmap] (http://doc.qt.io/qt-5/qpixmap.html)
  * | on-screen  | [wxBitmap](http://docs.wxwidgets.org/trunk/classwx_bitmap.html) | [QImage] (http://doc.qt.io/qt-5/qimage.html)
  *
- * Note that although wxImage and QImage share similar names, they play different roles on each GUI framework.
+ * Note that although wxImage and QImage share similar names, they play different roles in each GUI framework.
  */
 
 #include "Widget.hpp"

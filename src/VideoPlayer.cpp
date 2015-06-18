@@ -1,9 +1,14 @@
 #pragma once;
+
+#if defined(wxUSE_GUI)
 #include <wx/wxprec.h>
 #include <wx/numformatter.h>
 
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
+#endif
+#elif defined(QT_GUI_LIB)
+
 #endif
 
 #include <windows.h>
@@ -11,16 +16,22 @@
 #include "xv/VideoPlayer.hpp"
 #include "xv/ImagePanel.hpp"
 
+#include <cassert>
+#include <iostream>
+
 using namespace xv;
 using namespace std;
 
 const int VideoPlayer::LABEL_UPDATE_INTERVAL = 750;
 const char* VideoPlayer::LABEL_DEFAULT_TEXT = "-:-";
 
+#if defined(wxUSE_GUI)
 BEGIN_EVENT_TABLE(VideoPlayer, wxPanel)
 	EVT_TIMER(wxID_HIGHEST + 1, VideoPlayer::onTimer)
 END_EVENT_TABLE()
+#endif
 
+#if defined(wxUSE_GUI)
 void VideoPlayer::onTimer(wxTimerEvent& event)
 {
 	showTimeLabel(m_positionLabel, m_videoCapture->get(cv::CAP_PROP_POS_FRAMES));
@@ -47,12 +58,15 @@ VideoPlayer::VideoPlayer(
 	init();
 }
 
+#endif
+
 VideoPlayer::VideoPlayer(cv::VideoCapture* videoCapture)
 	:m_videoCapture(videoCapture)
 {
 	assert(("Not implemented", false));
 }
 
+#if defined(wxUSE_GUI)
 void VideoPlayer::init()
 {
 
@@ -92,14 +106,23 @@ void VideoPlayer::init()
 
 	SetSizer(m_sizer);
 }
+#elif defined(QT_GUI_LIB)
+void VideoPlayer::init()
+{
+
+}
+#endif
 
 VideoPlayer::~VideoPlayer()
 {
+#if defined(wxUSE_GUI)
 	m_timer.DeletePendingEvents();
 	if (m_thread)
 		m_thread->Delete();
+#endif
 }
 
+#if defined(wxUSE_GUI)
 void VideoPlayer::onMouseMove(wxCommandEvent& evt)
 {
 	if (m_state == VideoPlayer::seeking)
@@ -135,10 +158,12 @@ void VideoPlayer::onSliderClickUp(wxMouseEvent& evt){
 	evt.Skip();
 	m_timer.Start();
 }
+#endif
 
 template <typename _Tp>
 bool VideoPlayer::open_(const _Tp &deviceOrFilename)
 {
+#if defined(wxUSE_GUI)
 	wxBusyCursor busy;
 	m_slider->SetValue(0); /// rewind to first frame
 	m_durationLabel->SetLabel(LABEL_DEFAULT_TEXT);
@@ -155,6 +180,7 @@ bool VideoPlayer::open_(const _Tp &deviceOrFilename)
 	m_timer.Stop();
 	m_slider->SetRange(0, 1);
 	setState(playbackState::idle);
+#endif
 	return false;
 }
 
@@ -168,9 +194,12 @@ bool VideoPlayer::open(int device)
 	return open_<int>(device);
 }
 
+
 void VideoPlayer::play()
 {
+#if defined(wxUSE_GUI)
 	wxBusyCursor busy;
+
 	if ( m_state == playbackState::idle )
 		return; /// can't play if media not open
 	///launch the playback thread, if not running
@@ -179,6 +208,7 @@ void VideoPlayer::play()
 
 	setState(VideoPlayer::playing);
 	m_playButton->SetLabel(_("Pause"));
+#endif
 }
 
 void VideoPlayer::play(
@@ -192,21 +222,27 @@ void VideoPlayer::play(
 
 void VideoPlayer::pause()
 {
+#if defined(wxUSE_GUI)
 	if (m_state == playbackState::idle)
 		return; /// can't pause if media not open
 	setState(VideoPlayer::paused);
 	m_playButton->SetLabel(_("Play"));
+#endif
 }
 
 void VideoPlayer::stop()
 {
+#if defined(wxUSE_GUI)
 	m_thread->Delete();
 	m_thread = NULL;
 	Sleep(250);
+#endif
 }
 
 void VideoPlayer::seek(int idx)
 {
+#if defined(wxUSE_GUI)
+
 #ifdef _DEBUG
 	cout << "VideoPlayer::seek - locking mutex:" << idx << endl;
 #endif
@@ -220,8 +256,11 @@ void VideoPlayer::seek(int idx)
 #ifdef _DEBUG
 	cout << "VideoPlayer::seek - unlocking mutex:" << idx << endl;
 #endif
+
+#endif
 }
 
+#if defined(wxUSE_GUI)
 void VideoPlayer::onPlayClick(wxCommandEvent& evt)
 {
 	if (m_state == VideoPlayer::playing){
@@ -231,8 +270,10 @@ void VideoPlayer::onPlayClick(wxCommandEvent& evt)
 	}
 }
 
+
 void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
 {
+
 	
 	if (m_fps < 1)
 		return; /// property no available
@@ -268,6 +309,8 @@ void VideoPlayer::showTimeLabel(wxStaticText* label, int videoFrame)
 	if (sizeChanged)
 		m_sizer->RecalcSizes();
 }
+
+
 
 VideoPlayer::Thread::Thread(VideoPlayer* player)
 	:m_player(player)
@@ -307,8 +350,10 @@ void* VideoPlayer::Thread::Entry()
 
 		m_player->m_slider->SetValue(i);
 	}
+
 	return NULL;
 }
+#endif
 
 int VideoPlayer::getCurrentFrameIdx()
 {

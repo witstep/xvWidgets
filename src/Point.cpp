@@ -88,8 +88,9 @@ void Point::paint(const cv::Mat& image)
 void Point::setPosition(gui_point_t position)
 {
 	Widget::setPosition(position);
-	x = position.x;
-	y = position.y;
+
+	setX(position.x());
+	setY(position.y());
 
 	m_contour = {
 		position + gui_point_t(-MARGIN, -MARGIN),
