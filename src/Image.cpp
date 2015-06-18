@@ -85,9 +85,9 @@ void Image::createBitmap(int w, int h)
 	m_mutex.lock();
 	//create a blank bitmap
 	if (m_cvMat.empty()){
-		if (w < 1 || h < 1)
-			return;
-		m_renderMat = cv::Mat(h, w, CV_8UC3, PADDING_COLOR);
+		/*if (w < 1 || h < 1)
+			return;*/
+		m_renderMat = cv::Mat(h == 0 ? 1:h , w==0?1:w, CV_8UC3, PADDING_COLOR);
 	}
 	else{
 		m_renderMat = m_cvMat.clone();
