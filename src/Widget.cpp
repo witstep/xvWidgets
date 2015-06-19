@@ -135,7 +135,7 @@ void Widget::onMouseUp(const gui_point_t& point)
 			w->onMouseUp(point);
 	}
 
-	//remove
+	//remove detached children
 	purge();
 }
 
@@ -240,7 +240,7 @@ void Widget::addChild(Widget &widget, bool readOnly)
 	widget.m_readonly = readOnly;
 	widget.m_parent = this;
 	if (std::find(m_children.begin(), m_children.end(), &widget) == m_children.end())
-		m_children.push_back(&widget);
+		m_children.push_front(&widget);
 	else
 		assert(("Adding the same child widget more than once!", false));
 }
