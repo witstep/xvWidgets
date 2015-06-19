@@ -31,7 +31,7 @@ public:
 	bool operator == (const Polygon &b) {
 		if (this->m_undefined && b.m_undefined)
 			return true;//if both are undefined they are considered equal
-		return isEqual(*this, b);
+		return isEqual(b);
 	};
 
 	/// Checks if 2 Polygons are different
@@ -43,7 +43,7 @@ public:
 			return true; //opposite undefined state
 
 		//compare as a gui_point_t_
-		return !isEqual(*this, b);
+		return !isEqual(b);
 	};
 
 	/// Moves the widget
@@ -56,13 +56,15 @@ private:
 	void onMouseUp(const gui_point_t&);
 	void setMouseOver(bool mouseOver);
 	void defineContours();
-	static bool isEqual(const Polygon&, const Polygon&);
+	bool isEqual(const Polygon&);
 
 	Point m_centerPoint;
 
 	void setDefaultPoints();
 	gui_point_t getMiddlePoint();
 	void shiftPosition(gui_point_t);
+
+	std::mutex m_mutex;
 };
 
 }

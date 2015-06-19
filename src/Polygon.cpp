@@ -14,6 +14,7 @@ Polygon::Polygon(){
 
 void Polygon::paint(const cv::Mat& image)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	//paint each point
 	for (auto &p : *this){
 		if (p.isMouseOver())
@@ -95,6 +96,7 @@ void Polygon::paintAddPointButton(const Point& point, const cv::Mat& image)
 
 void Polygon::onMouseDown(const gui_point_t& point)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	Widget::onMouseDown(point);
 
 	if (m_centerPoint.contains(point)){
@@ -112,6 +114,7 @@ void Polygon::onMouseDown(const gui_point_t& point)
 
 void Polygon::onMouseUp(const gui_point_t& point)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	Widget::onMouseUp(point);
 
 	m_centerPoint.onMouseUp(point);
@@ -142,6 +145,8 @@ void Polygon::onMouseUp(const gui_point_t& point)
 
 void Polygon::onMouseMove(const gui_point_t& point)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	m_centerPoint.onMouseMove(point);
 
 	//when the central anchor point is dragged, move the whole widget and return
@@ -167,6 +172,7 @@ void Polygon::onMouseMove(const gui_point_t& point)
 
 void Polygon::setMouseOver(bool mouseOver)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	Widget::setMouseOver(mouseOver);
 	for (auto &p : *this){
 		p.setMouseOver(mouseOver);
@@ -186,6 +192,7 @@ void Polygon::setPosition(gui_point_t position)
 
 void Polygon::setDefaultPoints()
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
 	int polygonMargin = MARGIN * 6;
 	push_back(m_position + Point(-polygonMargin, -polygonMargin));
 	push_back(m_position + Point(-polygonMargin, polygonMargin));
@@ -212,9 +219,10 @@ void Polygon::shiftPosition(gui_point_t shift)
 		p.setPosition(p.position() - shift);
 }
 
-bool Polygon::isEqual(const Polygon &a, const Polygon &b)
+bool Polygon::isEqual(const Polygon &b)
 {
-	for (auto p : a) /// check if all points in Polygon a also exist in b
+	std::lock_guard<std::mutex> lock(m_mutex);
+	for (auto &p : *this) /// check if all points in Polygon a also exist in b
 		if (std::find(b.begin(), b.end(), p) == b.end())
 			return false;
 	return true;
