@@ -101,6 +101,9 @@ public:
 	/// Make it disappear from an Image
 	void hide();
 
+	/// Immediatelly remove child widgets
+	void purge();
+
 protected:
 	/// Other widgets inside the widget
 	std::list<Widget*> m_children;
@@ -150,6 +153,7 @@ protected:
 	bool m_readonly = false; /*!< The widget can be made visible but the user can't interact with it */
 
 	gui_point_t m_position; /*!< The position of the widget, usually the center point */
+
 private:
 	/// Draw the OK/Cancel buttons
 	virtual void paintButtons(const cv::Mat&);

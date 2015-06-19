@@ -89,6 +89,9 @@ public:
 	/// The scale ratio of the image in relation to the original data
 	float getScale(){ return m_scale; };
 
+	/// Draws the image and contained widgets on the image container
+	/// the ms threshold since last rendering avoids processing transformation that are not perceptible
+	void render(int ms = 16);
 private:
 
 #if defined(wxUSE_GUI)
@@ -98,8 +101,6 @@ private:
 	DECLARE_EVENT_TABLE()
 #endif
 
-	//the ms threshold since last rendering avoid processing transformation that are not perceptible
-	void render(int ms=16);
 	/// use to provide a reference to the original image and the image afer processing
 	std::function<void(cv::Mat &)>
 		m_preProcessCallback = [](cv::Mat &){},

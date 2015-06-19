@@ -135,16 +135,8 @@ void Widget::onMouseUp(const gui_point_t& point)
 			w->onMouseUp(point);
 	}
 
-	for (std::list<xv::Widget*>::iterator i = m_children.begin(); i != m_children.end();){
-		(*i)->onMouseUp(point);//no need to check for bounds
-		if (!(*i)->m_parent){
-			//m_mutex.lock();//assure the GUI thread is not iterating
-			i = m_children.erase(i);
-			//m_mutex.unlock();
-		}
-		else///if an element was erased above, there's no need to advance
-			i++;
-	}
+	//remove
+	purge();
 }
 
 bool Widget::contains(const gui_point_t& point)
@@ -227,7 +219,20 @@ void Widget::paintButtons(const cv::Mat& image)
 
 void Widget::hide()
 {
+	Widget *parent = m_parent;
 	m_parent = NULL;
+	if (parent) 
+		parent->purge();
+}
+
+void Widget::purge()
+{
+	for (std::list<xv::Widget*>::iterator i = m_children.begin(); i != m_children.end();){
+		if (!(*i)->m_parent)
+			i = m_children.erase(i); //should we lock mutex while doing this?
+		else///if an element was erased above, there's no need to advance
+			i++;//not using a regular iterator because we can erase children halfway
+	}
 }
 
 void Widget::addChild(Widget &widget, bool readOnly)

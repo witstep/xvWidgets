@@ -8,6 +8,7 @@
 	#include <wx/timer.h>
 	#include <wx/stattext.h>
 	#include <wx/button.h>
+	#include <wx/gdicmn.h>
 #elif defined(QT_GUI_LIB)
 	
 #endif
@@ -46,7 +47,8 @@ public:
 	/// Get the xv::Image instance used for rendering
 	ImagePanel& getImage();
 
-
+	/// Redraw an image optionally erasing background first or a limited area
+	void Refresh(bool eraseBackground = false, const wxRect *rect = NULL);
 #pragma region control
 
 	/// Try to open the named file

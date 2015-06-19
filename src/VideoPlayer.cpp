@@ -123,6 +123,13 @@ VideoPlayer::~VideoPlayer()
 }
 
 #if defined(wxUSE_GUI)
+
+void VideoPlayer::Refresh(bool eraseBackground, const wxRect *rect)
+{
+	m_image->render();
+	wxPanel::Refresh(eraseBackground);
+}
+
 void VideoPlayer::onMouseMove(wxCommandEvent& evt)
 {
 	if (m_state == VideoPlayer::seeking)
@@ -142,8 +149,8 @@ void VideoPlayer::onSliderClickDown(wxMouseEvent& evt)
 	m_timer.Stop(); ///don't update time labels while moving slider
 	if (m_state != VideoPlayer::seeking){
 		m_previousState = m_state;
-		setState(VideoPlayer::seeking);
 		pause();
+		setState(VideoPlayer::seeking);
 	}
 	evt.Skip();
 }
