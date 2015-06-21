@@ -10,6 +10,7 @@ Polygon Polygon::UNDEFINED = Polygon();
 Polygon::Polygon(){
 	m_undefined = true;
 	setPosition(gui_point_t(0, 0));
+	setDefaultPoints();
 }
 
 void Polygon::paint(const cv::Mat& image)
@@ -182,12 +183,11 @@ void Polygon::setMouseOver(bool mouseOver)
 void Polygon::setPosition(gui_point_t position)
 {
 	shiftPosition(m_position - position);
+	if (m_position == gui_point_t(0, 0))
+		defineContours();
 	Widget::setPosition(position);
-
-	if (this->size() == 0)
-		setDefaultPoints();
-
 	m_centerPoint.setPosition(m_position);
+
 }
 
 void Polygon::setDefaultPoints()

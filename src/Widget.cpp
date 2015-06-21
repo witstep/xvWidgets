@@ -149,8 +149,8 @@ bool Widget::contains(const gui_point_t& point)
 	if (
 		wxRegion(m_contour.size(), &m_contour[0]).Contains(p.x(), p.y(), MARGIN * 2, MARGIN * 2) != wxOutRegion
 	)
-#endif
 		return true;
+#endif
 	return false;
 }
 
